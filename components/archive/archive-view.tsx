@@ -42,6 +42,9 @@ export function ArchiveView({
   const [canScrollUp, setCanScrollUp] = useState(false);
   const [canScrollDown, setCanScrollDown] = useState(false);
   const [copiedCardId, setCopiedCardId] = useState<number | null>(null);
+  const [localSelectedItemId, setLocalSelectedItemId] = useState<number | null>(
+    selectedItemId
+  );
 
   console.log("Processed card IDs:", processedCardIds);
 
@@ -100,6 +103,9 @@ export function ArchiveView({
       competitorSku: "",
     };
 
+    // Update local selected item ID
+    setLocalSelectedItemId(item.id);
+
     // Pass the selected item to the parent component
     onSelectItem(formattedItem);
     scrollToTop();
@@ -120,6 +126,10 @@ export function ArchiveView({
     window.addEventListener("resize", checkScrollability);
     return () => window.removeEventListener("resize", checkScrollability);
   }, [filteredArchiveData]);
+
+  useEffect(() => {
+    setLocalSelectedItemId(selectedItemId);
+  }, [selectedItemId]);
 
   const handleScroll = () => {
     checkScrollability();
@@ -155,13 +165,12 @@ export function ArchiveView({
     const baseClasses =
       "bg-white dark:bg-[#333333] rounded-2xl p-4 shadow-md flex items-start cursor-pointer mb-4 relative transition-all duration-200";
 
-    // Только для десктопа (md:)
-    if (selectedItemId === itemId) {
-      // Если элемент выбран - синяя граница всегда видна
-      return `${baseClasses} md:border-2 md:border-blue-600`;
+    // Если элемент выбран - тонкая синяя граница
+    if (selectedItemId === itemId || localSelectedItemId === itemId) {
+      return `${baseClasses} border-2 border-blue-600`;
     } else {
-      // Если элемент не выбран - прозрачная граница по умолчанию, синяя при наведении
-      return `${baseClasses} md:border-2 md:border-transparent md:hover:border-blue-600`;
+      // Если элемент не выбран - обычная граница и тонкая синяя при наведении
+      return `${baseClasses} border hover:border-2 hover:border-blue-600`;
     }
   };
 
