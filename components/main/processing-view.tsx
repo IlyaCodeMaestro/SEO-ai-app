@@ -91,7 +91,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
   };
 
   return (
-    <div className="h-full flex flex-col dark:bg-[#333333]">
+    <div className="h-full flex flex-col dark:bg-[#404040]">
       {/* Заголовок с кнопкой закрытия */}
       <div className="p-6 border-b">
         <div className="flex items-center justify-between relative">
@@ -155,7 +155,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
                 {displayItems.map((card) => (
                   <div
                     key={card.id}
-                    className="bg-white rounded-xl p-4 shadow-sm border mb-4 dark:bg-[#333333] border-white"
+                    className="bg-white rounded-xl p-4 shadow-sm border mb-4 dark:bg-[#333333] "
                   >
                     <div className="flex items-center">
                       <div className="w-16 h-16 bg-gray-200 rounded-md mr-3 overflow-hidden">

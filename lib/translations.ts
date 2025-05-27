@@ -118,14 +118,14 @@ export const translations = {
     // Анализ карточки товара
     "product.analysis.title": "Анализ карточки товара",
     "product.analysis.desc":
-      "Проверьте качество SEO и тексты ваших карточек товаров",
+      "Проверить качество SEO и текста.",
     "product.analysis.enter.sku": "Введите SKU вашего товара",
     "product.analysis.sku": "SKU (анализируемый товар)",
     "product.analysis.enter.competitor":
-      "Введите SKU конкурента с высоким рейтингом",
-    "product.analysis.competitor": "SKU (топовый конкурент)",
+      "Введите SKU аналогичного товара с корректно заполненными характеристиками",
+    "product.analysis.competitor": "SKU (топовый аналог)",
     "product.analysis.note":
-      "Чтобы получить больше данных о вашем товаре необходимо ввести SKU аналога конкурента. Опционально.",
+      "Необязательное поле, но SKU аналога поможет системе собрать больше данных для точного анализа",
     "product.analysis.start": "Начать анализ",
     "product.analysis.time": "Анализ карточки товара займет примерно 5 минут",
     "product.analysis.notification": "Уведомление придет после завершения",
@@ -134,16 +134,16 @@ export const translations = {
     // Описание карточки товара
     "product.description.title": "Описание карточки товара",
     "product.description.desc":
-      "Качественные SEO-тексты для ваших товаров на основе промптов",
+      "Качественные SEO и текст за пару кликов.",
     "product.description.enter.sku": "Введите SKU вашего товара",
     "product.description.no.card":
       "Если у поставщика нет карточки, введите SKU похожего товара",
     "product.description.sku": "SKU (описываемый товар)",
     "product.description.enter.competitor":
-      "Введите SKU конкурента с высоким рейтингом",
-    "product.description.competitor": "SKU (топовый конкурент)",
+      "Введите SKU аналогичного товара с корректно заполненными характеристиками",
+    "product.description.competitor": "SKU (топовый аналог)",
     "product.description.note":
-      "Чтобы получить больше данных о вашем товаре необходимо ввести SKU аналога конкурента. Опционально.",
+      "Необязательное поле, но SKU аналога поможет системе собрать больше данных для точного анализа",
     "product.description.start": "Начать описание",
     "product.description.time":
       "Описание карточки товара займет примерно 5 минут",
@@ -162,8 +162,6 @@ export const translations = {
 
     // Результаты анализа
     "results.analysis": "Результаты анализа",
-    "results.visibility": "Видимость карточки:",
-    "results.keywords.presence": "Наличие ключевых слов:",
     "results.keywords.missed": "Упущенно ключевых слов:",
     "results.coverage.missed": "Упущенный охват:",
     "results.keywords.missed.words": "Упущенные ключевые слова",
@@ -195,6 +193,7 @@ export const translations = {
     "processing.product.name": "Товар",
     "processing.analysis": "Анализ",
     "processing.description": "Описание",
+    "processing.analysys-description": "Анализ и описание",
     "processing.empty": "Нет товаров в обработке",
     "processing.loading": "Загрузка данных...",
     "processing.error": "Ошибка при загрузке данных",
@@ -215,7 +214,7 @@ export const translations = {
     // Личный кабинет
     "cabinet.title": "Личный кабинет",
     "cabinet.balance": "Баланс",
-    "cabinet.topup": "пополнить",
+    "cabinet.topup": "Пополнить",
     "cabinet.balance.statement": "Выписка по балансу",
     "cabinet.bonuses": "Бонусы",
     "cabinet.exchange": "обменять",
@@ -239,8 +238,8 @@ export const translations = {
     // Тарифы
     "tariff.my": "Мой тариф",
     "tariff.next.payment": "Следующее списание",
-    "tariff.analysis.remaining": "Остаток анализа карточки товара",
-    "tariff.description.remaining": "Остаток описания карточки товара",
+    "tariff.analysis.remaining": "Доступно анализов",
+    "tariff.description.remaining": "Доступно описания",
     "tariff.reconnect": "Переподключить",
     "tariff.switch": "Перейти",
     "tariff.monthly.fee": "Ежемесячная абонентская плата",
@@ -371,7 +370,7 @@ export const translations = {
     "common.retry": "Қайталау",
     "common.next": "Келесі",
     "common.start": "Өту",
-    "partner.referral.program": "Реферралдық бағдарлама",
+    "partner.referral.program": "Рефералдық бағдарлама",
     "partner.program": "SEO-AI серіктестік бағдарламасы",
     "partner.standard.banner":
       "Қосылған тариф кезеңінде (30 күн) 50+ достарыңызды шақырыңыз және олардың төлемдерінің 30% өз шотыңызға алыңыз",
@@ -402,7 +401,7 @@ export const translations = {
     "partner.card.standard":
       "30 күн ішінде 50+ достарыңызды шақырыңыз және олардың төлемдерінің 30% өз шотыңызға алыңыз",
     "partner.share.content":
-      "Реферралдық бағдарламаға қосылыңыз және бонустар алыңыз!",
+      "Рефералдық бағдарламаға қосылыңыз және бонустар алыңыз!",
     "common.share": "Бөлісу",
     "common.go": "Өту",
     "share.title": "Бөлісу",
@@ -417,7 +416,7 @@ export const translations = {
     "empty.feedback": "Мұнда сіз біздің қызмет туралы пікір қалдыра аласыз",
     "empty.bonus.statement": "Бонустар бойынша көшірме бос",
     "empty.referral.statement": "Рефералдар бойынша көшірме бос",
-    "feedback.for.developers": "Әзірлеушілерге пікір",
+    "feedback.for.developers": "Разработчиктерге пікір жолдау",
     "feedback.faq": "Жиі қойылатын сұрақтар",
     "feedback.type": "Кері байланыс түрі",
     "feedback.recommendations": "Ұсыныстар",
@@ -446,9 +445,9 @@ export const translations = {
     "product.analysis.processing": "'Өңделуде' бетіне жіберілді",
 
     // Описание карточки товара
-    "product.description.title": "Қол жетімді сипаттама",
+    "product.description.title": "Тауар карточкасының сипаттамасы",
     "product.description.desc":
-      "Промпттарға негізделген тауарларыңызға арналған сапалы SEO мәтіндері",
+      "Бірнеше рет басу арқылы сапалы CEO және мәтін.",
     "product.description.enter.sku": "Тауарыңыздың SKU енгізіңіз",
     "product.description.no.card":
       "Егер жеткізушіде карточка болмаса, ұқсас тауардың SKU енгізіңіз",
@@ -477,8 +476,6 @@ export const translations = {
 
     // Результаты анализа
     "results.analysis": "Талдау нәтижелері",
-    "results.visibility": "Карточка көрінісі:",
-    "results.keywords.presence": "Кілт сөздердің болуы:",
     "results.keywords.missed": "Жіберіп алған кілт сөздер:",
     "results.coverage.missed": "Жіберіп алған қамту:",
     "results.keywords.missed.words": "Жіберіп алған кілт сөздер",
@@ -508,6 +505,7 @@ export const translations = {
     "processing.today": "Бүгін",
     "processing.product.name": "Тауар",
     "processing.analysis": "Талдау",
+     "processing.analysys-description": "Талдау және сипаттама",
     "processing.description": "Сипаттама",
     "processing.empty": "Өңделуде тауарлар жоқ",
     "processing.loading": "Деректерді жүктеу...",
@@ -532,11 +530,11 @@ export const translations = {
     "cabinet.title": "Жеке кабинет",
     "cabinet.balance": "Баланс",
     "cabinet.topup": "Толтыру",
-    "cabinet.balance.statement": "Баланс бойынша көшірме",
+    "cabinet.balance.statement": "Баланс бойынша үзінді көшірме",
     "cabinet.bonuses": "Бонустар",
     "cabinet.exchange": "Айырбастау",
-    "cabinet.bonus.statement": "Бонустар бойынша көшірме",
-    "cabinet.referral.statement": "Рефералдар бойынша көшірме",
+    "cabinet.bonus.statement": "Бонустар бойынша үзінді көшірме",
+    "cabinet.referral.statement": "Рефералдар бойынша үзінді көшірме",
     "cabinet.tariff": "Тариф",
     "cabinet.language": "Тіл",
     "cabinet.theme": "Тақырып",
@@ -736,9 +734,9 @@ export const translations = {
     "empty.referral.statement": "Referral statement is empty",
 
     // Анализ карточки товара
-    "product.analysis.title": "Product Card Analysis",
+    "product.analysis.title": "Product card analysis",
     "product.analysis.desc":
-      "Check the SEO quality and texts of your product cards",
+      "Check the quality of SEO and text.",
     "product.analysis.enter.sku": "Enter your product SKU",
     "product.analysis.sku": "SKU (analyzed product)",
     "product.analysis.enter.competitor":
@@ -753,9 +751,9 @@ export const translations = {
     "product.analysis.processing": "Moved to 'Processing' page",
 
     // Описание карточки товара
-    "product.description.title": "Product Card Description",
+    "product.description.title": "Product card description",
     "product.description.desc":
-      "Quality SEO texts for your products based on prompts",
+      "Quality SEO and text in a couple clicks.",
     "product.description.enter.sku": "Enter your product SKU",
     "product.description.no.card":
       "If the supplier doesn't have a card, enter the SKU of a similar product",
@@ -784,8 +782,6 @@ export const translations = {
 
     // Результаты анализа
     "results.analysis": "Analysis results",
-    "results.visibility": "Card visibility:",
-    "results.keywords.presence": "Presence of keywords:",
     "results.keywords.missed": "Missed keywords:",
     "results.coverage.missed": "Missed coverage:",
     "results.keywords.missed.words": "Missed keywords",
@@ -815,6 +811,7 @@ export const translations = {
     "processing.today": "Today",
     "processing.product.name": "Product",
     "processing.analysis": "Analysis",
+      "processing.analysys-description": "Analysis and description",
     "processing.description": "Description",
     "processing.empty": "No products in processing",
     "processing.loading": "Loading data...",

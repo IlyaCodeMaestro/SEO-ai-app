@@ -61,7 +61,7 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
 
   if (isMobile) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-around mb-4">
+      <div className="bg-white dark:bg-[#333333] rounded-xl p-4 shadow-around mb-4">
         <div className="flex">
           <div className="w-16 h-16 bg-gray-200 rounded-lg mr-3 overflow-hidden flex-shrink-0">
             {item.image ? (
@@ -105,7 +105,7 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 w-full sm:w-auto sm:max-w-[550px] sm:ml-0 md:ml-28 shadow-md mb-6 flex flex-col sm:flex-row items-center">
+    <div className="bg-white dark:bg-[#333333] rounded-xl p-4 w-full sm:w-auto sm:max-w-[550px] sm:ml-0 md:ml-28 shadow-md mb-6 flex flex-col sm:flex-row items-center">
       <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg mb-3 sm:mb-0 sm:mr-3 overflow-hidden">
         {item.image ? (
           <img

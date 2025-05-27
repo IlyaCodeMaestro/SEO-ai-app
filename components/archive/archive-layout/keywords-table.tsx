@@ -61,7 +61,7 @@ export function KeywordsTable({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
         <div className="p-4">
           {/* Верхняя строка: иконка - заголовок - иконка */}
           <div className="relative flex items-center justify-between mb-3">
@@ -150,7 +150,7 @@ export function KeywordsTable({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-gray-800 rounded-[20px] shadow-md overflow-hidden h-[225px]">
+    <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden h-[225px]">
       <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-b dark:border-gray-700 relative">
         {/* Левая часть — только копирование */}
         <div className="flex items-center space-x-2 mb-2 sm:mb-0 z-10">

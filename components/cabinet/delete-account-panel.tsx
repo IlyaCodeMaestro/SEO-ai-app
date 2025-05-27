@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, ArrowLeft, AlertCircle } from "lucide-react";
+import { X, ArrowLeft, AlertCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLanguage } from "../provider/language-provider";
@@ -98,14 +98,14 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
   };
 
   return (
-    <div className="h-full flex flex-col justify-start bg-white dark:bg-[#333333] px-4 md:px-0">
+    <div className="h-full flex flex-col justify-start bg-white px-4 md:px-0 dark:bg-[#404040] delete-account-panel">
       {/* Add Toaster component to ensure toasts are displayed */}
       <Toaster />
 
       {/* Модалка с затемнённым фоном */}
       {showConfirmModal && (
-        <div className="absolute pb-72 inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 rounded-3xl">
-          <div className="bg-white rounded-xl p-6 max-w-xs w-full mx-4 dark:bg-gray-800">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 rounded-3xl mt-0 sm:mt-7">
+          <div className="bg-white rounded-xl p-6 max-w-xs w-full mb-64 mx-4 dark:bg-gray-800">
             <p className="text-center font-medium mb-6">
               {t("cabinet.confirm.delete")}
             </p>
@@ -135,46 +135,62 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
         </div>
       )}
 
-      {/* Основной контент */}
-      <div className="flex-1 pt-0 max-w-md mx-auto w-full px-2 md:px-0">
-        {/* Заголовок с крестиком или стрелкой */}
-        <div className="flex justify-between items-center mb-12">
-          <div className="flex items-center">
-            {isMobile ? (
-              <button
-                onClick={onClose}
-                className="pt-3"
-                aria-label={t("common.back")}
-              >
-                <ArrowLeft className="h-6 w-6" />
-              </button>
-            ) : null}
-          </div>
-
-          <div className="flex justify-center w-full pt-6">
-            <h1 className="text-xl font-medium text-center text-blue-600">
-              {t("cabinet.delete.account")}
-            </h1>
-          </div>
-
-          {!isMobile && (
-            <div className="flex items-center">
-              <button
-                onClick={onClose}
-                className="p-1"
-                aria-label={t("common.close")}
-              >
-                <X className="h-6 w-6" />
-              </button>
+      {/* Заголовок с кнопкой закрытия */}
+      <div className="flex items-center justify-between mb-4 mt-3">
+        {isMobile ? (
+          <>
+            <button
+              onClick={onClose}
+              className="p-1"
+              aria-label={t("common.back")}
+            >
+              <ArrowLeft className="h-5 w-5 dark:text-blue-600" />
+            </button>
+            <div className="flex-1 text-center">
+              <h2 className="text-xl font-medium text-blue-600">
+                {t("cabinet.title")}
+              </h2>
             </div>
-          )}
+            <div className="w-5"></div> {/* Empty div for balanced spacing */}
+          </>
+        ) : (
+          <>
+            <div className="flex-1"></div>
+            <button
+              onClick={onClose}
+              className="p-1"
+              aria-label={t("common.close")}
+            >
+              <X className="h-5 w-5 dark:text-blue-600" />
+            </button>
+          </>
+        )}
+      </div>
+
+      <div className="flex-1 pt-0 max-w-md mx-auto w-full px-2 md:px-0">
+        {/* Заголовок */}
+        <div className="w-full border border-white bg-blue-600 dark:border-none py-5 rounded-[25px] text-xl font-medium shadow-md p-4 mb-6 text-white text-center">
+          <div className="flex justify-center items-center">
+            <span className="text-lg font-medium">
+              {t("cabinet.delete.account")}
+            </span>
+          </div>
         </div>
 
         {/* Информация об удалении */}
-        <div className="bg-white rounded-xl border-white border p-6 shadow-md dark:border-white dark:bg-[rgba(0,0,0,0.25)]">
+        <div className="bg-white rounded-xl p-6 shadow-md border dark:bg-[#2C2B2B] dark:border-none">
           {isLoading ? (
-            <div className="flex justify-center py-4">
-              <p>{t("loading")}</p>
+            <div className="flex items-center justify-center h-40">
+              <p>{t("common.loading")}</p>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center h-40 text-center">
+              <div className="bg-red-500 rounded-full p-3 mb-4">
+                <Info className="h-6 w-6 text-white" />
+              </div>
+              <p className="text-xl font-bold">
+                {t("error.loading.delete.info")}
+              </p>
             </div>
           ) : (
             <>

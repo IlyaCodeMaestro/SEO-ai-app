@@ -36,7 +36,7 @@
   }
 
   .dark {
-    --background: 0 0% 20%;
+    --background: 0 0% 25%;
     --foreground: 210 40% 98%;
 
     --card: 0 0% 0%;
@@ -91,4 +91,7 @@
 .animate-toast-slide-in {
   animation: toastSlideIn 0.4s ease-out forwards;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+html {
+  overflow-y: scroll;
 }

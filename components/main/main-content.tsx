@@ -20,9 +20,16 @@ export function MainContent({
 }: MainContentProps) {
   const { processingItems } = useProcessingContext();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const { data: mainData, isLoading: mainLoading } = useGetMainInfoQuery();
+  const { data: mainData, isLoading: mainLoading } = useGetMainInfoQuery(
+    undefined,
+    {
+      pollingInterval: 5000, // Refresh every 5 seconds
+    }
+  );
   const { data: processData, isLoading: processLoading } =
-    useGetProcessListQuery();
+    useGetProcessListQuery(undefined, {
+      pollingInterval: 5000, // Refresh every 5 seconds
+    });
   const { t } = useLanguage();
 
   // Check if there are any items in processing
@@ -86,13 +93,13 @@ export function MainContent({
             )
           }
         >
-          <h2 className="text-[24px] font-medium mb-3 ml-2">
+          <h2 className="text-[22px] font-medium mb-3 ml-2">
             {t("product.analysis.title")}
           </h2>
-          <p className="text-base md:text-sm mb-1 ml-2 font-medium">
+          <p className="text-base md:text-sm mb-1 ml-2 font-normal">
             {t("product.analysis.desc")}
           </p>
-          <p className="text-base md:text-sm mb-5 ml-2 font-thin">
+          <p className="text-base text-[15px] md:text-sm mb-5 ml-2 font-thin">
             {t("tariff.analysis.remaining")}{" "}
             {mainData && mainData?.tariff?.analyses}
           </p>
@@ -124,13 +131,13 @@ export function MainContent({
             )
           }
         >
-          <h2 className="text-[22px] font-medium mb-3 ml-2">
+          <h2 className="text-[20px] font-medium mb-3 ml-2">
             {t("product.description.title")}
           </h2>
-          <p className="text-base mb-1 ml-2 text-[14px] md:text-sm font-medium">
+          <p className="text-base mb-1 ml-2 text-[14px] md:text-sm font-normal">
             {t("product.description.desc")}
           </p>
-          <p className="text-base mb-5 ml-2 text-[15px] md:text-sm font-thin">
+          <p className="text-base mb-5 ml-2 text-[16px] md:text-sm font-thin">
             {t("tariff.description.remaining")}{" "}
             {mainData && mainData?.tariff?.descriptions}
           </p>

@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import AuthInput from "@/components/provider/auth-input";
@@ -97,16 +96,18 @@ function RegisterForm() {
         required
       />
 
-      {error && (
-        <div className="text-red-500 text-xs sm:text-sm text-center">
-          {error}
-        </div>
-      )}
+      <div className="h-5">
+        {error && (
+          <div className="text-red-500 text-xs sm:text-sm text-center">
+            {error}
+          </div>
+        )}
+      </div>
 
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent rounded-full shadow-sm text-xs sm:text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+        className="w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent rounded-full shadow-sm text-xs sm:text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50"
       >
         {isLoading ? "Загрузка..." : "Зарегистрироваться"}
       </button>
@@ -117,13 +118,15 @@ function RegisterForm() {
 // Main component that wraps the form in Suspense
 export default function RegisterStep2() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-5 sm:p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black py-4 sm:py-6 lg:py-12 px-3 sm:px-4 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md bg-gray-100 dark:bg-gray-800 rounded-3xl shadow-xl p-4  mb-16 sm:p-6 lg:p-8">
         <div className="text-center mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-2xl font-medium">Регистрация</h2>
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-medium">
+            Регистрация
+          </h2>
         </div>
 
-        <p className="text-center text-xs sm:text-sm text-gray-600 mb-6 sm:mb-8">
+        <p className="text-center text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 lg:mb-8">
           Заполните все поля, чтобы создать аккаунт
         </p>
 

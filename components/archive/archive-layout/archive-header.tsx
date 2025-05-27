@@ -36,7 +36,7 @@ export function ArchiveHeader({
       <div className="flex flex-col items-center mb-4 text-center">
         <div className="flex items-center w-full">
           <button onClick={onClose} className="mr-3" aria-label="Back">
-            <ArrowLeft className="h-5 w-5 text-gray-500" />
+            <ArrowLeft className="h-5 w-5 text-gray-500 dark:text-blue-600" />
           </button>
           <h2 className="text-blue-600 font-medium text-xl mx-auto">
             {t("archive.title")}
@@ -60,7 +60,7 @@ export function ArchiveHeader({
         {getSubtitle()}
       </h3>
       <button onClick={onClose} className="p-1" aria-label="Close">
-        <X className="h-5 w-5" />
+        <X className="h-5 w-5 dark:text-blue-600" />
       </button>
     </div>
   );

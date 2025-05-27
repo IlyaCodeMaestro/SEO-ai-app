@@ -84,6 +84,13 @@ const config = {
   },
  plugins: [
   require("tailwindcss-animate"),
+  function ({ addUtilities }) {
+    addUtilities({
+      ".overflow-overlay": {
+        "overflow-y": "overlay",
+      },
+    });
+  },
 ],
 
 } satisfies Config

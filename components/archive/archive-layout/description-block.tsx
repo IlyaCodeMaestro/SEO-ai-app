@@ -36,7 +36,7 @@ export function DescriptionBlock({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
         <div className="p-4">
           {/* Верхняя строка: копировать — заголовок — поделиться */}
           <div className="relative flex items-center justify-between mb-3">
@@ -107,7 +107,7 @@ export function DescriptionBlock({
 
   return (
     <div
-      className={`bg-[#f9f8f8] dark:bg-gray-800 rounded-[20px] shadow-md overflow-hidden ${
+      className={`bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden ${
         fullWidth ? "col-span-2" : ""
       }`}
     >

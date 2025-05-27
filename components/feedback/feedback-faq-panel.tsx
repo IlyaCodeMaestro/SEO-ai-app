@@ -5,64 +5,66 @@ import { X, ChevronUp, ChevronDown, ArrowLeft, Loader2 } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLanguage } from "../provider/language-provider";
 import { useGetFaqQuestionsQuery } from "@/store/services/feedback-api";
-import { IFaqQuestion } from "@/store/types";
+import type { IFaqQuestion } from "@/store/types";
 import { faqTranslations } from "./translations/faq-translations";
 
 interface FeedbackFaqPanelProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
-  const isMobile = useMediaQuery("(max-width: 768px)")
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const { t, language } = useLanguage()
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { t, language } = useLanguage();
 
   // Получаем данные FAQ из API
-  const { data: faqData, isLoading, error } = useGetFaqQuestionsQuery()
+  const { data: faqData, isLoading, error } = useGetFaqQuestionsQuery();
 
   const toggleFaqItem = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   // Функция для получения заголовка вопроса на нужном языке
   const getQuestionTitle = (question: IFaqQuestion): string => {
     // Проверяем, есть ли перевод в файле переводов
-    const translation = faqTranslations[question.id]?.[language as "kz" | "en" | "ru"]
+    const translation =
+      faqTranslations[question.id]?.[language as "kz" | "en" | "ru"];
     if (translation?.title) {
-      return translation.title
+      return translation.title;
     }
 
     // Если нет перевода в файле, проверяем, есть ли перевод в данных API
     if (language === "kz" && question.title_kk) {
-      return question.title_kk
+      return question.title_kk;
     } else if (language === "en" && question.title_en) {
-      return question.title_en
+      return question.title_en;
     } else if (language === "ru" && question.title_ru) {
-      return question.title_ru
+      return question.title_ru;
     }
 
-    return question.title // Возвращаем дефолтный заголовок, если перевод не найден
-  }
+    return question.title; // Возвращаем дефолтный заголовок, если перевод не найден
+  };
 
   // Функция для получения текста ответа на нужном языке
   const getQuestionMessage = (question: IFaqQuestion): string => {
     // Проверяем, есть ли перевод в файле переводов
-    const translation = faqTranslations[question.id]?.[language as "kz" | "en" | "ru"]
+    const translation =
+      faqTranslations[question.id]?.[language as "kz" | "en" | "ru"];
     if (translation?.message) {
-      return translation.message
+      return translation.message;
     }
 
     // Если нет перевода в файле, проверяем, есть ли перевод в данных API
     if (language === "kz" && question.message_kk) {
-      return question.message_kk
+      return question.message_kk;
     } else if (language === "en" && question.message_en) {
-      return question.message_en
+      return question.message_en;
     } else if (language === "ru" && question.message_ru) {
-      return question.message_ru
+      return question.message_ru;
     }
 
-    return question.message // Возвращаем дефолтный текст, если перевод не найден
-  }
+    return question.message; // Возвращаем дефолтный текст, если перевод не найден
+  };
 
   // Функция для форматирования текста с переносами строк
   const formatMessage = (message: string) => {
@@ -71,26 +73,37 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
         {line}
         {i < message.split("\n").length - 1 && <br />}
       </span>
-    ))
-  }
+    ));
+  };
+
+  // Определяем размер иконок в зависимости от устройства
+  const iconSize = 20;
 
   return (
-    <div className="h-full flex flex-col bg-white dark:bg-[#333333]">
+    <div className="h-full flex flex-col bg-white dark:bg-[#404040]">
       {/* Заголовок */}
       <div className="flex items-center justify-between p-4 relative">
         {isMobile ? (
           <>
-            <button onClick={onClose} className="absolute left-4 top-1/2 -translate-y-1/2">
-              <ArrowLeft size={24} className="text-gray-400 dark:text-white" />
+            <button
+              onClick={onClose}
+              className="absolute left-4 top-1/2 -translate-y-1/2"
+            >
+              <ArrowLeft
+                size={24}
+                className="text-gray-400 dark:text-blue-600"
+              />
             </button>
-            <h2 className="text-lg font-medium mx-auto text-center text-blue-600 pl-6">{t("feedback.title")}</h2>
+            <h2 className="text-lg font-medium mx-auto text-center text-blue-600 pl-6">
+              {t("common.feedback")}
+            </h2>
             <div className="w-6" />
           </>
         ) : (
           <>
             <div className="w-8" />
             <button onClick={onClose} className="p-1 mr-2">
-              <X size={24} className="text-gray-400 dark:text-white" />
+              <X size={24} className="text-gray-400 dark:text-blue-600" />
             </button>
           </>
         )}
@@ -125,20 +138,25 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
               faqData?.questions.map((item, index) => (
                 <div
                   key={item.id}
-                  className="rounded-2xl bg-[#f9f9f9] dark:bg-[#2C2B2B] border shadow-md overflow-hidden"
+                  className="rounded-2xl bg-[#f9f9f9] dark:bg-[#2C2B2B] border shadow-md overflow-hidden dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]"
                 >
                   <button
                     onClick={() => toggleFaqItem(index)}
                     className="w-full flex justify-between items-center px-5 py-4 text-left"
                   >
-                    <span className="text-base text-[#1e1e1e] dark:text-white font-medium">
+                    <span className="text-base text-[#1e1e1e] dark:text-white font-medium pr-2">
                       {getQuestionTitle(item)}
                     </span>
-                    {openIndex === index ? (
-                      <ChevronUp size={20} className="text-[#4C6FFF]" />
-                    ) : (
-                      <ChevronDown size={20} className="text-[#4C6FFF]" />
-                    )}
+                    <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
+                      {openIndex === index ? (
+                        <ChevronUp size={iconSize} className="text-[#4C6FFF]" />
+                      ) : (
+                        <ChevronDown
+                          size={iconSize}
+                          className="text-[#4C6FFF]"
+                        />
+                      )}
+                    </div>
                   </button>
                   {openIndex === index && (
                     <div className="px-5 pb-4 text-sm text-gray-600 dark:text-white">
@@ -150,12 +168,14 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
 
             {!isLoading && !error && faqData?.questions.length === 0 && (
               <div className="text-center py-8">
-                <p className="text-gray-500 dark:text-white">{t("feedback.no.questions")}</p>
+                <p className="text-gray-500 dark:text-white">
+                  {t("feedback.no.questions")}
+                </p>
               </div>
             )}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

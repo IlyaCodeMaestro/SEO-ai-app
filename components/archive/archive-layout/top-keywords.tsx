@@ -33,7 +33,7 @@ export function TopKeywords({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-gray-800  rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#333333]  rounded-xl shadow-md overflow-hidden">
         <div className="p-4">
           <h3 className="font-medium text-sm mb-3 text-center">
             {t("top.keywords.title")}
@@ -99,7 +99,7 @@ export function TopKeywords({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-gray-800 rounded-[20px] shadow-md overflow-hidden h-[225px]">
+    <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden h-[225px]">
       <div className="relative border-b px-4 py-3 flex flex-col sm:flex-row items-center">
         <h3 className="text-center font-medium text-base mx-auto w-max">
           {t("top.keywords.title")}

@@ -40,7 +40,7 @@ export function ArchiveItemDetailsModal({
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden">
+    <div className="absolute inset-0 z-50 flex items-center justify-center overflow-y-auto rounded-3xl overflow-x-hidden">
       <div
         className="absolute inset-0 bg-black bg-opacity-50"
         onClick={onClose}
@@ -49,7 +49,7 @@ export function ArchiveItemDetailsModal({
         className="bg-white dark:bg-[#1e1e1e] rounded-3xl w-[90%] max-w-3xl h-[80%] flex flex-col z-50 text-black dark:text-white"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="top-0 bg-white dark:bg-[#1e1e1e] z-10 border-b dark:border-gray-700 p-4 relative flex items-center justify-center rounded-t-3xl">
+        <div className="top-0 bg-white dark:bg-[#333333] z-10 border-b dark:border-gray-700 p-4 relative flex items-center justify-center rounded-t-3xl">
           <h2 className="text-lg font-medium absolute left-1/2 transform -translate-x-1/2 text-black dark:text-white">
             {title}
           </h2>
@@ -63,7 +63,7 @@ export function ArchiveItemDetailsModal({
         </div>
 
         <div
-          className={`flex-1 overflow-y-auto p-4 bg-white dark:bg-[#1e1e1e] dark:text-black`}
+          className={`flex-1 overflow-y-auto p-4 rounded-3xl bg-white dark:bg-[#333333] dark:text-black`}
         >
           <div className={contentClassName}>{children}</div>
         </div>

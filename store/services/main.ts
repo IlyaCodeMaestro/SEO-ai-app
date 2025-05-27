@@ -178,12 +178,6 @@ export const mainApi = createApi({
         method: "GET",
       }),
     }),
-    getCardAnalysisDescription: builder.query<ICardAnalysisResponse, number>({
-      query: (cardId) => ({
-        url: `/v1/card/analysis?card_id=${cardId}`,
-        method: "GET",
-      }),
-    }),
     getCardDescription: builder.query<ICardDescriptionResponse, number>({
       query: (cardId) => ({
         url: `/v1/card/description?card_id=${cardId}`,

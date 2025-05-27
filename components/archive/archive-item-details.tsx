@@ -648,7 +648,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   const renderDesktopLayout = () => {
     return (
       <div
-        className="h-full overflow-auto bg-white dark:bg-[#333333] flex flex-col"
+        className="h-full overflow-auto bg-white dark:bg-[#404040] flex flex-col"
         ref={containerRef}
       >
         <div className="p-3 sm:p-6 flex-1">
@@ -898,7 +898,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   const renderMobileLayout = () => {
     return (
       <div
-        className="h-full overflow-auto bg-white dark:bg-[#333333] flex flex-col"
+        className="h-full overflow-auto bg-white dark:bg-[#404040] flex flex-col"
         ref={containerRef}
       >
         <div className="p-4 flex-1">

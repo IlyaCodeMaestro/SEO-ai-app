@@ -40,7 +40,7 @@ export function MissedKeywordsTable({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
         <div className="p-4">
           {/* Simplified header with just the title */}
           <div className="flex items-center justify-center mb-3">
@@ -95,7 +95,7 @@ export function MissedKeywordsTable({
 
   return (
     <div
-      className={`bg-[#f9f8f8] dark:bg-gray-800 rounded-[20px] shadow-md overflow-hidden ${
+      className={`bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden ${
         !isExpanded ? "h-[202px]" : "h-full"
       }`}
     >

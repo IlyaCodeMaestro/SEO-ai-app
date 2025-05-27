@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useLanguage } from "../provider/language-provider";
-import { TariffSwitchConfirmModal } from "./tariff-switch-confirm-modal";
-import { AutoRenewalConfirmModal } from "./auto-renewal-confirm-modal";
 
 import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
@@ -122,7 +119,7 @@ const useLanguage = () => {
       "tariff.auto.renewal.disabled": "Автопродление тарифа выключено",
       "tariff.auto.renewal.error": "Ошибка при изменении автопродления тарифа",
       "tariff.buy.success": "Тариф успешно подключен",
-      "tariff.switch.error": "Ошибка при переключении тарифа",
+      "tariff.switch.error": "��шибка при переключении тарифа",
       "common.loading": "Загрузка...",
       "error.loading.tariffs": "Ошибка при загрузке тарифов",
       success: "Успешно",
@@ -282,20 +279,20 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
   const getTariffGradient = (tariffId: string) => {
     switch (tariffId) {
       case "seller":
-        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC] border border-white ";
+        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC]   ";
       case "manager":
-        return "bg-gradient-to-r from-[rgba(0,131,172,0.71)] to-[#3460D1] border border-white";
+        return "bg-gradient-to-r from-[rgba(0,131,172,0.71)] to-[#3460D1]  ";
       case "premium":
-        return "bg-gradient-to-r from-[#2663FF] to-[#0B3CBB] border border-white";
+        return "bg-gradient-to-r from-[#2663FF] to-[#0B3CBB]  ";
       default:
-        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC] border border-white";
+        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC] ";
     }
   };
 
   // Mobile view
   if (isMobile) {
     return (
-      <div className="h-full flex flex-col justify-start bg-white dark:bg-[#333333]">
+      <div className="h-full flex flex-col justify-start bg-white dark:bg-[#404040]">
         {/* Add Toaster component to ensure toasts are displayed */}
         <Toaster />
 
@@ -306,7 +303,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
             className="p-1 absolute left-4"
             aria-label="Back"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5 dark:text-blue-600" />
           </button>
           <div className="flex-1 text-center pl-4">
             <div className="text-[#4361EE] font-medium text-xl">
@@ -323,7 +320,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
 
         <div className="flex-1 p-4 pt-0 max-w-md mx-auto w-full">
           {/* Current tariff */}
-          <div className="mb-6 bg-gray-100 p-4 border rounded-lg dark:bg-[#2C2B2B] dark:border-white">
+          <div className="mb-6 bg-gray-100 p-4 border rounded-3xl dark:bg-[#2C2B2B] dark:border-none">
             <div className="flex justify-between items-start mb-1">
               <div>
                 <div className="mb-1">
@@ -352,7 +349,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
           </div>
 
           {/* Auto-renewal toggle */}
-          <div className="flex items-center justify-between mt-4">
+          <div className="flex items-center justify-between mt-8 mb-6">
             <span className="text-gray-600 dark:text-white">Автосписание</span>
             <div
               className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors duration-300 ${
@@ -375,7 +372,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
               .map((tariff) => (
                 <div
                   key={tariff.id}
-                  className={`rounded-xl overflow-hidden transition-all duration-300 ${getTariffGradient(
+                  className={`rounded-3xl overflow-hidden transition-all duration-300 ${getTariffGradient(
                     tariff.id
                   )} ${
                     expandedTariff === tariff.id ? "shadow-lg" : "shadow-sm"
@@ -497,7 +494,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                 </Button>
                 <Button
                   variant="outline"
-                  className="border-gray-300 text-gray-700 rounded-full py-3 dark:bg-gray-400 dark:text-white"
+                  className="border-gray-300 text-gray-700 rounded-full py-3 dark:text-white dark:bg-gray-400"
                   onClick={cancelAutoRenewal}
                 >
                   Отмена
@@ -512,7 +509,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
 
   // Desktop view
   return (
-    <div className="bg-white w-full dark:bg-[#333333]">
+    <div className="bg-white w-full dark:bg-[#404040]">
       {/* Add Toaster component to ensure toasts are displayed */}
       <Toaster />
 
@@ -527,13 +524,13 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
             className="absolute right-0 top-0 p-1"
             aria-label="Close"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 dark:text-blue-600" />
           </button>
         </div>
 
         <div className="w-full">
           {/* Current tariff */}
-          <div className="mb-6 bg-gray-100 p-4 border rounded-lg dark:bg-[#2C2B2B] dark:border-white">
+          <div className="mb-6 bg-gray-100 p-4 border rounded-3xl dark:bg-[#2C2B2B] dark:border-none">
             <div className="flex justify-between items-start">
               <div>
                 <div className="mb-1">
@@ -582,11 +579,11 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
               .map((tariff) => (
                 <div
                   key={tariff.id}
-                  className={`rounded-xl overflow-hidden ${getTariffGradient(
+                  className={`rounded-3xl overflow-hidden ${getTariffGradient(
                     tariff.id
                   )} shadow-sm`}
                 >
-                  <div className="p-4 text-white">
+                  <div className="p-4 text-white ">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="text-2xl font-bold mb-2">
@@ -631,7 +628,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
 
         {/* Confirmation modal */}
         {showConfirmModal && tariffToSwitch && (
-          <div className="absolute pb-32 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-3xl">
+          <div className="absolute pb-32 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-3xl mt-7">
             <div className="bg-white p-6 rounded-xl max-w-xs w-full mx-4 dark:bg-gray-800">
               <div className="text-center mb-6">
                 <p className="text-lg">
@@ -659,8 +656,8 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
         )}
 
         {showAutoRenewalModal && (
-          <div className="absolute pb-32 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-3xl">
-            <div className="bg-white p-6 rounded-xl max-w-xs w-full mx-4 dark:bg-gray-800">
+          <div className="absolute pb-32 mt-7   inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-3xl">
+            <div className="bg-white  p-6 rounded-xl max-w-xs w-full mx-4 dark:bg-gray-800">
               <div className="text-center mb-6">
                 <p className="text-lg">
                   Вы желаете включить автопродление тарифа?

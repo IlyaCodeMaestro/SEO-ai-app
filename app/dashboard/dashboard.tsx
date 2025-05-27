@@ -19,7 +19,6 @@ import { ReferralStatementPanel } from "../../components/cabinet/referral-statem
 import { TariffPanel } from "../../components/cabinet/tariff-panel";
 import { ActiveDevicesPanel } from "../../components/cabinet/active-devices-panel";
 import { DeleteAccountPanel } from "../../components/cabinet/delete-account-panel";
-import { ShareMenu } from "../../components/shared/share-menu";
 import { FeedbackFaqPanel } from "../../components/feedback/feedback-faq-panel";
 import { FeedbackRecommendationsPanel } from "../../components/feedback/feedback-recommendations-panel";
 import { FeedbackComplaintPanel } from "../../components/feedback/feedback-complaint-panel";
@@ -27,7 +26,6 @@ import { FeedbackOtherPanel } from "../../components/feedback/feedback-other-pan
 import { useProcessingContext } from "@/components/main/processing-provider";
 import { ProductAnalysisForm } from "@/components/main/product-analysis-form";
 import { ProductAnalysisDetails } from "@/components/main/product-analysis-details";
-import { ProductAnalysisResults } from "@/components/main/product-analysis-results";
 import { ProductDescriptionForm } from "@/components/main/product-description-form";
 import { ProductDescriptionDetails } from "@/components/main/product-description-details";
 import { ProcessingView } from "@/components/main/processing-view";
@@ -354,14 +352,6 @@ export function Dashboard() {
               onContinue={handleAnalysisModalContinue}
             />
           );
-        } else if (analysisStep === "results") {
-          return (
-            <ProductAnalysisResults
-              onClose={handleClosePanel}
-              onBack={handleBackToAnalysisDetails}
-              productData={productData}
-            />
-          );
         }
       } else if (activePanel === "product-description") {
         if (descriptionStep === "form") {
@@ -463,16 +453,16 @@ export function Dashboard() {
 
   // Для десктопной версии - оригинальный макет с общим скроллом
   return (
-    <div className="flex flex-1 w-full max-w-[1380px] mx-auto px-2 md:px-4 lg:px-6 xl:px-8 min-h-[calc(100vh-110px)] h-full">
+    <div className="flex flex-1 w-full max-w-[1380px] mx-auto px-2 md:px-4 lg:px-6 xl:px-8 min-h-[calc(100vh-110px)] h-full ">
       {/* Левая панель - всегда видима */}
 
-      <div className="w-[450px] bg-[#f9f8f8] rounded-[25px] mt-[30px] z-10 border shadow-md dark:bg-[#2C2B2B]">
+      <div className="w-[430px] bg-[#f9f8f8] rounded-[25px] mt-[30px] mb-[30px] z-10 border shadow-md dark:bg-[#303030]  ">
         {renderLeftContent()}
       </div>
       {/* Правая панель - по умолчанию пустая */}
-      <div className="flex-1 max-w-[1000px] relative ml-6 md:ml-8 lg:ml-10 xl:ml-12">
+      <div className="flex-1 max-w-[1000px] relative ml-6 md:ml-8 lg:ml-10 xl:ml-12  ">
         <div
-          className={`w-full bg-white rounded-[25px] dark:bg-[#333333] mt-[30px] ${
+          className={`w-full bg-white rounded-[25px] dark:bg-[#404040] mt-[30px] ${
             isFeedbackPanel ? "max-w-[1100px]" : ""
           }`}
         >

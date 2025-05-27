@@ -1,25 +1,28 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { X, ArrowLeft } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { useState } from "react"
-import { usePostCardMutation } from "@/store/services/main"
-import { useLanguage } from "../provider/language-provider"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { X, ArrowLeft } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { useState } from "react";
+import { usePostCardMutation } from "@/store/services/main";
+import { useLanguage } from "../provider/language-provider";
 
 interface ProductDescriptionFormProps {
-  onClose: () => void
+  onClose: () => void;
   onSubmit: (data: {
-    sku: string
-    competitorSku: string
-    cardId?: number
-  }) => void
+    sku: string;
+    competitorSku: string;
+    cardId?: number;
+  }) => void;
 }
 
-export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescriptionFormProps) {
-  const { t } = useLanguage()
-  const isMobile = useMediaQuery("(max-width: 768px)")
+export function ProductDescriptionForm({
+  onClose,
+  onSubmit,
+}: ProductDescriptionFormProps) {
+  const { t } = useLanguage();
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const {
     register,
     handleSubmit,
@@ -29,11 +32,11 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
       sku: "",
       competitorSku: "",
     },
-  })
+  });
 
   // Добавляем состояние для обработки ошибок и загрузки
-  const [error, setError] = useState("")
-  const [postCard, { isLoading }] = usePostCardMutation()
+  const [error, setError] = useState("");
+  const [postCard, { isLoading }] = usePostCardMutation();
 
   // Update the onFormSubmit function to use the correct type_id for description
   const onFormSubmit = async (data) => {
@@ -44,26 +47,26 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
         top_article: Number.parseInt(data.competitorSku) || 0,
         article: Number.parseInt(data.sku) || 0,
         type_id: 1, // This is for description
-      }).unwrap()
+      }).unwrap();
 
       // Если запрос успешен, передаем данные формы и ID карточки в родительский компонент
       if (response.output.result) {
         onSubmit({
           ...data,
           cardId: response.card.id,
-        })
+        });
       } else {
         // Если запрос не успешен, показываем сообщение об ошибке
-        setError(response.output.message_ru || response.output.message)
+        setError(response.output.message_ru || response.output.message);
       }
     } catch (error) {
-      console.error("Error calling postCard:", error)
-      setError(t("common.error"))
+      console.error("Error calling postCard:", error);
+      setError(t("common.error"));
     }
-  }
+  };
 
   return (
-    <div className="h-full relative dark:bg-[#333333]">
+    <div className="h-full relative dark:bg-[#404040]">
       {/* Кнопка закрытия (X) в правом верхнем углу - только для десктопа */}
       {!isMobile && (
         <div className="p-6">
@@ -72,7 +75,7 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
             className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
             aria-label={t("common.close")}
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 dark:text-blue-600" />
           </button>
         </div>
       )}
@@ -82,25 +85,37 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
         <div className="flex flex-col">
           {/* Верхняя панель с кнопкой назад и заголовком */}
           <div className="flex items-center p-4">
-            <button onClick={onClose} className="p-1" aria-label={t("common.back")}>
-              <ArrowLeft className="h-5 w-5" />
+            <button
+              onClick={onClose}
+              className="p-1"
+              aria-label={t("common.back")}
+            >
+              <ArrowLeft className="h-5 w-5 dark:text-blue-600" />
             </button>
             <div className="flex-1 text-center mr-5">
-              <h1 className="text-blue-500 font-medium text-xl">{t("common.main")}</h1>
+              <h1 className="text-blue-500 font-medium text-xl">
+                {t("common.main")}
+              </h1>
             </div>
           </div>
 
           {/* Подзаголовок с отступом */}
           <div className="text-center mb-8 mt-6">
-            <h2 className="text-black text-xl font-medium dark:text-white">{t("product.description.title")}</h2>
+            <h2 className="text-black text-xl font-medium dark:text-white">
+              {t("product.description.title")}
+            </h2>
           </div>
 
           {/* Форма */}
           <div className="px-4">
-            <form className="space-y-6" onSubmit={handleSubmit(onFormSubmit)}>
-              <div className="space-y-2">
-                <p className="text-sm text-gray-500 text-center">{t("product.description.enter.sku")}</p>
-                <p className="text-xs text-gray-500 text-center">{t("product.description.no.card")}</p>
+            <form className="space-y-8" onSubmit={handleSubmit(onFormSubmit)}>
+              <div className="space-y-3">
+                <p className="text-sm text-gray-500 text-center">
+                  {t("product.description.enter.sku")}
+                </p>
+                <p className="text-xs text-gray-500 text-center">
+                  {t("product.description.no.card")}
+                </p>
                 <div>
                   <Input
                     id="sku"
@@ -111,12 +126,18 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
                     autoFocus
                     {...register("sku", { required: true })}
                   />
-                  {errors.sku && <p className="text-red-500 text-xs mt-1 text-center">{t("validation.required")}</p>}
+                  {errors.sku && (
+                    <p className="text-red-500 text-xs mt-1 text-center">
+                      {t("validation.required")}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <p className="text-sm text-gray-500 text-center">{t("product.description.enter.competitor")}</p>
+              <div className="space-y-3">
+                <p className="text-sm text-gray-500 text-center">
+                  {t("product.description.enter.competitor")}
+                </p>
                 <div>
                   <Input
                     id="competitorSku"
@@ -127,7 +148,9 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
                     {...register("competitorSku", { required: false })}
                   />
                   {errors.competitorSku && (
-                    <p className="text-red-500 text-xs mt-1 text-center">{t("validation.required")}</p>
+                    <p className="text-red-500 text-xs mt-1 text-center">
+                      {t("validation.required")}
+                    </p>
                   )}
                 </div>
                 <div className="text-xs text-gray-500 mt-3 text-center px-4">
@@ -145,7 +168,9 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
                   {isLoading ? t("common.loading") : t("common.continue")}
                 </Button>
               </div>
-              {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
+              {error && (
+                <p className="text-red-500 text-sm text-center mt-2">{error}</p>
+              )}
             </form>
           </div>
         </div>
@@ -156,13 +181,19 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
         <div className="max-w-md mx-auto pt-4 p-6">
           {/* Заголовок */}
           <div className="text-center mb-8">
-            <h2 className="text-black font-medium text-xl dark:text-white">{t("product.description.title")}</h2>
+            <h2 className="text-black font-medium text-xl dark:text-white">
+              {t("product.description.title")}
+            </h2>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit(onFormSubmit)}>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-500 text-center">{t("product.description.enter.sku")}</p>
-              <p className="text-xs text-gray-500 text-center">{t("product.description.no.card")}</p>
+            <div className="space-y-3">
+              <p className="text-sm text-gray-500 text-center">
+                {t("product.description.enter.sku")}
+              </p>
+              <p className="text-xs text-gray-500 text-center">
+                {t("product.description.no.card")}
+              </p>
               <div>
                 <Input
                   id="sku"
@@ -173,12 +204,18 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
                   autoFocus
                   {...register("sku", { required: true })}
                 />
-                {errors.sku && <p className="text-red-500 text-xs mt-1 text-center">{t("validation.required")}</p>}
+                {errors.sku && (
+                  <p className="text-red-500 text-xs mt-1 text-center">
+                    {t("validation.required")}
+                  </p>
+                )}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <p className="text-sm text-gray-500 text-center">{t("product.description.enter.competitor")}</p>
+            <div className="space-y-3">
+              <p className="text-sm text-gray-500 text-center">
+                {t("product.description.enter.competitor")}
+              </p>
               <div>
                 <Input
                   id="competitorSku"
@@ -189,7 +226,9 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
                   {...register("competitorSku", { required: false })}
                 />
                 {errors.competitorSku && (
-                  <p className="text-red-500 text-xs mt-1 text-center">{t("validation.required")}</p>
+                  <p className="text-red-500 text-xs mt-1 text-center">
+                    {t("validation.required")}
+                  </p>
                 )}
               </div>
               <div className="text-xs text-gray-500 mt-3 text-center px-4">
@@ -207,10 +246,12 @@ export function ProductDescriptionForm({ onClose, onSubmit }: ProductDescription
                 {isLoading ? t("common.loading") : t("common.continue")}
               </Button>
             </div>
-            {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-sm text-center mt-2">{error}</p>
+            )}
           </form>
         </div>
       )}
     </div>
-  )
+  );
 }

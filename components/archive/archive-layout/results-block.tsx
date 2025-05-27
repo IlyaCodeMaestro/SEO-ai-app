@@ -57,7 +57,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
 
   return (
     <div
-      className={`bg-[#f9f8f8] dark:bg-gray-800 rounded-[20px] shadow-md  overflow-hidden ${
+      className={`bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md  overflow-hidden ${
         fullHeight ? "h-full" : !isExpanded ? "h-auto" : ""
       }`}
     >

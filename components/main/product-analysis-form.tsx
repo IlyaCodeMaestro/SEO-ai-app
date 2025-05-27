@@ -68,7 +68,7 @@ export function ProductAnalysisForm({
   };
 
   return (
-    <div className="h-full relative dark:bg-[#333333]">
+    <div className="h-full relative dark:bg-[#404040]">
       {/* Кнопка закрытия (X) в правом верхнем углу - только для десктопа */}
       {!isMobile && (
         <div className="p-6">
@@ -77,7 +77,7 @@ export function ProductAnalysisForm({
             className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
             aria-label={t("common.close")}
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 dark:text-blue-600" />
           </button>
         </div>
       )}
@@ -92,7 +92,7 @@ export function ProductAnalysisForm({
               className="p-1"
               aria-label={t("common.back")}
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-5 w-5 dark:text-blue-600" />
             </button>
             <div className="flex-1 text-center mr-5">
               <h1 className="text-blue-500 font-medium text-xl">
@@ -110,8 +110,8 @@ export function ProductAnalysisForm({
 
           {/* Форма */}
           <div className="px-4">
-            <form className="space-y-6" onSubmit={handleSubmit(onFormSubmit)}>
-              <div className="space-y-2">
+            <form className="space-y-8" onSubmit={handleSubmit(onFormSubmit)}>
+              <div className="space-y-3">
                 <p className="text-sm text-gray-500 text-center">
                   {t("product.analysis.enter.sku")}
                 </p>
@@ -133,7 +133,7 @@ export function ProductAnalysisForm({
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className=" space-y-2">
                 <p className="text-sm text-gray-500 text-center">
                   {t("product.analysis.enter.competitor")}
                 </p>
@@ -186,7 +186,7 @@ export function ProductAnalysisForm({
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit(onFormSubmit)}>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="text-sm text-gray-500 text-center">
                 {t("product.analysis.enter.sku")}
               </p>
@@ -208,7 +208,7 @@ export function ProductAnalysisForm({
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="text-sm text-gray-500 text-center">
                 {t("product.analysis.enter.competitor")}
               </p>

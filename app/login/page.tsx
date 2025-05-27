@@ -25,17 +25,18 @@ export default function Login() {
     try {
       await loginUser({ login, password, firebase_id: "" });
 
-      router.push("/dashboard");
+      // Use replace instead of push for immediate navigation
+      // and prevent back button from returning to login page
+      router.replace("/dashboard");
     } catch (err: any) {
       setError(err.message);
-    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center dark:bg-black bg-gray-50 px-4 sm:px-6">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-lg shadow-sm">
+      <div className="w-full max-w-md bg-gray-100 dark:bg-gray-800 rounded-3xl p-5 mb-12 sm:p-8  shadow-xl">
         <h1 className="text-xl sm:text-2xl font-medium text-center mb-8 sm:mb-12">
           Вход
         </h1>

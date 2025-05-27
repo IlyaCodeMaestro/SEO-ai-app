@@ -5,7 +5,7 @@ import { X, Plus, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BonusExchangeConfirmModal } from "./bonus-exchange-confirm-modal";
 import { BonusTransferConfirmModal } from "./bonus-transfer-confirm-modal";
-import { BonusTransferCardModal } from "./bonus-transfer-card-modal";
+
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLanguage } from "../provider/language-provider";
 import {
@@ -156,7 +156,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
   };
 
   return (
-    <div className="h-full flex flex-col justify-start bg-white dark:bg-[#333333] px-4 md:px-0 relative">
+    <div className="h-full flex flex-col justify-start bg-white dark:bg-[#404040] px-4 md:px-0 relative">
       {/* Add Toaster component to ensure toasts are displayed */}
       <Toaster />
 
@@ -169,7 +169,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
               className="p-1 mt-3 mb-4"
               aria-label={t("common.back")}
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-5 w-5 dark:text-blue-600" />
             </button>
             <div className="flex-1 text-center">
               <h2 className="text-xl font-medium text-blue-600 mt-3 mb-4">
@@ -186,7 +186,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
               className="p-1"
               aria-label={t("common.close")}
             >
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5 dark:text-blue-600" />
             </button>
           </>
         )}
@@ -204,34 +204,34 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
         ) : (
           <>
             {/* Bonus balance */}
-            <div className="w-full border border-white bg-blue-600 py-5 rounded-[25px] text-xl font-medium shadow-md p-4 mb-6 text-white text-center">
+            <div className="w-full border border-white dark:border-none bg-blue-600 py-5 rounded-[25px] text-base font-medium shadow-md p-4 mb-6 text-white text-center">
               <div className="flex justify-between items-center">
-                <span className="text-lg">{t("cabinet.bonuses")}</span>
-                <span className="text-xl font-bold">
+                <span className="text-sm">{t("cabinet.bonuses")}</span>
+                <span className="text-base font-bold">
                   {profileData?.user.bonuses || "0 баллов"}
                 </span>
               </div>
             </div>
 
             {/* Bonus exchange options */}
-            <div className="bg-gray-50 rounded-xl p-6 shadow-md mb-4 border dark:bg-[#404040] dark:border-white">
+            <div className="bg-gray-50 rounded-3xl p-6 shadow-md mb-4 border dark:bg-[#333333] dark:border-none">
               <div className="space-y-3">
                 {bonusExchangeData?.bonuses_exchange.map((option) => (
                   <div key={option.id} className="flex items-start">
                     <div
-                      className={`w-4 h-4 mt-0.5 mr-2 rounded-sm cursor-pointer ${
+                      className={`min-w-[16px] w-4 h-4 mt-0.5 mr-2 rounded-sm cursor-pointer flex-shrink-0 ${
                         selectedOptionId === option.id
                           ? "bg-blue-600"
                           : "bg-gray-200"
                       }`}
                       onClick={() => handleOptionChange(option.id)}
                     ></div>
-                    <span>{option.title}</span>
+                    <span className="text-xs sm:text-sm">{option.title}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-4 text-sm text-gray-600 dark:text-white">
+              <div className="mt-4 text-center text-xs text-gray-600 dark:text-white">
                 {bonusExchangeData?.prices.map((price) => (
                   <p key={price.id}>
                     {price.title}: {price.value} {price.currency}
@@ -242,7 +242,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
                 <Button
                   onClick={handleExchangeClick}
                   disabled={isExchanging || !selectedOptionId}
-                  className="w-32 bg-gradient-to-r shadow-md from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full mt-4"
+                  className="w-32 bg-gradient-to-r shadow-md from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full mt-4 text-sm"
                 >
                   {isExchanging ? `${t("loading")}...` : t("bonus.exchange")}
                 </Button>
@@ -251,51 +251,28 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
 
             {/* Bonus transfer section - only show if transfer_visible is true */}
             {bonusExchangeData?.transfer_visible && (
-              <div className="bg-gray-50 rounded-xl p-6 shadow-md border dark:bg-[#404040] dark:border-white">
-                <p className="text-center font-medium mb-1">
-                  {t("bonus.transfer.available", {
-                    points: bonusExchangeData.balance.exchange_value,
-                  })}{" "}
-                  {bonusExchangeData.balance.currency}
-                </p>
-                <p className="text-center text-sm text-gray-500 mb-4 dark:text-white">
-                  {bonusExchangeData.balance.exchange_bonuses <
-                  bonusExchangeData.balance.bonuses
-                    ? t("bonus.transfer.insufficient")
-                    : t("bonus.transfer.sufficient")}
+              <div className="bg-gray-50 rounded-3xl p-6 shadow-md border dark:bg-[#333333] dark:border-none flex flex-col items-center justify-center">
+                <p className="text-gray-500 text-xs sm:text-sm mb-3 text-center w-full">
+                  У вас пока недостаточно приглашенных друзей
                 </p>
 
-                {!cardAdded && !bonusExchangeData.have_card ? (
-                  <div
-                    className="flex items-center justify-center text-blue-600 cursor-pointer mb-4"
-                    onClick={handleAddCard}
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    <span>{t("bonus.add.card")}</span>
-                  </div>
-                ) : (
-                  <>
-                    <p className="text-center text-sm text-gray-500 mb-4">
-                      {t("bonus.card.added")}
-                    </p>
-                    <p className="text-center text-sm text-gray-500 mb-4">
-                      {t("bonus.point.value", {
-                        value: bonusExchangeData.balance.point_price,
-                        currency: bonusExchangeData.balance.currency,
-                      })}
-                    </p>
-                  </>
-                )}
-
-                <div className="flex justify-center">
-                  <Button
-                    onClick={handleTransferClick}
-                    disabled={!bonusExchangeData.transfer_enable}
-                    className="w-32 bg-gradient-to-r shadow-md from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full mt-4"
-                  >
-                    {t("bonus.transfer")}
-                  </Button>
+                <div
+                  className="text-black dark:text-gray-50 cursor-pointer flex items-center mb-3"
+                  onClick={handleAddCard}
+                >
+                  <Plus
+                    className="h-6 w-6 mr-2 text-blue-600"
+                    strokeWidth={2}
+                  />
+                  <span className="font-medium">
+                    {t("bonus.add.card") || "Добавить банковскую карту"}
+                  </span>
                 </div>
+
+                <p className="text-gray-500 text-xs mb-1">
+                  Банковская карта не добавлена
+                </p>
+                <p className="text-gray-500 text-xs">1 балл равен 200 ₸</p>
               </div>
             )}
           </>
@@ -309,12 +286,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
           onCancel={handleExchangeCancel}
         />
       )}
-      {showTransferCard && (
-        <BonusTransferCardModal
-          onSubmit={handleCardSubmit}
-          onClose={() => setShowTransferCard(false)}
-        />
-      )}
+
       {showTransferConfirm && (
         <BonusTransferConfirmModal
           onConfirm={handleTransferConfirm}

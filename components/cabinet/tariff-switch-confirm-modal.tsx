@@ -17,8 +17,8 @@ export function TariffSwitchConfirmModal({
   const { t } = useLanguage();
 
   return (
-    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-xl max-w-xs mx-auto dark:bg-gray-800">
+    <div className="absolute inset-0 bg-black/50 flex items-center justify-center  z-50">
+      <div className="bg-white p-6 rounded-xl  max-w-xs mx-auto dark:bg-gray-800">
         <div className="text-center mb-6">
           <p className="text-lg">
             {t("tariff.confirm.switch")} «{tariffName}»?

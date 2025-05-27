@@ -52,13 +52,13 @@ export default function PartnerPremiumPanel({
   };
 
   return (
-    <div className="max-w-md md:max-w-2xl lg:max-w-4xl mx-auto h-full flex flex-col">
+    <div className="max-w-md md:max-w-2xl lg:max-w-4xl dark:bg-[#404040] mb-7 mx-auto h-full flex flex-col">
       {/* Header */}
-      <div className="flex items-center p-4 bg-white relative dark:bg-[#333333]">
+      <div className="flex items-center p-4 bg-white relative dark:bg-[#404040]">
         {isMobile ? (
           <>
             <button onClick={onClose} className="absolute left-4">
-              <ArrowLeft size={24} />
+              <ArrowLeft size={24} className="dark:text-blue-600" />
             </button>
             <h1 className="text-xl font-medium text-blue-600 text-center w-full">
               {t("partner.referral.program")}
@@ -76,7 +76,7 @@ export default function PartnerPremiumPanel({
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="lucide lucide-x dark:text-white"
+              className="lucide lucide-x dark:text-blue-600"
             >
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
@@ -86,14 +86,14 @@ export default function PartnerPremiumPanel({
       </div>
 
       {/* Blue banner - gradient version */}
-      <div className=" bg-gradient-to-r from-[#64cada] to-[#4169E1] text-white p-6 rounded-[30px] mx-4 mb-4 text-center">
-        <p className="text-xl font-medium leading-tight">
+      <div className=" bg-gradient-to-r from-[#64cada] to-[#4169E1] p-6 rounded-[30px] mx-4 mb-4 text-center">
+        <p className="text-xl font-medium leading-tight text-white dark:text-gray-200">
           {t("partner.premium.banner")}
         </p>
       </div>
 
       {/* Main content */}
-      <div className="flex-1 bg-gray-100 rounded-[30px] dark:bg-[#2C2B2B] mx-4 p-6 shadow-md border">
+      <div className="flex-1 bg-gray-100 rounded-[30px] dark:bg-[#333333] mx-4 p-6 shadow-md border">
         <h2 className="text-xl font-medium mb-6">{t("partner.steps.title")}</h2>
 
         <div className="space-y-8 relative">
@@ -108,10 +108,10 @@ export default function PartnerPremiumPanel({
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1">
+              <h3 className="font-semibold text-lg mb-1">
                 {t("partner.step1.title")}
               </h3>
-              <p className="text-gray-700 dark:text-white">
+              <p className="text-gray-700 dark:text-gray-300">
                 {t("partner.step1.description")}
               </p>
             </div>
@@ -125,10 +125,10 @@ export default function PartnerPremiumPanel({
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1">
+              <h3 className="font-semibold text-lg mb-1">
                 {t("partner.step2.title")}
               </h3>
-              <p className="text-gray-700 dark:text-white">
+              <p className="text-gray-700 dark:text-gray-300">
                 {t("partner.step2.description")}
               </p>
             </div>
@@ -142,10 +142,10 @@ export default function PartnerPremiumPanel({
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1">
+              <h3 className="font-semibold text-lg mb-1">
                 {t("partner.step3.title")}
               </h3>
-              <p className="text-gray-700 dark:text-white">
+              <p className="text-gray-700 dark:text-gray-300">
                 {t("partner.step3.description")}
               </p>
             </div>
@@ -159,10 +159,10 @@ export default function PartnerPremiumPanel({
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1">
+              <h3 className="font-semibold text-lg mb-1">
                 {t("partner.step4.title")}
               </h3>
-              <p className="text-gray-700 dark:text-white">
+              <p className="text-gray-700 dark:text-gray-300">
                 {t("partner.step4.description")}
               </p>
             </div>
@@ -176,10 +176,10 @@ export default function PartnerPremiumPanel({
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1">
+              <h3 className="font-semibold text-lg mb-1">
                 {t("partner.step5.premium.title")}
               </h3>
-              <p className="text-gray-700 dark:text-white">
+              <p className="text-gray-700 dark:text-gray-300">
                 {t("partner.step5.premium.description")}
               </p>
             </div>
@@ -195,12 +195,17 @@ export default function PartnerPremiumPanel({
         </div>
         {/* ShareMenu with overlay */}
         {shareContent && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
+         <div className="absolute  inset-0 z-50 flex items-center justify-center overflow-y-auto rounded-3xl overflow-x-hidden">
+          <div
+            onClick={onClose}
+            className="absolute mt-7 mb-6 inset-0 bg-[#1e1e1e] bg-opacity-50"
+          >
             <ShareMenuWithoutCopy
               content={shareContent.content}
               title={shareContent.title}
               onClose={handleCloseShareMenu}
             />
+          </div>
           </div>
         )}
       </div>

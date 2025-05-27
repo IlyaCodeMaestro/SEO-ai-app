@@ -17,7 +17,10 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLanguage } from "../provider/language-provider";
 import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { useGetPaySystemsQuery, useRefillBalanceMutation } from "@/store/services/main";
+import {
+  useGetPaySystemsQuery,
+  useRefillBalanceMutation,
+} from "@/store/services/main";
 
 interface BalanceTopupPanelProps {
   onClose: () => void;
@@ -148,7 +151,7 @@ export function BalanceTopupPanel({ onClose }: BalanceTopupPanelProps) {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white px-4 py-6 max-w-2xl mx-auto dark:bg-[#333333]">
+    <div className="h-full flex flex-col bg-white px-4 py-6 max-w-2xl mx-auto dark:bg-[#404040]">
       {/* Add Toaster component to ensure toasts are displayed */}
       <Toaster />
 
@@ -161,7 +164,7 @@ export function BalanceTopupPanel({ onClose }: BalanceTopupPanelProps) {
               className="p-1"
               aria-label={t("common.back")}
             >
-              <ArrowLeft className="h-6 w-6 mb-4" />
+              <ArrowLeft className="h-6 w-6 mb-4 dark:text-blue-600" />
             </button>
             <h1 className="text-xl font-medium text-center flex-1 pr-4 mb-4 text-blue-600">
               {t("cabinet.title")}
@@ -174,7 +177,7 @@ export function BalanceTopupPanel({ onClose }: BalanceTopupPanelProps) {
               className="p-1"
               aria-label={t("common.close")}
             >
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5 dark:text-blue-600" />
             </button>
           </div>
         )}
@@ -183,7 +186,7 @@ export function BalanceTopupPanel({ onClose }: BalanceTopupPanelProps) {
       {/* Main content */}
       <div className="flex flex-col gap-6 w-full md:max-w-md md:mx-auto">
         {/* Top up balance button */}
-        <button className="w-full border border-white bg-blue-600 text-white py-5 rounded-[25px] text-xl font-medium shadow-md">
+        <button className="w-full border border-white dark:border-none bg-blue-600 text-white py-5 rounded-[25px] text-xl font-medium shadow-md">
           {t("balance.topup")}
         </button>
 

@@ -130,13 +130,13 @@ export function ProductDescriptionDetails({
   const buttonVisible = button?.visible !== false;
 
   return (
-    <div className="h-full relative dark:bg-[#333333]">
+    <div className="h-full relative dark:bg-[#404040]">
       <div className="max-w-md mx-auto p-6">
         {/* Заголовок с кнопкой назад */}
         <div className="relative mb-6">
           <div className="absolute left-0 top-1/2 -translate-y-1/2">
             <button onClick={onBack} aria-label={t("common.back")}>
-              <ArrowLeft className="h-6 w-6 text-blue-500" />
+              <ArrowLeft className="h-6 w-6 text-blue-500 dark:text-blue-600" />
             </button>
           </div>
 
@@ -168,6 +168,7 @@ export function ProductDescriptionDetails({
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className="dark:text-blue-600"
                   >
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>

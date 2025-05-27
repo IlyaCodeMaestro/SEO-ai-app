@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, Info, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, Info, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLanguage } from "../provider/language-provider";
 
@@ -16,6 +16,10 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
   const { t } = useLanguage();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [currentPage, setCurrentPage] = useState(1);
+  const [allEvents, setAllEvents] = useState<any[]>([]);
+  const [hasMoreContent, setHasMoreContent] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [loadedPages, setLoadedPages] = useState(1);
 
   // Fetch bonus history data
   const {
@@ -23,6 +27,24 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
     isLoading,
     error,
   } = useGetBonusHistoryQuery(currentPage);
+
+  // Update allEvents when new data is loaded
+  useEffect(() => {
+    if (bonusHistory?.date_events) {
+      if (currentPage === 1) {
+        setAllEvents(bonusHistory.date_events);
+        setLoadedPages(1);
+      } else {
+        // Append new events to existing ones
+        setAllEvents((prev) => [...prev, ...bonusHistory.date_events]);
+        setLoadedPages(currentPage);
+      }
+
+      // Check if there's more content to load
+      setHasMoreContent(bonusHistory.date_events.length > 0);
+      setIsLoadingMore(false);
+    }
+  }, [bonusHistory, currentPage]);
 
   // Format date string (YYYY-MM-DD) to a more readable format
   const formatDate = (dateString: string) => {
@@ -71,19 +93,34 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
     return value;
   };
 
-  // Handle pagination
-  const handleNextPage = () => {
+  // Handle load more
+  const handleLoadMore = () => {
+    setIsLoadingMore(true);
     setCurrentPage((prev) => prev + 1);
   };
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
+  // Handle collapse back to first page
+  const handleCollapse = () => {
+    setIsLoadingMore(true);
+    // Keep only the first page of data
+    setTimeout(() => {
+      if (bonusHistory?.date_events) {
+        setAllEvents(allEvents.slice(0, bonusHistory.date_events.length));
+      }
+      setCurrentPage(1);
+      setLoadedPages(1);
+      setHasMoreContent(true);
+      setIsLoadingMore(false);
+      // Scroll to top
+      const panel = document.querySelector(".bonus-statement-panel");
+      if (panel) {
+        panel.scrollTop = 0;
+      }
+    }, 300);
   };
 
   return (
-    <div className="h-full flex flex-col bg-white px-4 max-w-2xl mx-auto dark:bg-[#333333]">
+    <div className="h-full flex flex-col bg-white px-4 max-w-2xl mx-auto dark:bg-[#404040] bonus-statement-panel">
       {/* Header */}
       <div className="flex items-center">
         {isMobile ? (
@@ -93,7 +130,7 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
               className="p-1 mt-3"
               aria-label={t("common.back")}
             >
-              <ArrowLeft className="h-6 w-6 mb-4" />
+              <ArrowLeft className="h-6 w-6 mb-4 dark:text-blue-600" />
             </button>
             <h1 className="text-xl font-medium text-center flex-1 pr-4 mb-4 mt-3 text-blue-600">
               {t("cabinet.title")}
@@ -106,7 +143,7 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
               className="p-1"
               aria-label={t("common.close")}
             >
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5 dark:text-blue-600" />
             </button>
           </div>
         )}
@@ -115,15 +152,15 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
       {/* Main content */}
       <div className="flex flex-col gap-6 w-full md:max-w-md md:mx-auto">
         {/* Bonus statement title */}
-        <button className="w-full border border-white bg-blue-600 text-white py-5 rounded-[25px] text-xl font-medium shadow-md">
+        <button className="w-full border border-white dark:border-none bg-blue-600 text-white py-5 rounded-[25px] text-xl font-medium shadow-md">
           {t("cabinet.bonus.statement")}
         </button>
 
         {/* Bonus statement content */}
-        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:bg-[#404040] dark:border-white">
+        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:bg-[#333333] dark:border-none">
           {/* Transaction list */}
-          <div className="flex-grow">
-            {isLoading && (
+          <div className="flex-grow overflow-y-auto">
+            {isLoading && currentPage === 1 && (
               <div className="flex items-center justify-center h-full">
                 <p>{t("common.loading")}</p>
               </div>
@@ -140,29 +177,32 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
               </div>
             )}
 
-            {!isLoading &&
-              !error &&
-              bonusHistory?.date_events?.length === 0 && (
-                <div className="flex flex-col items-center justify-center h-full text-center py-20">
-                  <div className="bg-gray-500 rounded-full p-3 mb-4">
-                    <Info className="h-6 w-6 text-white" />
-                  </div>
-                  <p className="text-xl font-bold dark:text-white">
-                    {t("empty.bonus.statement")}
-                  </p>
+            {!isLoading && !error && allEvents.length === 0 && (
+              <div className="flex flex-col items-center justify-center h-full text-center py-20">
+                <div className="bg-gray-500 rounded-full p-3 mb-4">
+                  <Info className="h-6 w-6 text-white" />
                 </div>
-              )}
+                <p className="text-xl font-bold dark:text-white">
+                  {t("empty.bonus.statement")}
+                </p>
+              </div>
+            )}
 
-            {!isLoading &&
-              !error &&
-              bonusHistory?.date_events?.map((dateEvent) => (
-                <div key={dateEvent.id} className="mb-6 last:mb-0">
+            {!error &&
+              allEvents.map((dateEvent, dateIndex) => (
+                <div
+                  key={`date-${dateEvent.id}-${dateIndex}`}
+                  className="mb-6 last:mb-0"
+                >
                   <h3 className="text-sm font-medium text-gray-500 mb-2">
                     {formatDate(dateEvent.date)}
                   </h3>
 
-                  {dateEvent.events.map((event) => (
-                    <div key={event.id} className="mb-3 last:mb-0">
+                  {dateEvent.events.map((event: any, eventIndex) => (
+                    <div
+                      key={`event-${event.id}-${dateIndex}-${eventIndex}`}
+                      className="mb-3 last:mb-0"
+                    >
                       <div className="flex justify-between items-start">
                         <div>
                           <p className="font-medium">
@@ -185,29 +225,38 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
               ))}
           </div>
 
-          {/* Pagination */}
-          {!isLoading && !error && bonusHistory?.date_events?.length > 0 && (
-            <div className="flex justify-center items-center gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-              <Button
-                onClick={handlePrevPage}
-                disabled={currentPage <= 1}
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <span className="text-sm">
-                {t("page")} {currentPage}
-              </span>
-              <Button
-                onClick={handleNextPage}
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
+          {/* Load more button or collapse button */}
+          {!isLoading && !error && allEvents.length > 0 && (
+            <div className="flex justify-center items-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+              {loadedPages > 1 && !hasMoreContent ? (
+                <Button
+                  onClick={handleCollapse}
+                  disabled={isLoadingMore}
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                >
+                  {isLoadingMore ? (
+                    <div className="h-5 w-5 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
+                  ) : (
+                    <ChevronUp className="h-6 w-6 text-gray-600" />
+                  )}
+                </Button>
+              ) : hasMoreContent ? (
+                <Button
+                  onClick={handleLoadMore}
+                  disabled={isLoadingMore}
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                >
+                  {isLoadingMore ? (
+                    <div className="h-5 w-5 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
+                  ) : (
+                    <ChevronDown className="h-6 w-6 text-blue-600" />
+                  )}
+                </Button>
+              ) : null}
             </div>
           )}
         </div>

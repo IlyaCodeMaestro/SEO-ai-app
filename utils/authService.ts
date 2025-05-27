@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 
-export const BASE_URL = "https://api.stage.seo-ai.kz/b";
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://api.stage.seo-ai.kz/b";
 
 export async function getCountries() {
   const res = await fetch(`${BASE_URL}/v1/countries`, {
@@ -101,17 +102,19 @@ export async function loginUser(data: {
   }
 
   const { sessionId, userId } = json.user;
-  Cookies.set("sessionId", sessionId)
-  Cookies.set("userId", userId.toString())
-  localStorage.setItem("sessionId", sessionId)
-  localStorage.setItem("userId", userId.toString())
+
+  // Set cookies and localStorage synchronously
+  Cookies.set("sessionId", sessionId);
+  Cookies.set("userId", userId.toString());
+  localStorage.setItem("sessionId", sessionId);
+  localStorage.setItem("userId", userId.toString());
 
   return json;
 }
 
 export function logout() {
-  localStorage.removeItem("sessionId")
-  localStorage.removeItem("userId")
-  Cookies.set("sessionId", sessionId)
-  Cookies.set("userId", userId.toString())
+  localStorage.removeItem("sessionId");
+  localStorage.removeItem("userId");
+  Cookies.remove("sessionId");
+  Cookies.remove("userId");
 }

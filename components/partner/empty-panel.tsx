@@ -30,13 +30,13 @@ export default function EmptyPartnerPanel({ onClose }: EmptyPanelProps) {
   return (
     <div
       onClick={onClose}
-      className="max-w-md md:max-w-2xl lg:max-w-4xl mx-auto  flex flex-col"
+      className="max-w-md md:max-w-2xl lg:max-w-4xl mx-auto dark:bg-[#404040]  flex flex-col"
     >
       {/* Header with close button */}
-      <div className="flex items-center p-4 bg-white relative dark:bg-[#333333]">
+      <div className="flex items-center p-4 bg-white relative  dark:bg-[#404040]">
         {isMobile ? (
           <button onClick={onClose} className="absolute left-4">
-            <ArrowLeft size={24} />
+            <ArrowLeft size={24} className="dark:text-blue-600" />
           </button>
         ) : (
           <button onClick={onClose} className="text-gray-600 absolute right-4">
@@ -50,7 +50,7 @@ export default function EmptyPartnerPanel({ onClose }: EmptyPanelProps) {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="lucide lucide-x dark:text-white"
+              className="lucide lucide-x dark:text-blue-600"
             >
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
@@ -59,15 +59,17 @@ export default function EmptyPartnerPanel({ onClose }: EmptyPanelProps) {
         )}
       </div>
       {shareContent && (
-        <div
-          onClick={onClose}
-          className="absolute inset-0 flex items-center justify-center  bg-black bg-opacity-30 z-50 "
-        >
-          <ShareMenuWithoutCopy
-            content={shareContent.content}
-            title={shareContent.title}
-            onClose={handleCloseShareMenu}
-          />
+        <div className="absolute  inset-0 z-50 flex items-center justify-center overflow-y-auto rounded-3xl overflow-x-hidden">
+          <div
+            onClick={onClose}
+            className="absolute mt-7 mb-6 inset-0 bg-opacity-50"
+          >
+            <ShareMenuWithoutCopy
+              content={shareContent.content}
+              title={shareContent.title}
+              onClose={handleCloseShareMenu}
+            />
+          </div>
         </div>
       )}
     </div>

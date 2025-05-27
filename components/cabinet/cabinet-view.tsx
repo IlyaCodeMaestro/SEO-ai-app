@@ -43,6 +43,11 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
       }
       if (onOpenPanel) onOpenPanel(panelName);
       scrollToTop();
+
+      // Clear the selected item after 2 seconds
+      setTimeout(() => {
+        setSelectedItem(null);
+      }, 2000);
     };
 
   // Функция для получения переведенного названия тарифа
@@ -83,12 +88,16 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
     const baseClasses =
       "bg-white rounded-[25px] shadow-md transition-all duration-200";
 
+    // Добавляем тень снизу для темной темы
+    const darkModeClasses =
+      "dark:bg-[#333333] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]";
+
     // Если элемент выбран - тонкая синяя граница
     if (selectedItem === itemId) {
-      return `${baseClasses} border-2 border-blue-600`;
+      return `${baseClasses} ${darkModeClasses} border-2 border-blue-600`;
     } else {
       // Если элемент не выбран - обычная граница и тонкая синяя при наведении
-      return `${baseClasses} border hover:border-2 hover:border-blue-600`;
+      return `${baseClasses} ${darkModeClasses} border hover:border-2 hover:border-blue-600`;
     }
   };
 
@@ -96,7 +105,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
   if (isLoading) {
     return (
       <div className="h-full flex flex-col justify-center items-center">
-        <p className="text-lg">{t("loading")}</p>
+        <p className="text-lg md:text-lg">{t("loading")}</p>
       </div>
     );
   }
@@ -105,7 +114,9 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
   if (error) {
     return (
       <div className="h-full flex flex-col justify-center items-center">
-        <p className="text-lg text-red-500">{t("error.loading.profile")}</p>
+        <p className="text-lg md:text-lg text-red-500">
+          {t("error.loading.profile")}
+        </p>
       </div>
     );
   }
@@ -114,7 +125,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
     <div className="h-full flex flex-col">
       {/* Заголовок по центру без кнопки назад */}
       <div className="p-4 flex items-center justify-center">
-        <h2 className="text-xl text-[#1950DF] font-medium">
+        <h2 className="text-lg md:text-xl text-[#1950DF] font-medium">
           {t("cabinet.title")}
         </h2>
       </div>
@@ -122,32 +133,31 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
       {/* Серый блок с контентом */}
       <div className="flex-1 mx-4 mb-4 rounded-[24px]">
         {/* Информация о пользователе */}
-        <div className="px-4 pb-6">
-          <div className="text-center mb-1">
-            <h3 className="text-lg font-medium">
+        <div className="px-4 pb-2">
+          <div className="text-center mb-0">
+            <h3 className="text-xl font-medium">
               {profileData?.user.name || "Загрузка..."}
             </h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-base dark:text-xs md:text-base dark:md:text-sm font-sm text-gray-600 dark:text-white">
               {profileData?.user.phone || "Загрузка..."}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-base dark:text-xs md:text-base dark:md:text-sm font-sm text-gray-600 dark:text-white">
               {profileData?.user.email || "Загрузка..."}
             </p>
-            <br />
           </div>
 
           {/* Баланс */}
           <div
             className={`${getItemStyle(
               "balance"
-            )} bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] rounded-[25px] h-[70px] px-6 py-3 mb-4 text-white flex flex-col justify-between cursor-pointer`}
+            )} bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] rounded-[25px] h-[70px] px-6 py-3 mt-2 mb-4 text-white flex flex-col justify-between cursor-pointer dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]`}
             onClick={handleButtonClick("balance-topup", "balance")}
           >
             <div className="flex justify-between items-start">
-              <span className="font-medium text-base pt-[10px]">
+              <span className="font-sm text-md md:text-base pt-[10px]">
                 {t("cabinet.balance")}
               </span>
-              <span className="font-medium text-base">
+              <span className="font-medium text-sm md:text-base">
                 {profileData?.user.balance || "0 ₸"}
               </span>
             </div>
@@ -170,12 +180,14 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "balance-statement"
-            )} p-6 mb-4 h-[70px] cursor-pointer dark:bg-[#333333]`}
+            )} p-6 mb-4 h-[70px] cursor-pointer`}
             onClick={handleButtonClick("balance-history", "balance-statement")}
           >
-            <div className="flex justify-between items-center">
-              <span>{t("cabinet.balance.statement")}</span>
-              <ChevronRight className="h-6 w-6 text-black dark:text-white" />
+            <div className="flex justify-between items-center h-full">
+              <span className="text-base md:text-base leading-tight">
+                {t("cabinet.balance.statement")}
+              </span>
+              <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white flex-shrink-0" />
             </div>
           </div>
 
@@ -183,14 +195,14 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "bonuses"
-            )} h-[70px] px-6 pt-4 pb-2 mb-4 flex flex-col justify-between cursor-pointer dark:bg-[#333333]`}
+            )} h-[70px] px-6 pt-4 pb-2 mb-4 flex flex-col justify-between cursor-pointer`}
             onClick={handleButtonClick("bonus-exchange", "bonuses")}
           >
             <div className="flex justify-between items-start">
-              <span className="text-base pt-2 text-[#020817] dark:text-white">
+              <span className="text-base md:text-base pt-2 text-[#020817] dark:text-white leading-tight">
                 {t("cabinet.bonuses")}
               </span>
-              <span className="text-base text-[#020817] dark:text-white">
+              <span className="text-sm md:text-base text-[#020817] dark:text-white">
                 {profileData?.user.bonuses || "0 баллов"}
               </span>
             </div>
@@ -211,12 +223,14 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "bonus-statement"
-            )} p-6 mb-4 h-[70px] cursor-pointer dark:bg-[#333333]`}
+            )} p-6 mb-4 h-[70px] cursor-pointer`}
             onClick={handleButtonClick("bonus-statement", "bonus-statement")}
           >
-            <div className="flex justify-between items-center">
-              <span>{t("cabinet.bonus.statement")}</span>
-              <ChevronRight className="h-6 w-6 text-black dark:text-white" />
+            <div className="flex justify-between items-center h-full">
+              <span className="text-base md:text-base leading-tight">
+                {t("cabinet.bonus.statement")}
+              </span>
+              <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white flex-shrink-0" />
             </div>
           </div>
 
@@ -224,15 +238,17 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "referral-statement"
-            )} p-6 mb-4 h-[70px] cursor-pointer dark:bg-[#333333]`}
+            )} p-6 mb-4 h-[70px] cursor-pointer`}
             onClick={handleButtonClick(
               "referral-statement",
               "referral-statement"
             )}
           >
-            <div className="flex justify-between items-center">
-              <span>{t("cabinet.referral.statement")}</span>
-              <ChevronRight className="h-6 w-6 text-black dark:text-white" />
+            <div className="flex justify-between items-center h-full">
+              <span className="text-base md:text-base leading-tight">
+                {t("cabinet.referral.statement")}
+              </span>
+              <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white flex-shrink-0" />
             </div>
           </div>
 
@@ -240,13 +256,15 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "tariff"
-            )} h-[70px] px-6 pt-4 mb-4 flex flex-col justify-between cursor-pointer dark:bg-[#333333]`}
+            )} h-[70px] px-6 pt-4 mb-4 flex flex-col justify-between cursor-pointer`}
             onClick={handleButtonClick("tariff", "tariff")}
           >
             <div className="flex justify-between items-center">
-              <span className="pb-[10px]">{t("cabinet.tariff")}</span>
+              <span className="text-base md:text-base pb-[10px] leading-tight">
+                {t("cabinet.tariff")}
+              </span>
               <div className="flex flex-col items-end gap-2">
-                <span className="text-gray-800 dark:text-white">
+                <span className="text-sm md:text-base text-gray-800 dark:text-white leading-tight">
                   {profileData?.user.tariff || `«${getTranslatedTariffName()}»`}
                 </span>
                 <button
@@ -264,19 +282,16 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
 
           {/* Язык - обновленный стиль */}
           <div className="relative mb-4">
-            <div
-              className={`${getItemStyle(
-                "language"
-              )} h-[70px] p-4 flex justify-between items-center cursor-pointer dark:bg-[#333333]`}
-              onClick={handleButtonClick("language", "language")}
-            >
-              <span className="text-base ml-2">{t("cabinet.language")}</span>
+            <div className="bg-white rounded-[25px] shadow-md transition-all duration-200 border h-[70px] p-4 flex justify-between items-center dark:bg-[#333333] dark:border-gray-700 dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]">
+              <span className="text-base md:text-base ml-2 leading-tight">
+                {t("cabinet.language")}
+              </span>
               <div className="bg-gray-100 rounded-[25px] p-1 flex dark:bg-[#4D4D4D]">
                 <button
-                  className={`px-3 py-2 rounded-[20px] text-sm transition-all ${
+                  className={`px-2 md:px-3 py-1 md:py-2 rounded-[20px] text-xs md:text-sm transition-all ${
                     language === "kz"
                       ? "bg-white text-blue-600 font-medium shadow-md dark:bg-gray-900 dark:text-white"
-                      : "text-gray-500"
+                      : "text-gray-500 dark:text-white"
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -286,10 +301,10 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                   Каз.
                 </button>
                 <button
-                  className={`px-3 py-2 rounded-[20px] text-sm transition-all ${
+                  className={`px-2 md:px-3 py-1 md:py-2 rounded-[20px] text-xs md:text-sm transition-all ${
                     language === "ru"
                       ? "bg-white text-blue-600 font-medium shadow-md dark:bg-gray-900 dark:text-white"
-                      : "text-gray-500"
+                      : "text-gray-500 dark:text-white"
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -299,10 +314,10 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                   Рус.
                 </button>
                 <button
-                  className={`px-3 py-2 rounded-[20px] text-sm transition-all ${
+                  className={`px-2 md:px-3 py-1 md:py-2 rounded-[20px] text-xs md:text-sm transition-all ${
                     language === "en"
                       ? "bg-white text-blue-600 font-medium shadow-md dark:bg-gray-900 dark:text-white"
-                      : "text-gray-500"
+                      : "text-gray-500 dark:text-white"
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -313,64 +328,63 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                 </button>
               </div>
             </div>
-            {/* Shadow effect */}
-            <div className="absolute inset-0 rounded-[40px] shadow-md -z-10"></div>
           </div>
 
           {/* Тема - обновленный стиль */}
           <div className="relative mb-4">
-            <div
-              className={`${getItemStyle(
-                "theme"
-              )} h-[70px] p-4 flex justify-between items-center cursor-pointer dark:bg-[#333333]`}
-              onClick={handleButtonClick("theme", "theme")}
-            >
-              <span className="text-base ml-2">{t("cabinet.theme")}</span>
+            <div className="bg-white rounded-[25px] shadow-md transition-all duration-200 border h-[70px] p-4 flex justify-between items-center dark:bg-[#333333] dark:border-gray-700 dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]">
+              <span className="text-base md:text-base ml-2 leading-tight">
+                {t("cabinet.theme")}
+              </span>
               <div className="bg-gray-100 rounded-[25px] p-1 flex dark:bg-[#4D4D4D]">
                 <button
-                  className={`px-3 py-2 rounded-[20px] flex items-center transition-all ${
+                  className={`px-2 md:px-3 py-1 md:py-2 rounded-[20px] flex items-center transition-all ${
                     theme === "light"
                       ? "bg-white text-blue-600 shadow-md"
-                      : "text-gray-500"
+                      : "text-gray-500 dark:text-white"
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
                     setTheme("light");
                   }}
                 >
-                  <Sun className="h-4 w-4 mr-1" />
-                  <span className="text-sm">{t("cabinet.theme.light")}</span>
+                  <Sun className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                  <span className="text-xs md:text-sm leading-none">
+                    {t("cabinet.theme.light")}
+                  </span>
                 </button>
                 <button
-                  className={`px-3 py-2 rounded-[20px] flex items-center transition-all ${
+                  className={`px-2 md:px-3 py-1 md:py-2 rounded-[20px] flex items-center transition-all ${
                     theme === "dark"
                       ? "bg-white text-blue-600 shadow-md dark:text-white dark:bg-gray-900"
-                      : "text-gray-500"
+                      : "text-gray-500 dark:text-white"
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
                     setTheme("dark");
                   }}
                 >
-                  <Moon className="h-4 w-4 mr-1" />
-                  <span className="text-sm">{t("cabinet.theme.dark")}</span>
+                  <Moon className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                  <span className="text-xs md:text-sm leading-none">
+                    {t("cabinet.theme.dark")}
+                  </span>
                 </button>
               </div>
             </div>
-            {/* Shadow effect */}
-            <div className="absolute inset-0 rounded-[40px] shadow-md -z-10"></div>
           </div>
 
           {/* Активные устройства */}
           <div
             className={`${getItemStyle(
               "active-devices"
-            )} h-[70px] p-6 mb-4 cursor-pointer dark:bg-[#333333]`}
+            )} p-6 mb-4 h-[70px] cursor-pointer`}
             onClick={handleButtonClick("active-devices", "active-devices")}
           >
-            <div className="flex justify-between items-center">
-              <span>{t("cabinet.active.devices")}</span>
-              <ChevronRight className="h-6 w-6 text-black dark:text-white" />
+            <div className="flex justify-between items-center h-full">
+              <span className="text-base md:text-base leading-tight">
+                {t("cabinet.active.devices")}
+              </span>
+              <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white flex-shrink-0" />
             </div>
           </div>
 
@@ -378,14 +392,14 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "delete-account"
-            )} h-[70px] p-6 mb-4 cursor-pointer dark:bg-[#333333]`}
+            )} p-6 mb-4 h-[70px] cursor-pointer`}
             onClick={handleButtonClick("delete-account", "delete-account")}
           >
-            <div className="flex justify-between items-center">
-              <span className="text-red-500">
+            <div className="flex justify-between items-center h-full">
+              <span className="text-base md:text-base text-black dark:text-white leading-tight">
                 {t("cabinet.delete.account")}
               </span>
-              <ChevronRight className="h-6 w-6 text-black dark:text-white" />
+              <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white flex-shrink-0" />
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "../provider/theme-provider";
 import { useLanguage } from "../provider/language-provider";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Sun, Moon, Menu } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -179,40 +179,48 @@ export function Header() {
                   </div>
 
                   <div className="mt-auto p-4 border-t">
-                    <div className="flex justify-start items-center gap-24">
+                    <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-500">
                         {t("cabinet.language")}:
                       </span>
-                      <ToggleGroup
-                        type="single"
-                        value={language}
-                        onValueChange={(value) =>
-                          value && setLanguage(value as "kz" | "ru" | "en")
-                        }
-                        className="border rounded-full p-0.5 bg-gray-200 dark:bg-[#4D4D4D]"
-                      >
-                        <ToggleGroupItem
-                          value="kz"
-                          aria-label="Казахский"
-                          className="text-xs px-1.5 py-0.5 rounded-full data-[state=on]:bg-white h-6 w-8 dark:bg-[#4D4D4D] dark:data-[state=on]:bg-black "
+                      <div className="flex items-center border rounded-full p-0.5 bg-gray-200 dark:bg-[#4D4D4D]">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setLanguage("kz")}
+                          className={`rounded-full h-6 w-8 text-xs ${
+                            language === "kz"
+                              ? "bg-white dark:bg-black"
+                              : "opacity-70"
+                          }`}
                         >
                           Каз
-                        </ToggleGroupItem>
-                        <ToggleGroupItem
-                          value="ru"
-                          aria-label="Русский"
-                          className="text-xs px-1.5 py-0.5 rounded-full data-[state=on]:bg-white h-6 w-8 dark:bg-[#4D4D4D] dark:data-[state=on]:bg-black "
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setLanguage("ru")}
+                          className={`rounded-full h-6 w-8 text-xs ${
+                            language === "ru"
+                              ? "bg-white dark:bg-black"
+                              : "opacity-70"
+                          }`}
                         >
                           Рус
-                        </ToggleGroupItem>
-                        <ToggleGroupItem
-                          value="en"
-                          aria-label="Английский"
-                          className="text-xs px-1.5 py-0.5 rounded-full data-[state=on]:bg-white h-6 w-8 dark:bg-[#4D4D4D] dark:data-[state=on]:bg-black "
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setLanguage("en")}
+                          className={`rounded-full h-6 w-8 text-xs ${
+                            language === "en"
+                              ? "bg-white dark:bg-black"
+                              : "opacity-70"
+                          }`}
                         >
                           Eng
-                        </ToggleGroupItem>
-                      </ToggleGroup>
+                        </Button>
+                      </div>
                     </div>
 
                     <div className="flex justify-between items-center mt-4">
@@ -276,14 +284,14 @@ export function Header() {
                 <ToggleGroupItem
                   value="ru"
                   aria-label="Русский"
-                  className="text-xs px-1.5 py-0.5 rounded-full data-[state=on]:bg-white h-6 w-8 dark:data-[state=on]:bg-black"
+                  className="text-xs px-1.5 py-0.5 rounded-full data-[state=on]:bg-white h-6 w-8 dark:bg-[#4D4D4D] dark:data-[state=on]:bg-black"
                 >
                   Рус
                 </ToggleGroupItem>
                 <ToggleGroupItem
                   value="en"
                   aria-label="Английский"
-                  className="text-xs px-1.5 py-0.5 rounded-full data-[state=on]:bg-white h-6 w-8 dark:data-[state=on]:bg-black"
+                  className="text-xs px-1.5 py-0.5 rounded-full data-[state=on]:bg-white h-6 w-8 dark:bg-[#4D4D4D] dark:data-[state=on]:bg-black"
                 >
                   Eng
                 </ToggleGroupItem>

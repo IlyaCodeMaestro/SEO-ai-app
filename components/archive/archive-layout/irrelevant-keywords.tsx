@@ -40,7 +40,7 @@ export function IrrelevantKeywordsTable({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
         <div className="p-4">
           <div className="flex items-center justify-center w-full mb-3">
             <h3 className="font-medium text-sm text-center">
@@ -90,7 +90,7 @@ export function IrrelevantKeywordsTable({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-gray-800 rounded-[20px] shadow-md overflow-hidden">
+    <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden">
       <div className="flex flex-col items-center p-4 border-b dark:border-gray-700 relative">
         <h3 className="font-medium mb-2 text-center">
           {t("keywords.irrelevant")}

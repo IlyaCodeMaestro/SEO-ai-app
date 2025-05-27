@@ -33,26 +33,29 @@ export function ShareMenuWithoutCopy({
   }, [onClose]);
 
   const handleWhatsAppShare = () => {
-    const shareText = encodeURIComponent(
-      title ? `${title}\n\n${content}` : content
+    const predefinedText = encodeURIComponent(
+      "Добрый день!\nhttps://seo-ai.kz/?link=MEXPGFWG"
     );
-    window.open(`https://wa.me/?text=${shareText}`, "_blank");
+    window.open(`https://wa.me/?text=${predefinedText}`, "_blank");
   };
+
   const handleTelegramShare = () => {
-    const shareText = encodeURIComponent(
-      title ? `${title}\n\n${content}` : content
+    const predefinedText = encodeURIComponent(
+      "Добрый день!\nhttps://seo-ai.kz/?link=MEXPGFWG"
     );
-    window.open(`https://t.me/share/url?url=${shareText}`, "_blank");
+    window.open(`https://t.me/share/url?url=${predefinedText}`, "_blank");
   };
 
   const handleEmailShare = () => {
     const subject = encodeURIComponent(title || t("share.default.title"));
-    const body = encodeURIComponent(content);
+    const body = encodeURIComponent(
+      "Добрый день!\nhttps://seo-ai.kz/?link=MEXPGFWG"
+    );
     window.open(`mailto:?subject=${subject}&body=${body}`, "_blank");
   };
 
   return (
-    <div className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div className="absolute inset-0 bg-black/50 rounded-3xl z-50 flex items-center justify-center">
       <div
         ref={menuRef}
         className="bg-white dark:bg-gray-800 rounded-xl shadow-lg max-w-xs w-full mx-4 overflow-hidden"
