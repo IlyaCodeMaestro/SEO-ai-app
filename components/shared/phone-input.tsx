@@ -171,9 +171,9 @@ export default function PhoneInput({
               <span className="mr-2 w-6 h-4 relative overflow-hidden">
                 {selectedCountry.image && (
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/file/${selectedCountry.image}`}
+                    src={`https://upload.seo-ai.kz/test/photos/${selectedCountry.image}`}
                     alt={selectedCountry.name_ru}
-                    width={24}
+                    width={16}
                     height={16}
                     className="object-cover"
                   />
@@ -200,9 +200,9 @@ export default function PhoneInput({
                     <span className="mr-2 w-6 h-4 relative overflow-hidden">
                       {country.image && (
                         <Image
-                          src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/file/${country.image}`}
+                          src={`https://upload.seo-ai.kz/test/photos/${country.image}`}
                           alt={country.name_ru}
-                          width={24}
+                          width={16}
                           height={16}
                           className="object-cover"
                         />
