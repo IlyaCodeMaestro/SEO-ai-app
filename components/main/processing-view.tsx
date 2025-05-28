@@ -101,11 +101,11 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
               className="absolute left-0"
               aria-label={t("common.back")}
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-5 w-5 dark:text-blue-600" />
             </button>
           )}
 
-          <h2 className="text-lg font-medium w-full text-center">
+          <h2 className="text-lg font-medium w-full text-center dark:text-blue-600">
             {t("processing.title")}
           </h2>
 
@@ -115,7 +115,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
               className="absolute right-0"
               aria-label={t("common.close")}
             >
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5 dark:text-blue-600" />
             </button>
           )}
         </div>
