@@ -117,8 +117,7 @@ export const translations = {
 
     // Анализ карточки товара
     "product.analysis.title": "Анализ карточки товара",
-    "product.analysis.desc":
-      "Проверить качество SEO и текста.",
+    "product.analysis.desc": "Проверить качество SEO и текста.",
     "product.analysis.enter.sku": "Введите SKU вашего товара",
     "product.analysis.sku": "SKU (анализируемый товар)",
     "product.analysis.enter.competitor":
@@ -133,8 +132,7 @@ export const translations = {
 
     // Описание карточки товара
     "product.description.title": "Описание карточки товара",
-    "product.description.desc":
-      "Качественные SEO и текст за пару кликов.",
+    "product.description.desc": "Качественные SEO и текст за пару кликов.",
     "product.description.enter.sku": "Введите SKU вашего товара",
     "product.description.no.card":
       "Если у поставщика нет карточки, введите SKU похожего товара",
@@ -200,7 +198,9 @@ export const translations = {
     "processing.try.again": "Попробовать снова",
     "processing.back": "Назад",
     "processing.close": "Закрыть",
-
+    "tariff.name.seller": "Селлер",
+    "tariff.name.manager": "Менеджер",
+    "tariff.name.premium": "Премиум",
     // Валидация
     "validation.required": "Это поле обязательно к заполнению",
 
@@ -217,7 +217,7 @@ export const translations = {
     "cabinet.topup": "Пополнить",
     "cabinet.balance.statement": "Выписка по балансу",
     "cabinet.bonuses": "Бонусы",
-    "cabinet.exchange": "обменять",
+    "cabinet.exchange": "Обменять",
     "cabinet.bonus.statement": "Выписка по бонусам",
     "cabinet.referral.statement": "Выписка по рефералам",
     "cabinet.tariff": "Тариф",
@@ -249,16 +249,28 @@ export const translations = {
     "tariff.confirm.switch": "Вы желаете переподключить тариф",
     "tariff.connect": "Подключить",
     "tariff.cancel": "Отмена",
+    "tariff.confirm": "Подтвердить",
+    "tariff.auto.renewal": "Автосписание",
+    "tariff.auto.renewal.confirm.enable":
+      "Вы желаете включить автопродление тарифа?",
+    "tariff.auto.renewal.confirm.disable":
+      "Вы желаете отключить автопродление тарифа?",
+    "tariff.auto.renewal.enabled": "Автосписание включено",
+    "tariff.auto.renewal.disabled": "Автосписание отключено",
+    "tariff.auto.renewal.error": "Ошибка при изменении настроек автосписания",
+    "tariff.buy.success": "Тариф успешно подключен",
+    "tariff.switch.error": "Ошибка при переключении тарифа",
+    success: "Успешно",
 
     // Бонусы
     "bonus.from": "Бонус от",
-    "bonus.points": "Баллов",
+    "bonus.points": "баллов",
     "bonus.exchange": "Обменять",
     "bonus.exchange.analysis": "Обменять все на анализ карточки",
     "bonus.exchange.description": "Обменять все на описание карточки",
     "bonus.exchange.both": "Обменять все на анализ и описание карточки",
-    "bonus.analysis.value": "Анализ карточки равен 200 тг.",
-    "bonus.description.value": "Описание карточки равен 800 тг.",
+    "bonus.analysis.value": "Анализ карточки равен 1 балл.",
+    "bonus.description.value": "Описание карточки равно 4 балла.",
     "bonus.transfer.available": "Вы можете перевести 5000 баллов",
     "bonus.transfer.insufficient":
       "У Вас пока недостаточно приглашенных друзей",
@@ -275,6 +287,43 @@ export const translations = {
     "payment.system": "Платежная система",
     "empty.balance.statement": "Выписка по балансу пуста",
     "bonus.exchange.confirm": "Вы желаете обменять бонусы на услуги?",
+    "bonus.exchange.title": "Обмен бонусов",
+    "bonus.balance": "Бонусы",
+
+    // Опции обмена
+    "bonus.exchange.all.analysis": "Обменять все на анализ карточки",
+    "bonus.exchange.all.description": "Обменять все на описание карточки",
+    "bonus.exchange.all.both":
+      "Обменять все на анализ и описание карточки 50/50",
+
+    // Действия
+    "bonus.exchange.success": "Бонусы успешно обменены",
+    "bonus.exchange.error": "Ошибка при обмене бонусов",
+    "bonus.exchange.error.option": "Выберите опцию обмена",
+
+    // Перевод бонусов
+    "bonus.transfer.title": "Перевод бонусов",
+    "bonus.transfer.disabled": "Перевод бонусов недоступен",
+    "bonus.transfer.success": "Бонусы успешно переведены",
+
+    // Банковская карта
+    "bonus.card.required": "Необходимо добавить банковскую карту",
+    "bonus.card.add": "Добавить банковскую карту",
+    "bonus.card.added.success": "Банковская карта успешно добавлена",
+    "bonus.card.not.added": "Банковская карта не добавлена",
+
+    // Статусы и сообщения
+    "bonus.insufficient.friends": "У вас пока недостаточно приглашенных друзей",
+
+    "bonus.point.value.200": "1 балл равен 200 ₸",
+
+    "bonus.point": "балл",
+    "bonus.points.2_4": "балла", // для 2, 3, 4 балла
+
+    // Загрузка и ошибки
+    "bonus.loading": "Загрузка...",
+    "bonus.error": "Ошибка",
+    "bonus.error.loading": "Ошибка при загрузке данных обмена бонусов",
     currency: "тг.",
     "feedback.for.developers": "Отзыв для разработчиков",
     "feedback.faq": "Часто задаваемые вопросы",
@@ -309,7 +358,9 @@ export const translations = {
     "archive.analysis.done": "Талдау\nорындалды",
     "archive.description.done": "Сипаттама\nорындалды",
     "archive.both.done": "Талдау және\nсипаттама\nорындалды",
-
+    "tariff.name.seller": "Селлер",
+    "tariff.name.manager": "Менеджер",
+    "tariff.name.premium": "Премиум",
     // Archive header
     "archive.header.analysis": "Тауар карточкасын талдау",
     "archive.header.description": "Тауар карточкасының сипаттамасы",
@@ -505,7 +556,7 @@ export const translations = {
     "processing.today": "Бүгін",
     "processing.product.name": "Тауар",
     "processing.analysis": "Талдау",
-     "processing.analysys-description": "Талдау және сипаттама",
+    "processing.analysys-description": "Талдау және сипаттама",
     "processing.description": "Сипаттама",
     "processing.empty": "Өңделуде тауарлар жоқ",
     "processing.loading": "Деректерді жүктеу...",
@@ -564,25 +615,78 @@ export const translations = {
     "tariff.confirm.switch": "Тарифті қайта қосқыңыз келе ме",
     "tariff.connect": "Қосу",
     "tariff.cancel": "Болдырмау",
+    "tariff.confirm": "Растау",
+    "tariff.auto.renewal": "Автоматты есептен шығару",
+    "tariff.auto.renewal.confirm.enable":
+      "Сіз тарифті автоматты түрде жаңартуды қосқыңыз келе ме?",
+    "tariff.auto.renewal.confirm.disable":
+      "Тарифті автоматты түрде жаңартуды өшіргіңіз келе ме?",
+    "tariff.auto.renewal.enabled": "Автотізімнен шығару қосылды",
+    "tariff.auto.renewal.disabled": "Автотізімнен шығару өшірілді",
+    "tariff.auto.renewal.error":
+      "Автотізімнен шығару параметрлерін өзгерту кезінде қате",
+    "tariff.buy.success": "Тариф сәтті қосылды",
+    "tariff.switch.error": "Тарифті ауыстыру кезінде қате",
+    success: "Сәтті",
+    "bonus.exchange.title": "Бонустарды айырбастау",
+    "bonus.balance": "Бонустар",
 
+    // Опции обмена
+    "bonus.exchange.all.analysis": "Барлығын карточка талдауына айырбастау",
+    "bonus.exchange.all.description":
+      "Барлығын карточка сипаттамасына айырбастау",
+    "bonus.exchange.all.both":
+      "Барлығын карточка талдауы мен сипаттамасына 50/50 айырбастау",
+
+    // Стоимость услуг
+    "bonus.analysis.value": "Карточканы талдау тең 1 ұпай.",
+    "bonus.description.value": "Карточканың сипаттамасы тең 4 ұпай.",
+
+    // Действия
+    "bonus.exchange": "Айырбастау",
+    "bonus.exchange.confirm": "Бонустарды қызметтерге айырбастағыңыз келе ме?",
+    "bonus.exchange.success": "Бонустар сәтті айырбасталды",
+    "bonus.exchange.error": "Бонустарды айырбастау кезінде қате",
+    "bonus.exchange.error.option": "Айырбастау опциясын таңдаңыз",
+
+    // Перевод бонусов
+    "bonus.transfer": "Аудару",
+    "bonus.transfer.title": "Бонустарды аудару",
+    "bonus.transfer.disabled": "Бонустарды аудару қолжетімді емес",
+    "bonus.transfer.confirm": "Бонустарды картаға аударғыңыз келе ме?",
+    "bonus.transfer.success": "Бонустар сәтті аударылды",
+    "bonus.transfer.available": "Сіз бонустарды аудара аласыз",
+
+    // Банковская карта
+    "bonus.card.required": "Банк картасын қосу қажет",
+    "bonus.card.add": "Банк картасын қосу",
+    "bonus.card.added.success": "Банк картасы сәтті қосылды",
+    "bonus.card.not.added": "Банк картасы қосылмаған",
+
+    // Статусы и сообщения
+    "bonus.insufficient.friends": "Сізде әлі жеткілікті шақырылған достар жоқ",
+    "bonus.point.value": "1 ұпай 1 теңгеге тең",
+    "bonus.point.value.200": "1 ұпай 200 ₸ тең",
+    "bonus.points": "ұпай",
+    "bonus.point": "ұпай",
+    "bonus.points.2_4": "ұпай", // для казахского языка форма не меняется
+
+    // Загрузка и ошибки
+    "bonus.loading": "Жүктелуде...",
+    "bonus.error": "Қате",
+    "bonus.error.loading": "Бонус айырбастау деректерін жүктеу кезінде қате",
     // Бонусы
     "bonus.from": "Бонус",
-    "bonus.points": "Ұпай",
-    "bonus.exchange": "Айырбастау",
     "bonus.exchange.analysis": "Барлығын тауар карточкасын талдауға айырбастау",
     "bonus.exchange.description":
       "Барлығын тауар карточкасының сипаттамасына айырбастау",
     "bonus.exchange.both":
       "Барлығын тауар карточкасын талдау және сипаттамаға айырбастау",
-    "bonus.analysis.value": "Тауар карточкасын талдау 200 тг тең.",
-    "bonus.description.value": "Тауар карточкасының сипаттамасы 800 тг тең.",
-    "bonus.transfer.available": "Сіз 5000 ұпайды аудара аласыз",
+
     "bonus.transfer.insufficient": "Сізде әлі жеткілікті шақырылған достар жоқ",
     "bonus.add.card": "Банк картасын қосу",
     "bonus.card.added": "Банк картасы қосылды",
-    "bonus.point.value": "1 ұпай 1 теңгеге тең",
-    "bonus.transfer": "Аудару",
-    "bonus.transfer.confirm": "Бонустарды картаға аударғыңыз келе ме?",
+
     // For Kazakh (kz)
     "balance.topup": "Балансты толтыру",
     "balance.topup.amount": "Толтыру сомасы",
@@ -591,7 +695,6 @@ export const translations = {
     "balance.payment": "Төлем",
     "payment.system": "Төлем жүйесі",
     "empty.balance.statement": "Баланс бойынша көшірме бос",
-    "bonus.exchange.confirm": "Бонустарды қызметтерге айырбастағыңыз келе ме?",
     currency: "тг.",
     // Карта
     "card.number": "Карта нөмірі",
@@ -613,7 +716,9 @@ export const translations = {
     "archive.analysis.done": "Analysis\ncompleted",
     "archive.description.done": "Description\ncompleted",
     "archive.both.done": "Analysis and\ndescription\ncompleted",
-
+    "tariff.name.seller": "Seller",
+    "tariff.name.manager": "Manager",
+    "tariff.name.premium": "Premium",
     // Archive header
     "archive.header.analysis": "Product card analysis",
     "archive.header.description": "Product card description",
@@ -626,7 +731,53 @@ export const translations = {
     "confirmation.notification":
       "You will receive a notification when it's complete",
     "confirmation.next": "Next",
+    "bonus.exchange.title": "Bonus Exchange",
+    "bonus.balance": "Bonuses",
 
+    // Опции обмена
+    "bonus.exchange.all.analysis": "Exchange all for product card analysis",
+    "bonus.exchange.all.description":
+      "Exchange all for product card description",
+    "bonus.exchange.all.both":
+      "Exchange all for product card analysis and description 50/50",
+
+    // Стоимость услуг
+    "bonus.analysis.value": "The analysis of the card is equal to 1 point.",
+    "bonus.description.value": "The card description is equal to 4 point.",
+
+    // Действия
+    "bonus.exchange": "Exchange",
+    "bonus.exchange.confirm": "Do you want to exchange bonuses for services?",
+    "bonus.exchange.success": "Bonuses successfully exchanged",
+    "bonus.exchange.error": "Error exchanging bonuses",
+    "bonus.exchange.error.option": "Select an exchange option",
+
+    // Перевод бонусов
+    "bonus.transfer": "Transfer",
+    "bonus.transfer.title": "Bonus Transfer",
+    "bonus.transfer.disabled": "Bonus transfer is not available",
+    "bonus.transfer.confirm": "Do you want to transfer bonuses to the card?",
+    "bonus.transfer.success": "Bonuses successfully transferred",
+    "bonus.transfer.available": "You can transfer bonuses",
+
+    // Банковская карта
+    "bonus.card.required": "You need to add a bank card",
+    "bonus.card.add": "Add bank card",
+    "bonus.card.added.success": "Bank card successfully added",
+    "bonus.card.not.added": "Bank card not added",
+
+    // Статусы и сообщения
+    "bonus.insufficient.friends": "You don't have enough invited friends yet",
+    "bonus.point.value": "1 point equals 1 tenge",
+    "bonus.point.value.200": "1 point equals 200 ₸",
+    "bonus.points": "points",
+    "bonus.point": "point",
+    "bonus.points.2_4": "points", // для английского языка форма не меняется
+
+    // Загрузка и ошибки
+    "bonus.loading": "Loading...",
+    "bonus.error": "Error",
+    "bonus.error.loading": "Error loading bonus exchange data",
     // Keywords tables
     "keywords.used": "Used\nkeywords",
     "keywords.missed": "Missed keywords",
@@ -735,8 +886,7 @@ export const translations = {
 
     // Анализ карточки товара
     "product.analysis.title": "Product card analysis",
-    "product.analysis.desc":
-      "Check the quality of SEO and text.",
+    "product.analysis.desc": "Check the quality of SEO and text.",
     "product.analysis.enter.sku": "Enter your product SKU",
     "product.analysis.sku": "SKU (analyzed product)",
     "product.analysis.enter.competitor":
@@ -752,8 +902,7 @@ export const translations = {
 
     // Описание карточки товара
     "product.description.title": "Product card description",
-    "product.description.desc":
-      "Quality SEO and text in a couple clicks.",
+    "product.description.desc": "Quality SEO and text in a couple clicks.",
     "product.description.enter.sku": "Enter your product SKU",
     "product.description.no.card":
       "If the supplier doesn't have a card, enter the SKU of a similar product",
@@ -811,7 +960,7 @@ export const translations = {
     "processing.today": "Today",
     "processing.product.name": "Product",
     "processing.analysis": "Analysis",
-      "processing.analysys-description": "Analysis and description",
+    "processing.analysys-description": "Analysis and description",
     "processing.description": "Description",
     "processing.empty": "No products in processing",
     "processing.loading": "Loading data...",
@@ -868,24 +1017,29 @@ export const translations = {
     "tariff.confirm.switch": "Do you want to switch to tariff",
     "tariff.connect": "Connect",
     "tariff.cancel": "Cancel",
+    "tariff.confirm": "Confirm",
+    "tariff.auto.renewal": "Auto-renewal",
+    "tariff.auto.renewal.confirm.enable": "Enable auto-renewal?",
+    "tariff.auto.renewal.confirm.disable": "Disable auto-renewal?",
+    "tariff.auto.renewal.enabled": "Auto-renewal enabled",
+    "tariff.auto.renewal.disabled": "Auto-renewal disabled",
+    "tariff.auto.renewal.error": "Error changing auto-renewal settings",
+    "tariff.buy.success": "Tariff successfully connected",
+    "tariff.switch.error": "Error switching tariff",
+    success: "Success",
 
     // Бонусы
     "bonus.from": "Bonus from",
-    "bonus.points": "Points",
-    "bonus.exchange": "Exchange",
+
     "bonus.exchange.analysis": "Exchange all for product card analysis",
     "bonus.exchange.description": "Exchange all for product card description",
     "bonus.exchange.both":
       "Exchange all for product card analysis and description",
-    "bonus.analysis.value": "Product card analysis equals 200 tenge.",
-    "bonus.description.value": "Product card description equals 800 tenge.",
-    "bonus.transfer.available": "You can transfer 5000 points",
+
     "bonus.transfer.insufficient": "You don't have enough invited friends yet",
     "bonus.add.card": "Add bank card",
     "bonus.card.added": "Bank card added",
-    "bonus.point.value": "1 point equals 1 tenge",
-    "bonus.transfer": "Transfer",
-    "bonus.transfer.confirm": "Do you want to transfer bonuses to the card?",
+
     "balance.topup": "Top Up Balance",
     "balance.topup.amount": "Top Up Amount",
     "balance.topup.button": "Top Up",
@@ -893,7 +1047,6 @@ export const translations = {
     "balance.payment": "Payment",
     "payment.system": "Payment System",
     "empty.balance.statement": "Balance statement is empty",
-    "bonus.exchange.confirm": "Do you want to exchange bonuses for services?",
     currency: "tg.",
     // Карта
     "card.number": "Card number",
@@ -906,11 +1059,6 @@ export const translations = {
     "payment.total": "Total payment",
   },
 };
-// Add these translations to the existing translations.ts file
-
-// For Russian (ru)
-
-// For English (en)
 
 // Функция для получения перевода
 export function getTranslation(language: string, key: string): string {

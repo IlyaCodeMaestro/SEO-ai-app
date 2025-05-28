@@ -1,19 +1,24 @@
-"use client"
+"use client";
 
-import { useGetTariffsQuery } from "@/store/services/main"
-import { TariffProvider } from "./tariff-provider"
-import type { ReactNode } from "react"
+import { useGetTariffsQuery } from "@/store/services/main";
+import { TariffProvider } from "./tariff-provider";
+import type { ReactNode } from "react";
 
 interface TariffProviderWrapperProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
-export function TariffProviderWrapper({ children }: TariffProviderWrapperProps) {
-  const { data: tariffsData } = useGetTariffsQuery()
+export function TariffProviderWrapper({
+  children,
+}: TariffProviderWrapperProps) {
+  const { data: tariffsData } = useGetTariffsQuery();
 
   return (
-    <TariffProvider apiTariffs={tariffsData?.tariffs} currentApiTariff={tariffsData?.tariff}>
+    <TariffProvider
+      apiTariffs={tariffsData?.tariffs}
+      currentApiTariff={tariffsData?.tariff}
+    >
       {children}
     </TariffProvider>
-  )
+  );
 }

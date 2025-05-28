@@ -19,7 +19,32 @@ function isMobileDevice() {
   }
   return false;
 }
+// Добавим функцию translateApiContent, как в tariff-panel.tsx
+const translateApiContent = (text: string, language: string): string => {
+  if (!text) return text;
 
+  // Проверяем, есть ли точное совпадение для этого текста
+  if (apiTranslations[text]) {
+    return apiTranslations[text][language] || text;
+  }
+
+  // Если точного совпадения нет, ищем частичное совпадение
+  for (const key in apiTranslations) {
+    // Удаляем все пробелы и переносы строк для сравнения
+    const normalizedKey = key.replace(/\s+/g, "");
+    const normalizedText = text.replace(/\s+/g, "");
+
+    if (
+      normalizedKey.includes(normalizedText) ||
+      normalizedText.includes(normalizedKey)
+    ) {
+      return apiTranslations[key][language] || text;
+    }
+  }
+
+  // Если совпадения не найдено, возвращаем оригинальный текст
+  return text;
+};
 export function CabinetView({ onOpenPanel }: CabinetViewProps) {
   const { t, language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -50,7 +75,9 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
       }, 2000);
     };
 
-  // Функция для получения переведенного названия тарифа
+  // Update the getTranslatedTariffName function to properly handle English translations
+
+  // Replace the current getTranslatedTariffName function with this updated version:
   const getTranslatedTariffName = () => {
     if (currentTariffData.id === "seller") {
       return language === "ru"
@@ -98,6 +125,29 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
     } else {
       // Если элемент не выбран - обычная граница и тонкая синяя при наведении
       return `${baseClasses} ${darkModeClasses} border hover:border-2 hover:border-blue-600`;
+    }
+  };
+  // Функция для форматирования количества баллов с учетом языка
+  const formatBonusPoints = (points: number | string | undefined): string => {
+    if (points === undefined) return `0 ${t("bonus.points")}`;
+
+    const numPoints =
+      typeof points === "string" ? Number.parseInt(points, 10) : points;
+
+    if (language === "ru") {
+      // Для русского языка используем правильные окончания
+      if (numPoints === 1) {
+        return `${numPoints} ${t("bonus.point")}`;
+      } else if (numPoints >= 2 && numPoints <= 4) {
+        return `${numPoints} ${t("bonus.points.2_4")}`;
+      } else {
+        return `${numPoints} ${t("bonus.points")}`;
+      }
+    } else {
+      // Для других языков просто используем множественную форму
+      return `${numPoints} ${t(
+        numPoints === 1 ? "bonus.point" : "bonus.points"
+      )}`;
     }
   };
 
@@ -192,6 +242,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           </div>
 
           {/* Бонусы */}
+
           <div
             className={`${getItemStyle(
               "bonuses"
@@ -203,7 +254,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                 {t("cabinet.bonuses")}
               </span>
               <span className="text-sm md:text-base text-[#020817] dark:text-white">
-                {profileData?.user.bonuses || "0 баллов"}
+                {formatBonusPoints(profileData?.user.bonuses)}
               </span>
             </div>
             <div className="flex justify-end">
@@ -218,7 +269,6 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
               </button>
             </div>
           </div>
-
           {/* Выписка по бонусам */}
           <div
             className={`${getItemStyle(
@@ -265,7 +315,11 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
               </span>
               <div className="flex flex-col items-end gap-2">
                 <span className="text-sm md:text-base text-gray-800 dark:text-white leading-tight">
-                  {profileData?.user.tariff || `«${getTranslatedTariffName()}»`}
+                  {profileData?.user.tariff
+                    ? profileData.user.tariff.includes("Премиум")
+                      ? `«${language === "en" ? "Premium" : "Премиум"}»`
+                      : profileData.user.tariff
+                    : `«${getTranslatedTariffName()}»`}
                 </span>
                 <button
                   className="text-xs font-light text-black underline dark:text-white"

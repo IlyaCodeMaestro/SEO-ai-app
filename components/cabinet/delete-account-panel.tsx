@@ -178,7 +178,7 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
         </div>
 
         {/* Информация об удалении */}
-        <div className="bg-white rounded-xl p-6 shadow-md border dark:bg-[#2C2B2B] dark:border-none">
+        <div className="bg-white rounded-3xl p-6 shadow-md border dark:bg-[#2C2B2B] dark:border-none">
           {isLoading ? (
             <div className="flex items-center justify-center h-40">
               <p>{t("common.loading")}</p>

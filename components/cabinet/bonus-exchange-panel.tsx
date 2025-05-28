@@ -21,7 +21,7 @@ interface BonusExchangePanelProps {
 }
 
 export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null);
   const [showExchangeConfirm, setShowExchangeConfirm] = useState(false);
   const [showTransferCard, setShowTransferCard] = useState(false);
@@ -57,7 +57,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
   const handleExchangeClick = () => {
     if (!selectedOptionId) {
       toast({
-        title: t("error"),
+        title: t("bonus.error"),
         description: t("bonus.exchange.error.option"),
         variant: "destructive",
       });
@@ -71,7 +71,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
 
     if (!selectedOptionId) {
       toast({
-        title: t("error"),
+        title: t("bonus.error"),
         description: t("bonus.exchange.error.option"),
         variant: "destructive",
       });
@@ -91,7 +91,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
       });
     } catch (error) {
       toast({
-        title: t("error"),
+        title: t("bonus.error"),
         description: t("bonus.exchange.error"),
         variant: "destructive",
       });
@@ -120,7 +120,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
   const handleTransferClick = () => {
     if (!bonusExchangeData?.transfer_enable) {
       toast({
-        title: t("error"),
+        title: t("bonus.error"),
         description: t("bonus.transfer.disabled"),
         variant: "destructive",
       });
@@ -129,7 +129,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
 
     if (!cardAdded && !bonusExchangeData?.have_card) {
       toast({
-        title: t("error"),
+        title: t("bonus.error"),
         description: t("bonus.card.required"),
         variant: "destructive",
       });
@@ -153,6 +153,30 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
 
   const handleTransferCancel = () => {
     setShowTransferConfirm(false);
+  };
+
+  // Функция для форматирования количества баллов с учетом языка
+  const formatBonusPoints = (points: number | string | undefined): string => {
+    if (points === undefined) return `0 ${t("bonus.points")}`;
+
+    const numPoints =
+      typeof points === "string" ? Number.parseInt(points, 10) : points;
+
+    if (language === "ru") {
+      // Для русского языка используем правильные окончания
+      if (numPoints === 1) {
+        return `${numPoints} ${t("bonus.point")}`;
+      } else if (numPoints >= 2 && numPoints <= 4) {
+        return `${numPoints} ${t("bonus.points.2_4")}`;
+      } else {
+        return `${numPoints} ${t("bonus.points")}`;
+      }
+    } else {
+      // Для других языков просто используем множественную форму
+      return `${numPoints} ${t(
+        numPoints === 1 ? "bonus.point" : "bonus.points"
+      )}`;
+    }
   };
 
   return (
@@ -195,20 +219,20 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
       <div className="flex-1 pt-0 max-w-md mx-auto w-full px-2 md:px-0">
         {isLoading ? (
           <div className="flex items-center justify-center h-40">
-            <p>{t("common.loading")}</p>
+            <p>{t("bonus.loading")}</p>
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center h-40 text-center">
-            <p className="text-red-500">{t("error.loading.bonus.exchange")}</p>
+            <p className="text-red-500">{t("bonus.error.loading")}</p>
           </div>
         ) : (
           <>
             {/* Bonus balance */}
             <div className="w-full border border-white dark:border-none bg-blue-600 py-5 rounded-[25px] text-base font-medium shadow-md p-4 mb-6 text-white text-center">
               <div className="flex justify-between items-center">
-                <span className="text-sm">{t("cabinet.bonuses")}</span>
+                <span className="text-sm">{t("bonus.balance")}</span>
                 <span className="text-base font-bold">
-                  {profileData?.user.bonuses || "0 баллов"}
+                  {formatBonusPoints(profileData?.user.bonuses)}
                 </span>
               </div>
             </div>
@@ -226,7 +250,15 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
                       }`}
                       onClick={() => handleOptionChange(option.id)}
                     ></div>
-                    <span className="text-xs sm:text-sm">{option.title}</span>
+                    <span className="text-xs sm:text-sm">
+                      {option.id === 1
+                        ? t("bonus.exchange.all.analysis")
+                        : option.id === 2
+                        ? t("bonus.exchange.all.description")
+                        : option.id === 3
+                        ? t("bonus.exchange.all.both")
+                        : option.title}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -234,7 +266,11 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
               <div className="mt-4 text-center text-xs text-gray-600 dark:text-white">
                 {bonusExchangeData?.prices.map((price) => (
                   <p key={price.id}>
-                    {price.title}: {price.value} {price.currency}
+                    {price.id === 1
+                      ? t("bonus.analysis.value")
+                      : price.id === 2
+                      ? t("bonus.description.value")
+                      : `${price.title}: ${price.value} ${price.currency}`}
                   </p>
                 ))}
               </div>
@@ -244,7 +280,9 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
                   disabled={isExchanging || !selectedOptionId}
                   className="w-32 bg-gradient-to-r shadow-md from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full mt-4 text-sm"
                 >
-                  {isExchanging ? `${t("loading")}...` : t("bonus.exchange")}
+                  {isExchanging
+                    ? `${t("bonus.loading")}...`
+                    : t("bonus.exchange")}
                 </Button>
               </div>
             </div>
@@ -253,7 +291,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
             {bonusExchangeData?.transfer_visible && (
               <div className="bg-gray-50 rounded-3xl p-6 shadow-md border dark:bg-[#333333] dark:border-none flex flex-col items-center justify-center">
                 <p className="text-gray-500 text-xs sm:text-sm mb-3 text-center w-full">
-                  У вас пока недостаточно приглашенных друзей
+                  {t("bonus.insufficient.friends")}
                 </p>
 
                 <div
@@ -264,15 +302,15 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
                     className="h-6 w-6 mr-2 text-blue-600"
                     strokeWidth={2}
                   />
-                  <span className="font-medium">
-                    {t("bonus.add.card") || "Добавить банковскую карту"}
-                  </span>
+                  <span className="font-medium">{t("bonus.card.add")}</span>
                 </div>
 
                 <p className="text-gray-500 text-xs mb-1">
-                  Банковская карта не добавлена
+                  {t("bonus.card.not.added")}
                 </p>
-                <p className="text-gray-500 text-xs">1 балл равен 200 ₸</p>
+                <p className="text-gray-500 text-xs">
+                  {t("bonus.point.value.200")}
+                </p>
               </div>
             )}
           </>
