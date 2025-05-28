@@ -134,6 +134,7 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ["Tariffs", "Profile"],
     }),
+
     buyTariff: builder.mutation<ITariffBuyResponse, ITariffBuyRequest>({
       query: (body) => ({
         url: "/v2/tariff/buy",

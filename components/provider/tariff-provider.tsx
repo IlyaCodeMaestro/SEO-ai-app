@@ -1,90 +1,168 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react"
+import {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+  useEffect,
+} from "react";
 
 // Типы тарифов
-export type TariffId = "seller" | "manager" | "premium"
+export type TariffId = "seller" | "manager" | "premium";
 
 // Интерфейс тарифа
 export interface Tariff {
-  id: TariffId
-  name: string
-  monthlyFee: number
-  analysisCount: number
-  descriptionCount: number
-  color: string
-  bonusInfo: string[]
+  id: TariffId;
+  name: string;
+  monthlyFee: number;
+  analysisCount: number;
+  descriptionCount: number;
+  color: string;
+  bonusInfo: string[];
+}
+
+// API tariff interface
+export interface ApiTariff {
+  id: number;
+  title: string;
+  final_price: number;
+  analyses: number;
+  descriptions: number;
+  b_start_color: string;
+  b_end_color: string;
+  description: string;
+}
+
+export interface ApiCurrentTariff {
+  id: number;
+  title: string;
+  analyses: number;
+  descriptions: number;
+  end_time: string;
+  auto_reconnect: boolean;
 }
 
 // Данные о тарифах
-export const tariffs: Tariff[] = [
-  {
-    id: "seller",
-    name: "Селлер",
-    monthlyFee: 8000,
-    analysisCount: 6,
-    descriptionCount: 6,
-    color: "bg-gradient-to-r from-blue-300 to-blue-500",
-    bonusInfo: [
-      "При переподключении тарифа остатки трафика и бонусы не сохраняются.",
-      'При переходе на тариф "Менеджер" 50% бонусов сохраняются.',
-      'При переходе на тариф "Премиум" 100% бонусов сохраняются.',
-      "Абонентская плата бонусами не оплачивается.",
-    ],
-  },
-  {
-    id: "manager",
-    name: "Менеджер",
-    monthlyFee: 20000,
-    analysisCount: 20,
-    descriptionCount: 20,
-    color: "bg-gradient-to-r from-blue-400 to-blue-600",
-    bonusInfo: [
-      "При своевременной оплате абонентской платы или переподключении тарифа 50% бонусов сохраняются, остатки трафика не сохраняются.",
-      'При переходе на тариф "Селлер" бонусы не сохраняются.',
-      'При переходе на тариф "Премиум" 100% бонусов сохраняются.',
-      "Абонентская плата бонусами не оплачивается.",
-    ],
-  },
-  {
-    id: "premium",
-    name: "Премиум",
-    monthlyFee: 50000,
-    analysisCount: 60,
-    descriptionCount: 60,
-    color: "bg-gradient-to-r from-blue-500 to-blue-700",
-    bonusInfo: [
-      "При своевременной оплате абонентской платы или переподключении 100% бонусов сохраняются, остатки трафика не сохраняются.",
-      'При переходе на тариф "Селлер" или "Менеджер" бонусы не сохраняются.',
-      "Абонентская плата бонусами не оплачивается.",
-    ],
-  },
-]
+export const mapApiIdToComponentId = (apiId: number): TariffId => {
+  switch (apiId) {
+    case 1:
+      return "seller";
+    case 2:
+      return "manager";
+    case 3:
+      return "premium";
+    default:
+      return "seller";
+  }
+};
 
 // Интерфейс контекста тарифа
 interface TariffContextType {
-  currentTariff: TariffId
-  setCurrentTariff: (tariffId: TariffId) => void
-  getTariffById: (id: TariffId) => Tariff
-  analysisRemaining: number
-  descriptionRemaining: number
-  nextPaymentDate: string
+  currentTariff: TariffId;
+  setCurrentTariff: (tariffId: TariffId) => void;
+  getTariffById: (id: TariffId) => Tariff;
+  analysisRemaining: number;
+  descriptionRemaining: number;
+  nextPaymentDate: string;
 }
 
-const TariffContext = createContext<TariffContextType | undefined>(undefined)
+interface TariffProviderProps {
+  children: ReactNode;
+  apiTariffs?: ApiTariff[];
+  currentApiTariff?: ApiCurrentTariff;
+}
 
-export function TariffProvider({ children }: { children: ReactNode }) {
-  const [currentTariff, setCurrentTariff] = useState<TariffId>("premium")
+const TariffContext = createContext<TariffContextType | undefined>(undefined);
 
-  // Функция для получения тарифа по ID
+export function TariffProvider({
+  children,
+  apiTariffs,
+  currentApiTariff,
+}: TariffProviderProps) {
+  const [currentTariff, setCurrentTariff] = useState<TariffId>("premium");
+
+  useEffect(() => {
+    if (currentApiTariff) {
+      setCurrentTariff(mapApiIdToComponentId(currentApiTariff.id));
+    }
+  }, [currentApiTariff]);
+
+  // Function to get tariff by ID
   const getTariffById = (id: TariffId): Tariff => {
-    return tariffs.find((t) => t.id === id) || tariffs[2] // По умолчанию "premium"
-  }
+    if (!apiTariffs) {
+      // Fallback to default values if API data is not available
+      return {
+        id,
+        name:
+          id === "seller"
+            ? "Селлер"
+            : id === "manager"
+            ? "Менеджер"
+            : "Премиум",
+        monthlyFee: id === "seller" ? 8000 : id === "manager" ? 20000 : 40000,
+        analysisCount: id === "seller" ? 5 : id === "manager" ? 15 : 40,
+        descriptionCount: id === "seller" ? 5 : id === "manager" ? 15 : 40,
+        color:
+          id === "seller"
+            ? "bg-gradient-to-r from-blue-300 to-blue-500"
+            : id === "manager"
+            ? "bg-gradient-to-r from-blue-400 to-blue-600"
+            : "bg-gradient-to-r from-blue-500 to-blue-700",
+        bonusInfo: [],
+      };
+    }
 
-  // Моковые данные для остатков и даты следующего платежа
-  const analysisRemaining = 40
-  const descriptionRemaining = 25
-  const nextPaymentDate = "10 ноября"
+    const apiId = id === "seller" ? 1 : id === "manager" ? 2 : 3;
+    const apiTariff = apiTariffs.find((t) => t.id === apiId);
+
+    if (!apiTariff) {
+      return {
+        id,
+        name:
+          id === "seller"
+            ? "Селлер"
+            : id === "manager"
+            ? "Менеджер"
+            : "Премиум",
+        monthlyFee: id === "seller" ? 8000 : id === "manager" ? 20000 : 40000,
+        analysisCount: id === "seller" ? 5 : id === "manager" ? 15 : 40,
+        descriptionCount: id === "seller" ? 5 : id === "manager" ? 15 : 40,
+        color:
+          id === "seller"
+            ? "bg-gradient-to-r from-blue-300 to-blue-500"
+            : id === "manager"
+            ? "bg-gradient-to-r from-blue-400 to-blue-600"
+            : "bg-gradient-to-r from-blue-500 to-blue-700",
+        bonusInfo: [],
+      };
+    }
+
+    return {
+      id,
+      name: apiTariff.title.replace(/[«»]/g, ""),
+      monthlyFee: apiTariff.final_price,
+      analysisCount: apiTariff.analyses,
+      descriptionCount: apiTariff.descriptions,
+      color:
+        id === "seller"
+          ? "bg-gradient-to-r from-blue-300 to-blue-500"
+          : id === "manager"
+          ? "bg-gradient-to-r from-blue-400 to-blue-600"
+          : "bg-gradient-to-r from-blue-500 to-blue-700",
+      bonusInfo: apiTariff.description.split("\n\n").filter(Boolean),
+    };
+  };
+
+  // Get values from API data
+  const analysisRemaining = currentApiTariff?.analyses || 0;
+  const descriptionRemaining = currentApiTariff?.descriptions || 0;
+  const nextPaymentDate = currentApiTariff?.end_time
+    ? new Date(currentApiTariff.end_time).toLocaleDateString("ru-RU", {
+        day: "2-digit",
+        month: "long",
+      })
+    : "";
 
   return (
     <TariffContext.Provider
@@ -99,13 +177,13 @@ export function TariffProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </TariffContext.Provider>
-  )
+  );
 }
 
 export function useTariff() {
-  const context = useContext(TariffContext)
+  const context = useContext(TariffContext);
   if (context === undefined) {
-    throw new Error("useTariff must be used within a TariffProvider")
+    throw new Error("useTariff must be used within a TariffProvider");
   }
-  return context
+  return context;
 }
