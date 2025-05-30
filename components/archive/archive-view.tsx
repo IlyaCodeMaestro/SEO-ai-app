@@ -153,7 +153,7 @@ export function ArchiveView({
   const getItemStyle = (itemId: number) => {
     // Базовые классы, которые всегда применяются
     const baseClasses =
-      "bg-white dark:bg-[#333333] rounded-2xl p-4 shadow-md flex items-start cursor-pointer mb-4 relative transition-all duration-200";
+      "bg-white dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl p-4  flex items-start cursor-pointer mb-4 relative transition-all duration-200";
 
     // Только для десктопа (md:)
     if (selectedItemId === itemId) {

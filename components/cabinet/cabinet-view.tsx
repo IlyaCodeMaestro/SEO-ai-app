@@ -117,7 +117,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
 
     // Добавляем тень снизу для темной темы
     const darkModeClasses =
-      "dark:bg-[#333333] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]";
+      "dark:bg-[#333333] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]";
 
     // Если элемент выбран - тонкая синяя граница
     if (selectedItem === itemId) {
@@ -200,7 +200,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "balance"
-            )} bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] rounded-[25px] h-[70px] px-6 py-3 mt-2 mb-4 text-white flex flex-col justify-between cursor-pointer dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]`}
+            )} bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] rounded-[25px] h-[70px] px-6 py-3 mt-2 mb-4 text-white flex flex-col justify-between cursor-pointer shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]`}
             onClick={handleButtonClick("balance-topup", "balance")}
           >
             <div className="flex justify-between items-start">
@@ -336,7 +336,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
 
           {/* Язык - обновленный стиль */}
           <div className="relative mb-4">
-            <div className="bg-white rounded-[25px] shadow-md transition-all duration-200 border h-[70px] p-4 flex justify-between items-center dark:bg-[#333333] dark:border-gray-700 dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]">
+            <div className="bg-white rounded-[25px] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] transition-all duration-200 border h-[70px] p-4 flex justify-between items-center dark:bg-[#333333] dark:border-gray-700">
               <span className="text-base md:text-base ml-2 leading-tight">
                 {t("cabinet.language")}
               </span>
@@ -386,7 +386,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
 
           {/* Тема - обновленный стиль */}
           <div className="relative mb-4">
-            <div className="bg-white rounded-[25px] shadow-md transition-all duration-200 border h-[70px] p-4 flex justify-between items-center dark:bg-[#333333] dark:border-gray-700 dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]">
+            <div className="bg-white rounded-[25px]  shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] transition-all duration-200 border h-[70px] p-4 flex justify-between items-center dark:bg-[#333333] dark:border-gray-700 dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]">
               <span className="text-base md:text-base ml-2 leading-tight">
                 {t("cabinet.theme")}
               </span>

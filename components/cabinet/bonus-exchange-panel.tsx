@@ -238,7 +238,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
             </div>
 
             {/* Bonus exchange options */}
-            <div className="bg-gray-50 rounded-3xl p-6 shadow-md mb-4 border dark:bg-[#333333] dark:border-none">
+            <div className="bg-gray-50 rounded-3xl p-6 shadow-md mb-4 border dark:bg-[#2C2B2B] dark:border-none">
               <div className="space-y-3">
                 {bonusExchangeData?.bonuses_exchange.map((option) => (
                   <div key={option.id} className="flex items-start">
@@ -289,7 +289,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
 
             {/* Bonus transfer section - only show if transfer_visible is true */}
             {bonusExchangeData?.transfer_visible && (
-              <div className="bg-gray-50 rounded-3xl p-6 shadow-md border dark:bg-[#333333] dark:border-none flex flex-col items-center justify-center">
+              <div className="bg-gray-50 rounded-3xl p-6 shadow-md border dark:bg-[#2C2B2B] dark:border-none flex flex-col items-center justify-center">
                 <p className="text-gray-500 text-xs sm:text-sm mb-3 text-center w-full">
                   {t("bonus.insufficient.friends")}
                 </p>

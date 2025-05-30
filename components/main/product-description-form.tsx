@@ -41,13 +41,19 @@ export function ProductDescriptionForm({
   // Update the onFormSubmit function to use the correct type_id for description
   const onFormSubmit = async (data) => {
     try {
-      // Вызываем API метод postCard с нужными параметрами
-      // For description, we use type_id: 1
-      const response = await postCard({
-        top_article: Number.parseInt(data.competitorSku) || 0,
+      // Подготавливаем данные для отправки
+      const requestData: any = {
         article: Number.parseInt(data.sku) || 0,
         type_id: 1, // This is for description
-      }).unwrap();
+      };
+
+      // Добавляем top_article только если competitorSku заполнен
+      if (data.competitorSku && data.competitorSku.trim() !== "") {
+        requestData.top_article = Number.parseInt(data.competitorSku);
+      }
+
+      // Вызываем API метод postCard с подготовленными параметрами
+      const response = await postCard(requestData).unwrap();
 
       // Если запрос успешен, передаем данные формы и ID карточки в родительский компонент
       if (response.output.result) {
@@ -108,7 +114,7 @@ export function ProductDescriptionForm({
 
           {/* Форма */}
           <div className="px-4">
-            <form className="space-y-8" onSubmit={handleSubmit(onFormSubmit)}>
+            <form className="space-y-6" onSubmit={handleSubmit(onFormSubmit)}>
               <div className="space-y-3">
                 <p className="text-sm text-gray-500 text-center">
                   {t("product.description.enter.sku")}
@@ -119,7 +125,7 @@ export function ProductDescriptionForm({
                 <div>
                   <Input
                     id="sku"
-                    className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
+                    className={`mt-1 bg-gray-100 rounded-full h-[45px] text-center max-w-[320px] mx-auto ${
                       errors.sku ? "border-red-500" : ""
                     }`}
                     placeholder={t("product.description.sku")}
@@ -141,7 +147,7 @@ export function ProductDescriptionForm({
                 <div>
                   <Input
                     id="competitorSku"
-                    className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
+                    className={`mt-1 bg-gray-100 rounded-full h-[45px] text-center max-w-[320px] mx-auto ${
                       errors.competitorSku ? "border-red-500" : ""
                     }`}
                     placeholder={t("product.description.competitor")}
@@ -153,8 +159,7 @@ export function ProductDescriptionForm({
                     </p>
                   )}
                 </div>
-                <div className="text-xs text-gray-500 mt-3 text-center px-4">
-                  <br />
+                <div className="text-xs text-gray-500 mt-1 mb-4 text-center px-4">
                   {t("product.description.note")}
                 </div>
               </div>
@@ -162,7 +167,7 @@ export function ProductDescriptionForm({
               <div className="flex justify-center">
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-[#2865ff] to-[rgba(11,60,187,1)] text-white rounded-full  h-[45px] border border-white shadow-custom inline-block px-8"
+                  className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[45px] border border-white shadow-custom inline-block px-8"
                   disabled={isLoading}
                 >
                   {isLoading ? t("common.loading") : t("common.continue")}
@@ -197,7 +202,7 @@ export function ProductDescriptionForm({
               <div>
                 <Input
                   id="sku"
-                  className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
+                  className={`mt-1 bg-gray-100 rounded-full h-[45px] text-center max-w-[320px] mx-auto ${
                     errors.sku ? "border-red-500" : ""
                   }`}
                   placeholder={t("product.description.sku")}
@@ -219,7 +224,7 @@ export function ProductDescriptionForm({
               <div>
                 <Input
                   id="competitorSku"
-                  className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
+                  className={`mt-1 bg-gray-100 rounded-full h-[45px] text-center max-w-[320px] mx-auto ${
                     errors.competitorSku ? "border-red-500" : ""
                   }`}
                   placeholder={t("product.description.competitor")}
@@ -231,8 +236,7 @@ export function ProductDescriptionForm({
                   </p>
                 )}
               </div>
-              <div className="text-xs text-gray-500 mt-3 text-center px-4">
-                <br />
+              <div className="text-xs text-gray-500 mt-1 text-center px-4">
                 {t("product.description.note")}
               </div>
             </div>

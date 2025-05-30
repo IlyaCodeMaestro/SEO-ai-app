@@ -129,7 +129,7 @@ export function BalanceHistoryPanel({ onClose }: BalanceHistoryPanelProps) {
         </button>
 
         {/* Balance statement content */}
-        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:border-none dark:bg-[#333333]">
+        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:border-none dark:bg-[#2C2B2B]">
           {/* Transaction list */}
           <div className="flex-grow overflow-y-auto">
             {isLoading && currentPage === 1 && (

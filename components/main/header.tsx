@@ -95,8 +95,11 @@ export function Header() {
           <div className="absolute top-3 right-4">
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
-                <div className="w-[40px] h-[40px] flex items-center justify-center">
+                <div className="w-[40px] h-[40px] flex items-center justify-center relative">
                   <Menu className="w-[35px] h-[35px] stroke-[1.5px]" />
+                  {hasNewItems && activeTab !== "archive" && (
+                    <span className="absolute top-0 right-0 bg-blue-600 w-4 h-4 rounded-full"></span>
+                  )}
                 </div>
               </SheetTrigger>
               <SheetContent
@@ -131,9 +134,9 @@ export function Header() {
                       }`}
                       onClick={() => handleTabChange("archive")}
                     >
-                      {t("common.archive")}
+                      <span>{t("common.archive")}</span>
                       {hasNewItems && activeTab !== "archive" && (
-                        <span className="absolute top-3 right-4 bg-blue-600 w-3 h-3 rounded-full"></span>
+                        <span className="absolute top-1 right-48 bg-blue-600 w-4 h-4 rounded-full"></span>
                       )}
                     </button>
                     <button
@@ -343,7 +346,7 @@ export function Header() {
                   >
                     {t("common.archive")}
                     {hasNewItems && activeTab !== "archive" && (
-                      <span className="absolute -top-1 right-1 bg-blue-600 w-3 h-3 rounded-full"></span>
+                      <span className="absolute -top-1 right-1 bg-blue-600 w-4 h-4 rounded-full"></span>
                     )}
                   </TabsTrigger>
                   <TabsTrigger

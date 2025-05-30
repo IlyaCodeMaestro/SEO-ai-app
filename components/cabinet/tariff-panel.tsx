@@ -342,14 +342,11 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
               <div className="flex justify-between items-start mb-1">
                 <div>
                   <div className="mb-1">
-                    <span className="text-gray-600 dark:text-white">
+                    <span className="text-sm text-gray-600 dark:text-white">
                       {t("tariff.my")}
                     </span>
-                    <span className="font-bold text-lg ml-2">
-                      {translateApiContent(tariffsData.tariff.title)}
-                    </span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-white">
+                  <div className="text-xs text-gray-600 dark:text-white space-y-0.5">
                     <p>
                       {t("tariff.next.payment")}{" "}
                       {formatDateByLanguage(
@@ -366,6 +363,9 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       {tariffsData.tariff.descriptions} {t("tariff.pieces")}.
                     </p>
                   </div>
+                </div>
+                <div className="font-bold text-base text-gray-900 dark:text-white">
+                  {translateApiContent(tariffsData.tariff.title)}
                 </div>
               </div>
             </div>
@@ -598,9 +598,6 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                     <span className="text-gray-600 dark:text-white">
                       {t("tariff.my")}
                     </span>
-                    <span className="font-bold text-lg ml-2">
-                      {translateApiContent(tariffsData.tariff.title)}
-                    </span>
                   </div>
                   <div className="text-sm text-gray-600 dark:text-white">
                     <p>
@@ -619,6 +616,9 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       {tariffsData.tariff.descriptions} {t("tariff.pieces")}.
                     </p>
                   </div>
+                </div>
+                <div className="font-bold text-lg text-gray-900 dark:text-white">
+                  {translateApiContent(tariffsData.tariff.title)}
                 </div>
               </div>
             </div>
@@ -752,7 +752,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
         )}
 
         {showAutoRenewalModal && (
-          <div className="absolute pb-32 mt-7 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-3xl">
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-3xl">
             <div className="bg-white p-6 rounded-xl max-w-xs w-full mx-4 dark:bg-gray-800">
               <div className="text-center mb-6">
                 <p className="text-lg">

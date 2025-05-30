@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Maximize2, ChevronUp, ChevronDown, Copy } from "lucide-react";
 import { useLanguage } from "@/components/provider/language-provider";
 
-
 interface TopKeywordsProps {
   section: string;
   isExpanded: boolean;
@@ -27,13 +26,17 @@ export function TopKeywords({
 
   const handleCopy = (sku: string) => {
     navigator.clipboard.writeText(sku);
-    setCopied(sku);
-    setTimeout(() => setCopied(null), 2000);
+    // Не меняем состояние copied, чтобы цвет оставался прежним
+  };
+
+  // Функция для определения цвета SKU и иконки копирования
+  const getSkuColor = (index: number) => {
+    return index === 0 ? "text-green-500" : "text-blue-600";
   };
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-[#333333]  rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]  rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
         <div className="p-4">
           <h3 className="font-medium text-sm mb-3 text-center">
             {t("top.keywords.title")}
@@ -44,9 +47,9 @@ export function TopKeywords({
               .map((keyword, index) => (
                 <div
                   key={index}
-                  className="bg-white dark:bg-[#333333] rounded-[16px] p-3 flex items-start"
+                  className="bg-white dark:bg-[#333333] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]  shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-[16px] p-3 flex items-start"
                 >
-                  <div className="w-14 h-14 bg-gray-200 rounded-lg mr-3 overflow-hidden flex-shrink-0">
+                  <div className="w-14 h-14 bg-gray-200 rounded-3xl mr-3 overflow-hidden flex-shrink-0">
                     {keyword.image ? (
                       <img
                         src={`https://upload.seo-ai.kz/test/images/${keyword.image}`}
@@ -64,20 +67,15 @@ export function TopKeywords({
                   <div className="flex-1 min-w-0">
                     <p className="text-sm leading-tight mb-2">{keyword.name}</p>
                     <div className="flex items-center">
-                      <p className="text-base text-blue-600">{keyword.sku}</p>
+                      <p className={`text-base ${getSkuColor(index)}`}>
+                        {keyword.sku}
+                      </p>
                       <button
                         onClick={() => handleCopy(keyword.sku)}
                         className="ml-2"
                         aria-label={t("common.copy")}
                       >
-                        <Copy
-                          size={16}
-                          className={
-                            copied === keyword.sku
-                              ? "text-green-500"
-                              : "text-blue-600"
-                          }
-                        />
+                        <Copy size={16} className={getSkuColor(index)} />
                       </button>
                     </div>
                   </div>
@@ -86,7 +84,10 @@ export function TopKeywords({
           </div>
         </div>
         <div className="flex justify-center pb-2">
-          <button className="text-gray-400" onClick={() => onToggle(section)}>
+          <button
+            className="text-gray-400 hover:text-gray-600"
+            onClick={() => onToggle(section)}
+          >
             {isExpanded ? (
               <ChevronUp className="h-5 w-5" />
             ) : (
@@ -99,8 +100,8 @@ export function TopKeywords({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden h-[225px]">
-      <div className="relative border-b px-4 py-3 flex flex-col sm:flex-row items-center">
+    <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden h-[225px]">
+      <div className="relative px-4 py-3 flex flex-col sm:flex-row items-center">
         <h3 className="text-center font-medium text-base mx-auto w-max">
           {t("top.keywords.title")}
         </h3>
@@ -123,9 +124,9 @@ export function TopKeywords({
             .map((keyword, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-[#333333] rounded-[16px] p-3 flex flex-col sm:flex-row items-center sm:items-start"
+                className="bg-white dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] dark:bg-[#333333] rounded-3xl p-3 flex flex-col sm:flex-row items-center sm:items-start"
               >
-                <div className="w-[60px] h-[60px] bg-gray-200 rounded-lg mb-3 sm:mb-0 sm:mr-3 overflow-hidden flex-shrink-0">
+                <div className="w-[60px] h-[60px] bg-gray-200 rounded-3xl mb-3 sm:mb-0 sm:mr-3 overflow-hidden flex-shrink-0">
                   {keyword.image ? (
                     <img
                       src={`https://upload.seo-ai.kz/test/images/${keyword.image}`}
@@ -145,20 +146,15 @@ export function TopKeywords({
                     {keyword.name}
                   </p>
                   <div className="flex items-center justify-center sm:justify-start">
-                    <p className="text-base text-blue-600">{keyword.sku}</p>
+                    <p className={`text-base ${getSkuColor(index)}`}>
+                      {keyword.sku}
+                    </p>
                     <button
                       onClick={() => handleCopy(keyword.sku)}
                       className="ml-2"
                       aria-label={t("common.copy")}
                     >
-                      <Copy
-                        size={16}
-                        className={
-                          copied === keyword.sku
-                            ? "text-green-500"
-                            : "text-blue-600"
-                        }
-                      />
+                      <Copy size={16} className={getSkuColor(index)} />
                     </button>
                   </div>
                 </div>

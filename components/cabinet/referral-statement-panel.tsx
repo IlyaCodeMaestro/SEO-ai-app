@@ -139,7 +139,7 @@ export function ReferralStatementPanel({
         </button>
 
         {/* Referral statement content */}
-        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:bg-[#333333] dark:border-none">
+        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:bg-[#2C2B2B] dark:border-none">
           {/* Referral list */}
           <div className="flex-grow overflow-y-auto">
             {isLoading && currentPage === 1 && (

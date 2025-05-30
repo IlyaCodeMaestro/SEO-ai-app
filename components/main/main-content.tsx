@@ -99,7 +99,7 @@ export function MainContent({
           <p className="text-base md:text-sm mb-1 ml-2 font-normal">
             {t("product.analysis.desc")}
           </p>
-          <p className="text-base text-[15px] md:text-sm mb-5 ml-2 font-thin">
+          <p className="  text-sm md:text-sm mb-5 ml-2 md:font-thin">
             {t("tariff.analysis.remaining")}{" "}
             {mainData && mainData?.tariff?.analyses}
           </p>
@@ -137,7 +137,7 @@ export function MainContent({
           <p className="text-base mb-1 ml-2 text-[14px] md:text-sm font-normal">
             {t("product.description.desc")}
           </p>
-          <p className="text-base mb-5 ml-2 text-[16px] md:text-sm font-thin">
+          <p className="  text-sm md:text-sm mb-5 ml-2 md:font-thin">
             {t("tariff.description.remaining")}{" "}
             {mainData && mainData?.tariff?.descriptions}
           </p>

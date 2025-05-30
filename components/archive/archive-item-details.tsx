@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "../provider/language-provider";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -381,143 +381,133 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
     let content;
     switch (section) {
       case "topKeywords":
+        // Функция для определения цвета SKU и иконки копирования в модальном окне
+        const getModalSkuColor = (index: number) => {
+          return index === 0 ? "text-green-500" : "text-blue-600";
+        };
+
         content = (
-          <div>
-            <div className="bg-[#f9f8f8] dark:bg-[#404040] rounded-[20px] shadow-md">
-              <div className="p-6">
-                <div className="space-y-4">
-                  {analysisResults.topKeywords.map((keyword, index) => (
-                    <div
-                      key={index}
-                      className="bg-white dark:bg-[#333333] rounded-[16px] p-4 flex items-start"
-                    >
-                      <div className="w-[80px] h-[80px]  bg-gray-200 rounded-lg mr-4 overflow-hidden flex-shrink-0">
-                        {keyword.image ? (
-                          <img
-                            src={`https://upload.seo-ai.kz/test/images/${keyword.image}`}
-                            alt={keyword.name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <img
-                            src={`/placeholder.svg?height=80&width=80&query=product`}
-                            alt="Product"
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-lg font-medium dark:text-white leading-tight mb-3">
-                          {keyword.name}
-                        </p>
-                        <div className="flex items-center">
-                          <p className="text-lg text-blue-600">{keyword.sku}</p>
-                          <button
-                            onClick={() =>
-                              handleCopy(keyword.sku, "topKeywords")
-                            }
-                            className="ml-2"
-                            aria-label="Copy SKU"
-                          >
-                            <Copy
-                              size={16}
-                              className={
-                                copied ? "text-green-500" : "text-blue-600"
-                              }
-                            />
-                          </button>
-                        </div>
-                      </div>
+          <div className="bg-white dark:bg-[#2C2B2B] p-6">
+            <div className="space-y-2">
+              {analysisResults.topKeywords.map((keyword, index) => (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl p-3 flex items-start"
+                >
+                  <div className="w-[80px] h-[80px] bg-gray-200 rounded-lg mr-4 overflow-hidden flex-shrink-0">
+                    {keyword.image ? (
+                      <img
+                        src={`https://upload.seo-ai.kz/test/images/${keyword.image}`}
+                        alt={keyword.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={`/placeholder.svg?height=80&width=80&query=product`}
+                        alt="Product"
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-lg font-medium dark:text-white text-black leading-tight mb-2">
+                      {keyword.name}
+                    </p>
+                    <div className="flex items-center">
+                      <p className={`text-lg ${getModalSkuColor(index)}`}>
+                        {keyword.sku}
+                      </p>
+                      <button
+                        onClick={() => handleCopy(keyword.sku, "topKeywords")}
+                        className="ml-2"
+                        aria-label="Copy SKU"
+                      >
+                        <Copy size={16} className={getModalSkuColor(index)} />
+                      </button>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         );
         break;
       case "results":
         content = (
-          <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md">
-            <div className="p-6 ">
-              <div className="flex items-center justify-center mb-6"></div>
+          <div className="bg-white dark:bg-[#2C2B2B] p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    className={`h-8 w-8 ${
+                      star <= Math.round(analysisResults.rating)
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-gray-300 dark:text-gray-600"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-2xl font-bold text-black dark:text-white">
+                {analysisResults.rating.toFixed(1)}
+              </span>
+            </div>
 
-              <div className="flex items-center justify-center mb-6">
-                <div className="flex items-center">
-                  <div className="flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className={`h-8 w-8 ${
-                          star <= Math.round(analysisResults.rating)
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-300 dark:text-gray-600"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="ml-2 text-2xl font-bold text-gray-600 dark:text-white">
-                    {analysisResults.rating.toFixed(1)}
+            <div className="space-y-2">
+              <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-black dark:text-white text-lg">
+                    Видимость:
+                  </span>
+                  <span className="font-medium text-lg text-black dark:text-white">
+                    {analysisResults.visibility} %
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="bg-white dark:bg-[#2C2B2B] rounded-[16px] p-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-white text-lg">
-                      Видимость:
-                    </span>
-                    <span className="font-medium text-lg dark:text-white">
-                      {analysisResults.visibility} %
-                    </span>
-                  </div>
+              <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-black dark:text-white text-lg">
+                    Присутствие ключевых слов:
+                  </span>
+                  <span className="font-medium text-lg text-black dark:text-white">
+                    {analysisResults.keywordsPresence} %
+                  </span>
                 </div>
+              </div>
 
-                <div className="bg-white dark:bg-[#2C2B2B] rounded-[16px] p-4">
-                  <div className="flex justify-between  items-center">
-                    <span className="text-gray-700 dark:text-white text-lg">
-                      Присутствие ключевых слов:
-                    </span>
-                    <span className="font-medium text-lg dark:text-white">
-                      {analysisResults.keywordsPresence} %
-                    </span>
-                  </div>
+              <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-black dark:text-white text-lg">
+                    Упущено ключевых слов:
+                  </span>
+                  <span className="font-medium text-lg text-black dark:text-white">
+                    {analysisResults.missedKeywordsCount}
+                  </span>
                 </div>
+              </div>
 
-                <div className="bg-white dark:bg-[#2C2B2B] rounded-[16px] p-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-white text-lg">
-                      Упущено ключевых слов:
-                    </span>
-                    <span className="font-medium text-lg dark:text-white">
-                      {analysisResults.missedKeywordsCount}
-                    </span>
-                  </div>
+              <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-black dark:text-white text-lg">
+                    Упущенный охват:
+                  </span>
+                  <span className="font-medium text-lg text-black dark:text-white">
+                    {new Intl.NumberFormat().format(
+                      analysisResults.missedCoverage
+                    )}
+                  </span>
                 </div>
+              </div>
 
-                <div className="bg-white dark:bg-[#2C2B2B] rounded-[16px] p-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-white text-lg">
-                      Упущенный охват:
-                    </span>
-                    <span className="font-medium text-lg dark:text-white">
-                      {new Intl.NumberFormat().format(
-                        analysisResults.missedCoverage
-                      )}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-[#2C2B2B] rounded-[16px] p-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-white text-lg">
-                      Наличие нерелевантных слов:
-                    </span>
-                    <span className="font-medium dark:text-white text-lg">
-                      {analysisResults.irrelevantCount}
-                    </span>
-                  </div>
+              <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-black dark:text-white text-lg">
+                    Наличие нерелевантных слов:
+                  </span>
+                  <span className="font-medium text-black dark:text-white text-lg">
+                    {analysisResults.irrelevantCount}
+                  </span>
                 </div>
               </div>
             </div>
@@ -526,113 +516,103 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
         break;
       case "usedKeywords":
         content = (
-          <div>
-            <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-[20px] shadow-md">
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="font-medium text-lg dark:text-white">
-                    Ключевые слова
-                  </div>
-                  <div className="font-medium dark:text-white text-lg text-right">
-                    Сумм. частотность
-                  </div>
-                  {analysisResults.usedKeywords.map((keyword, index) => (
-                    <React.Fragment key={index}>
-                      <div className="bg-white dark:bg-[#333333] rounded-[16px] p-4">
-                        <p className="text-lg dark:text-white">
-                          {keyword.word}
-                        </p>
-                      </div>
-                      <div className="bg-white dark:bg-[#333333]  rounded-[16px] p-4">
-                        <p className="text-lg text-right dark:text-white text-gray-500">
-                          {typeof keyword.frequency === "number"
-                            ? new Intl.NumberFormat().format(keyword.frequency)
-                            : keyword.frequency}
-                        </p>
-                      </div>
-                    </React.Fragment>
-                  ))}
+          <div className="bg-white dark:bg-[#2C2B2B] p-6">
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-4 mb-3">
+                <div className="font-medium text-lg text-black dark:text-white">
+                  Ключевые слова
+                </div>
+                <div className="font-medium text-black dark:text-white text-lg text-right">
+                  Сумм. частотность
                 </div>
               </div>
+              {analysisResults.usedKeywords.map((keyword, index) => (
+                <div key={index} className="grid grid-cols-2 gap-4">
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    <p className="text-lg text-black dark:text-white">
+                      {keyword.word}
+                    </p>
+                  </div>
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    <p className="text-lg text-right text-black dark:text-white">
+                      {typeof keyword.frequency === "number"
+                        ? new Intl.NumberFormat().format(keyword.frequency)
+                        : keyword.frequency}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         );
         break;
       case "irrelevantKeywords":
         content = (
-          <div>
-            <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-[20px] shadow-md">
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="font-medium text-lg dark:text-white">
-                    Нерелевант. слова
-                  </div>
-                  <div className="font-medium text-lg text-right dark:text-white">
-                    Сумм. частотность
-                  </div>
-                  {analysisResults.irrelevantKeywords.map((keyword, index) => (
-                    <React.Fragment key={index}>
-                      <div className="bg-white dark:bg-[#333333] rounded-[16px] p-4">
-                        <p className="text-lg text-blue-600">{keyword.word}</p>
-                      </div>
-                      <div className="bg-white dark:bg-[#333333] rounded-[16px] p-4">
-                        <p className="text-lg text-right text-gray-500 dark:text-white">
-                          {typeof keyword.frequency === "number"
-                            ? new Intl.NumberFormat().format(keyword.frequency)
-                            : keyword.frequency}
-                        </p>
-                      </div>
-                    </React.Fragment>
-                  ))}
+          <div className="bg-white dark:bg-[#2C2B2B] p-6">
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-4 mb-3">
+                <div className="font-medium text-lg text-black dark:text-white">
+                  Нерелевант. слова
+                </div>
+                <div className="font-medium text-lg text-right text-black dark:text-white">
+                  Сумм. частотность
                 </div>
               </div>
+              {analysisResults.irrelevantKeywords.map((keyword, index) => (
+                <div key={index} className="grid grid-cols-2 gap-4">
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    <p className="text-lg text-blue-600">{keyword.word}</p>
+                  </div>
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    <p className="text-lg text-right text-black dark:text-white">
+                      {typeof keyword.frequency === "number"
+                        ? new Intl.NumberFormat().format(keyword.frequency)
+                        : keyword.frequency}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         );
         break;
       case "missedKeywords":
         content = (
-          <div>
-            <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-[20px] shadow-md">
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="font-medium text-lg dark:text-white">
-                    Ключевые слова
-                  </div>
-                  <div className="font-medium text-lg text-right dark:text-white">
-                    Сумм. частотность
-                  </div>
-                  {analysisResults.missedKeywords.map((keyword, index) => (
-                    <React.Fragment key={index}>
-                      <div className="bg-white dark:bg-[#333333] rounded-[16px] p-4">
-                        <p className="text-lg text-blue-500">{keyword.word}</p>
-                      </div>
-                      <div className="bg-white dark:bg-[#333333] rounded-[16px] p-4">
-                        <p className="text-lg text-right text-gray-500 dark:text-white">
-                          {typeof keyword.frequency === "number"
-                            ? new Intl.NumberFormat().format(keyword.frequency)
-                            : keyword.frequency}
-                        </p>
-                      </div>
-                    </React.Fragment>
-                  ))}
+          <div className="bg-white dark:bg-[#2C2B2B] p-6">
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-4 mb-3">
+                <div className="font-medium text-lg text-black dark:text-white">
+                  Ключевые слова
+                </div>
+                <div className="font-medium text-lg text-right text-black dark:text-white">
+                  Сумм. частотность
                 </div>
               </div>
+              {analysisResults.missedKeywords.map((keyword, index) => (
+                <div key={index} className="grid grid-cols-2 gap-4">
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    <p className="text-lg text-blue-500">{keyword.word}</p>
+                  </div>
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    <p className="text-lg text-right text-black dark:text-white">
+                      {typeof keyword.frequency === "number"
+                        ? new Intl.NumberFormat().format(keyword.frequency)
+                        : keyword.frequency}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         );
         break;
       case "description":
         content = (
-          <div>
-            <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-[20px] shadow-md">
-              <div className="p-6">
-                <div className="bg-white dark:bg-[#2C2B2B] rounded-[16px] p-6">
-                  <p className="text-lg dark:text-white leading-relaxed whitespace-pre-wrap">
-                    {analysisResults.description}
-                  </p>
-                </div>
-              </div>
+          <div className="bg-white dark:bg-[#2C2B2B] p-6">
+            <div className="bg-white dark:bg-[#2C2B2B] p-4">
+              <p className="text-lg text-black dark:text-white leading-relaxed whitespace-pre-wrap">
+                {analysisResults.description}
+              </p>
             </div>
           </div>
         );

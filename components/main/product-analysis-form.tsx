@@ -43,13 +43,19 @@ export function ProductAnalysisForm({
   // Обновить функцию onFormSubmit, чтобы она вызывала метод postCard
   const onFormSubmit = async (data) => {
     try {
-      // Vызываем API метод postCard с нужными параметрами
-      // For analysis, we use type_id: 2
-      const response = await postCard({
-        top_article: Number.parseInt(data.competitorSku) || 0,
+      // Подготавливаем данные для отправки
+      const requestData: any = {
         article: Number.parseInt(data.sku) || 0,
         type_id: 2, // This is for analysis
-      }).unwrap();
+      };
+
+      // Добавляем top_article только если competitorSku заполнен
+      if (data.competitorSku && data.competitorSku.trim() !== "") {
+        requestData.top_article = Number.parseInt(data.competitorSku);
+      }
+
+      // Вызываем API метод postCard с подготовленными параметрами
+      const response = await postCard(requestData).unwrap();
 
       // Если запрос успешен, передаем данные формы и ID карточки в родительский компонент
       if (response.output.result) {
@@ -133,7 +139,7 @@ export function ProductAnalysisForm({
                 </div>
               </div>
 
-              <div className=" space-y-2">
+              <div className="space-y-3">
                 <p className="text-sm text-gray-500 text-center">
                   {t("product.analysis.enter.competitor")}
                 </p>
@@ -152,8 +158,7 @@ export function ProductAnalysisForm({
                     </p>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-3 text-center px-4">
-                  <br />
+                <p className="text-xs text-gray-500 mt-1 mb-4 text-center px-4">
                   {t("product.analysis.note")}
                 </p>
               </div>
@@ -185,7 +190,7 @@ export function ProductAnalysisForm({
             </h2>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit(onFormSubmit)}>
+          <form className="space-y-8" onSubmit={handleSubmit(onFormSubmit)}>
             <div className="space-y-3">
               <p className="text-sm text-gray-500 text-center">
                 {t("product.analysis.enter.sku")}
@@ -227,8 +232,7 @@ export function ProductAnalysisForm({
                   </p>
                 )}
               </div>
-              <p className="text-xs text-gray-500 mt-3 text-center px-4">
-                <br />
+              <p className="text-xs text-gray-500 mt-1 text-center px-4">
                 {t("product.analysis.note")}
               </p>
             </div>
