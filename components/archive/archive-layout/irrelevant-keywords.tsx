@@ -86,7 +86,7 @@ export function IrrelevantKeywordsTable({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl shadow-md overflow-hidden">
+    <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl  overflow-hidden">
       <div className="flex flex-col items-center p-4 relative">
         <h3 className="font-medium mb-2 text-center">
           {t("keywords.irrelevant")}
