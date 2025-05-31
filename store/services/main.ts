@@ -145,7 +145,7 @@ export const mainApi = createApi({
     }),
     postCard: builder.mutation<IResponseCard, any>({
       query: (body) => ({
-        url: "/v2/static/card",
+        url: "/v1/static/card",
         method: "POST",
         data: body,
       }),

@@ -25,7 +25,7 @@ export const translations = {
     // Keywords tables
     "keywords.used": "Использованные\nключевые слова",
     "keywords.missed": "Упущенные ключевые слова",
-    "keywords.irrelevant": "Использованные нерелевантные слова",
+    "keywords.irrelevant": "Нерелевантные ключевые слова",
     "keywords.column.keywords": "Ключевые слова",
     "keywords.column.irrelevant": "Нерелевант. слова",
     "keywords.column.frequency": "Сумм. частотность",
@@ -375,8 +375,8 @@ export const translations = {
 
     // Keywords tables
     "keywords.used": "Пайдаланылған\nкілт сөздер",
-    "keywords.missed": "Жіберіліп алған кілт сөздер",
-    "keywords.irrelevant": "Қолданылған маңызды емес сөздер",
+    "keywords.missed": "Жіберіп алған кілт сөздер",
+    "keywords.irrelevant": "Қатысты емес кілт сөздер",
     "keywords.column.keywords": "Кілт сөздер",
     "keywords.column.irrelevant": "Қатысты емес сөздер",
     "keywords.column.frequency": "Жиілік қосындысы",
@@ -783,7 +783,7 @@ export const translations = {
     "keywords.missed": "Missed keywords",
     "keywords.irrelevant": "Irrelevant keywords",
     "keywords.column.keywords": "Keywords",
-    "keywords.column.irrelevant": "Irrelevant words used",
+    "keywords.column.irrelevant": "Irrelevant words",
     "keywords.column.frequency": "Total frequency",
 
     // Description block

@@ -17,7 +17,7 @@ interface ProductAnalysisDetailsProps {
   onContinue: () => void;
   productData: {
     sku: string;
-    competitorSku: string;
+    competitorSku?: string;
     cardId?: number;
   };
 }

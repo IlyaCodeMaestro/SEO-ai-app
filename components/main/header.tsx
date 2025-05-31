@@ -12,54 +12,16 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useProcessingContext } from "./processing-provider";
 
-export function Header() {
+export function Header({ activeTab }: { activeTab?: string }) {
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
-  const [activeTab, setActiveTab] = useState("main");
   const { hasNewItems, clearNewItems } = useProcessingContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  // Слушаем изменения в URL для определения активной вкладки
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace("#", "");
-      if (
-        hash &&
-        [
-          "main",
-          "archive",
-          "notifications",
-          "cabinet",
-          "partner",
-          "feedback",
-        ].includes(hash)
-      ) {
-        setActiveTab(hash);
-        if (hash === "archive") {
-          clearNewItems();
-        }
-      }
-    };
-
-    // Инициализация при загрузке
-    handleHashChange();
-
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [clearNewItems]);
-
   // Обновляем URL при изменении вкладки
   const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    window.location.hash = value;
-    if (value === "archive") {
-      clearNewItems();
-    }
-    // Закрываем меню на мобильных устройствах после выбора вкладки
-    if (isMobile) {
-      setIsMenuOpen(false);
-    }
+    window.location.href = `/dashboard/${value}`;
   };
 
   const handleThemeChange = (newTheme: "light" | "dark") => {
@@ -95,11 +57,8 @@ export function Header() {
           <div className="absolute top-3 right-4">
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
-                <div className="w-[40px] h-[40px] flex items-center justify-center relative">
+                <div className="w-[40px] h-[40px] flex items-center justify-center">
                   <Menu className="w-[35px] h-[35px] stroke-[1.5px]" />
-                  {hasNewItems && activeTab !== "archive" && (
-                    <span className="absolute top-0 right-0 bg-blue-600 w-4 h-4 rounded-full"></span>
-                  )}
                 </div>
               </SheetTrigger>
               <SheetContent
@@ -134,9 +93,9 @@ export function Header() {
                       }`}
                       onClick={() => handleTabChange("archive")}
                     >
-                      <span>{t("common.archive")}</span>
+                      {t("common.archive")}
                       {hasNewItems && activeTab !== "archive" && (
-                        <span className="absolute top-1 right-48 bg-blue-600 w-4 h-4 rounded-full"></span>
+                        <span className="absolute top-3 right-4 bg-blue-600 w-3 h-3 rounded-full"></span>
                       )}
                     </button>
                     <button
@@ -346,7 +305,7 @@ export function Header() {
                   >
                     {t("common.archive")}
                     {hasNewItems && activeTab !== "archive" && (
-                      <span className="absolute -top-1 right-1 bg-blue-600 w-4 h-4 rounded-full"></span>
+                      <span className="absolute -top-1 right-1 bg-blue-600 w-3 h-3 rounded-full"></span>
                     )}
                   </TabsTrigger>
                   <TabsTrigger

@@ -11,8 +11,8 @@ import {
 export type ProcessingHistoryItem = {
   id: string;
   sku: string;
-  competitorSku: string;
-  type: "analysis" | "description";
+  competitorSku?: string;
+  type: "analysis" | "description" | "both";
   status: "processing" | "completed";
   timestamp: number;
   name: string;
@@ -27,7 +27,7 @@ type ProcessingContextType = {
     type: "analysis" | "description" | "both",
     data: {
       sku: string;
-      competitorSku: string;
+      competitorSku?: string;
       cardId?: number;
       cardData?: any;
     }
@@ -99,7 +99,7 @@ export function ProcessingProvider({
     archiveData.card_dates.forEach((dateGroup) => {
       dateGroup.cards.forEach((card) => {
         // Log the complete card object to see all properties
-        console.log("Archive card:", JSON.stringify(card, null, 2));
+        // console.log("Archive card:", JSON.stringify(card, null, 2));
 
         // Find matching processing item by cardId
         const processingItem = currentProcessingItems.find(
@@ -206,7 +206,7 @@ export function ProcessingProvider({
     type: "analysis" | "description" | "both",
     data: {
       sku: string;
-      competitorSku: string;
+      competitorSku?: string;
       cardId?: number;
       cardData?: any;
     }
@@ -222,6 +222,8 @@ export function ProcessingProvider({
       );
       return;
     }
+
+    console.log("123456789", type);
 
     // For "both" type, we need to handle it specially
     if (type === "both" && data.cardId) {

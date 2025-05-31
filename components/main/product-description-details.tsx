@@ -17,7 +17,7 @@ interface ProductDescriptionDetailsProps {
   onContinue: () => void;
   productData: {
     sku: string;
-    competitorSku: string;
+    competitorSku?: string;
     cardId?: number;
   };
 }
@@ -64,6 +64,7 @@ export function ProductDescriptionDetails({
         }).unwrap();
 
         if (result.output.result) {
+          console.log("1212", result);
           // Add the item to the processing list with complete card data
           // This matches exactly how the analysis component does it
           addProcessingItem("description", {

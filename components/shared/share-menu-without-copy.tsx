@@ -58,7 +58,7 @@ export function ShareMenuWithoutCopy({
     <div className="absolute inset-0 bg-black/50 rounded-3xl z-50 flex items-center justify-center">
       <div
         ref={menuRef}
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg sm:mt-0  mt-80 max-w-xs w-full mx-4 overflow-hidden"
+        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg max-w-xs w-full mx-4 overflow-hidden"
       >
         <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
           <h3 className="font-medium">{t("share.title")}</h3>

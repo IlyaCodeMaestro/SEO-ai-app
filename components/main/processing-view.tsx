@@ -28,6 +28,8 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
   // State to store combined and deduplicated items
   const [displayItems, setDisplayItems] = useState<any[]>([]);
 
+  console.log("asd", displayItems);
+
   // Combine and deduplicate items from API and context
   useEffect(() => {
     const combinedItems: any[] = [];
@@ -35,12 +37,24 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
 
     // First add items from context (these are the most up-to-date)
     if (contextProcessingItems && contextProcessingItems.length > 0) {
+      console.log("546", contextProcessingItems);
       contextProcessingItems.forEach((item) => {
         if (item.cardId && !processedIds.has(item.cardId)) {
           combinedItems.push({
             ...item.cardData,
             id: item.cardId,
-            type_id: item.type === "analysis" ? 2 : 1,
+            type:
+              item.type === "analysis"
+                ? "analysis"
+                : item.type === "description"
+                ? "description"
+                : "both",
+            type_id:
+              item.type === "analysis"
+                ? 2
+                : item.type === "description"
+                ? 1
+                : 3,
             // Add any other necessary fields
           });
           processedIds.add(item.cardId);
@@ -93,7 +107,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
   return (
     <div className="h-full flex flex-col dark:bg-[#404040]">
       {/* Заголовок с кнопкой закрытия */}
-      <div className="p-6">
+      <div className="p-6 border-b">
         <div className="flex items-center justify-between relative">
           {isMobile && (
             <button

@@ -4,11 +4,11 @@ import type React from "react";
 
 import { format, parseISO } from "date-fns";
 import { ru } from "date-fns/locale";
-import { Inbox, Copy } from "lucide-react";
+import { Inbox, Copy, Check } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { useGetArchiveQuery } from "@/store/services/main";
 import { Button } from "@/components/ui/button";
-import  {useProcessingContext}  from "../main/processing-provider";
+import { useProcessingContext } from "../main/processing-provider";
 import { useLanguage } from "../provider/language-provider";
 
 interface ArchiveViewProps {
@@ -43,7 +43,7 @@ export function ArchiveView({
   const [canScrollDown, setCanScrollDown] = useState(false);
   const [copiedCardId, setCopiedCardId] = useState<number | null>(null);
 
-  console.log("Processed card IDs:", processedCardIds);
+  // console.log("Processed card IDs:", processedCardIds);
 
   // Filter archive data to only show items that have been processed by the user
   const filteredArchiveData = archiveData && {
@@ -57,6 +57,9 @@ export function ArchiveView({
       }))
       .filter((dateGroup) => dateGroup.cards.length > 0),
   };
+
+  console.log("zxc", archiveData);
+  console.log("qwe", filteredArchiveData);
 
   // Функция для безопасной проверки пустого архива
   const isArchiveEmpty = () => {
@@ -153,7 +156,7 @@ export function ArchiveView({
   const getItemStyle = (itemId: number) => {
     // Базовые классы, которые всегда применяются
     const baseClasses =
-      "bg-white dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl p-4  flex items-start cursor-pointer mb-4 relative transition-all duration-200";
+      "bg-white dark:bg-[#333333] rounded-2xl p-4 shadow-md flex items-start cursor-pointer mb-4 relative transition-all duration-200";
 
     // Только для десктопа (md:)
     if (selectedItemId === itemId) {
@@ -292,7 +295,7 @@ export function ArchiveView({
                           aria-label={t("common.copy")}
                         >
                           {copiedCardId === card.id ? (
-                            <Copy className="h-4 w-4 text-blue-900" />
+                            <Check className="h-4 w-4 text-green-500" />
                           ) : (
                             <Copy className="h-4 w-4 text-blue-600" />
                           )}

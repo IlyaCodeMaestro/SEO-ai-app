@@ -65,22 +65,6 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
     }
   };
 
-  // Format time string to remove seconds (HH:MM:SS -> HH:MM)
-  const formatTime = (timeString: string) => {
-    try {
-      // If time is in HH:MM:SS format, remove seconds
-      if (timeString && timeString.includes(":")) {
-        const timeParts = timeString.split(":");
-        if (timeParts.length >= 2) {
-          return `${timeParts[0]}:${timeParts[1]}`;
-        }
-      }
-      return timeString;
-    } catch (error) {
-      return timeString;
-    }
-  };
-
   // Get text color based on transaction type
   const getTextColor = (typeId: number) => {
     // Если это пополнение бонусов (type_id = 8), то зеленый цвет
@@ -173,7 +157,7 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
         </button>
 
         {/* Bonus statement content */}
-        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:bg-[#2C2B2B] dark:border-none">
+        <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:bg-[#333333] dark:border-none">
           {/* Transaction list */}
           <div className="flex-grow overflow-y-auto">
             {isLoading && currentPage === 1 && (
@@ -224,9 +208,7 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
                           <p className="font-medium">
                             {event.title} {event.from_name && event.from_name}
                           </p>
-                          <p className="text-xs text-gray-500">
-                            {formatTime(event.time)}
-                          </p>
+                          <p className="text-xs text-gray-500">{event.time}</p>
                         </div>
                         <span
                           className={`font-medium ${getTextColor(
