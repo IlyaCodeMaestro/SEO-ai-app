@@ -38,7 +38,7 @@ export function ArchiveHeader({
           <button onClick={onClose} className="mr-3" aria-label="Back">
             <ArrowLeft className="h-5 w-5 text-gray-500 dark:text-blue-600" />
           </button>
-          <h2 className="text-blue-600 font-medium text-xl mx-[100px]">
+          <h2 className="text-blue-600 font-medium text-xl mx-auto">
             {t("archive.title")}
           </h2>
         </div>

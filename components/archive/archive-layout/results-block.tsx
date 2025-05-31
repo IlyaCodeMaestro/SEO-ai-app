@@ -4,6 +4,7 @@ import type React from "react";
 import { Star, ChevronUp, ChevronDown, Maximize2 } from "lucide-react";
 import { useLanguage } from "@/components/provider/language-provider";
 
+
 interface ResultsBlockProps {
   title: string;
   rating: number;
@@ -56,15 +57,11 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
 
   return (
     <div
-      className={`bg-[#f9f8f8] dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]  overflow-hidden ${
+      className={`bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md  overflow-hidden ${
         fullHeight ? "h-full" : !isExpanded ? "h-auto" : ""
       }`}
     >
-      <div
-        className={`flex items-center justify-center ${
-          isMobile ? "p-2 pb-1" : "p-4"
-        } dark:border-gray-700 relative`}
-      >
+      <div className="flex items-center justify-center p-4 border-b dark:border-gray-700 relative">
         <h3 className="font-medium text-center">{t("results.title")}</h3>
 
         {/* Add maximize icon in top right corner */}
@@ -83,7 +80,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
         )}
       </div>
 
-      <div className={`${isMobile ? "px-4 pt-1 pb-4" : "p-4"} overflow-auto`}>
+      <div className="p-4 overflow-auto">
         {fullHeight ? (
           <div className="flex items-center justify-center h-full">
             <div className={`text-6xl font-bold ${ratingColor}`}>
@@ -91,9 +88,9 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
             </div>
           </div>
         ) : (
-          <div className="space-y-2">
-            {/* Рейтинг со звездами - звезды слева, рейтинг справа */}
-            <div className="flex items-center justify-between mb-1">
+          <div className="space-y-4">
+            {/* Рейтинг со звездами - как на мобильном */}
+            <div className="flex items-center mb-3 justify-center">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
@@ -106,21 +103,21 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                   />
                 ))}
               </div>
-              <span className="font-medium text-sm -mt-1">
+              <span className="ml-2 font-medium text-sm">
                 {rating.toFixed(1)}
               </span>
             </div>
 
             {/* Показываем только первые 3 метрики в нераскрытом состоянии, как на мобильном */}
-            <div className="space-y-1">
+            <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-gray-700  dark:text-gray-300 text-md">
+                <span className="text-gray-700 dark:text-gray-300 text-sm">
                   {t("results.visibility")}
                 </span>
                 <span className="font-medium text-sm">{visibility} %</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-700 dark:text-gray-300 text-md">
+                <span className="text-gray-700 dark:text-gray-300 text-sm">
                   {t("results.keywords.presence")}
                 </span>
                 <span className="font-medium text-sm">
@@ -128,10 +125,10 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-700 dark:text-gray-300 text-md">
+                <span className="text-gray-700 dark:text-gray-300 text-sm">
                   {t("results.missed.keywords")}
                 </span>
-                <span className="font-medium text-md">
+                <span className="font-medium text-sm">
                   {missedKeywordsCount}
                 </span>
               </div>
@@ -140,18 +137,18 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
               {isExpanded && (
                 <>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300 text-md">
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">
                       {t("results.missed.coverage")}
                     </span>
-                    <span className="font-medium text-md">
+                    <span className="font-medium text-sm">
                       {formatNumber(missedCoverage)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300 text-md">
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">
                       {t("results.irrelevant.words")}
                     </span>
-                    <span className="font-medium text-md">
+                    <span className="font-medium text-sm">
                       {irrelevantCount}
                     </span>
                   </div>
@@ -168,9 +165,9 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                   aria-label={isExpanded ? "Collapse" : "Expand"}
                 >
                   {isExpanded ? (
-                    <ChevronUp className="h-5 w-5" />
+                    <ChevronUp className="h-4 w-4" />
                   ) : (
-                    <ChevronDown className="h-5 w-5" />
+                    <ChevronDown className="h-4 w-4" />
                   )}
                 </button>
               </div>

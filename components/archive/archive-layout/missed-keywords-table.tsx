@@ -2,6 +2,8 @@
 
 import { useLanguage } from "@/components/provider/language-provider";
 import { ChevronDown, ChevronUp, Maximize2 } from "lucide-react";
+import React from "react";
+
 
 interface MissedKeywordsTableProps {
   title: string;
@@ -38,36 +40,37 @@ export function MissedKeywordsTable({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
         <div className="p-4">
           {/* Simplified header with just the title */}
           <div className="flex items-center justify-center mb-3">
-            <h3 className="text-md font-medium text-center" title={title}>
+            <h3 className="text-sm font-medium text-center" title={title}>
               {t("keywords.missed")}
             </h3>
           </div>
 
-          {/* Заголовки */}
-          <div className="flex justify-between mb-2">
-            <div className="font-medium text-sm">
+          {/* Sетка с ключевыми словами */}
+          <div className="grid grid-cols-2 gap-x-4 text-sm">
+            <div className="font-medium mb-2">
               {t("keywords.column.keywords")}
             </div>
-            <div className="font-medium text-sm">
+            <div className="font-medium mb-2 text-right">
               {t("keywords.column.frequency")}
             </div>
-          </div>
 
-          {/* Список ключевых слов без разделителей */}
-          <div className="space-y-1">
             {keywords
               .slice(0, isExpanded ? undefined : 3)
               .map((keyword, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <span className={`text-sm ${textColorClass}`}>
+                <React.Fragment key={index}>
+                  <div
+                    className={`text-sm py-2 border-t border-gray-100 ${textColorClass}`}
+                  >
                     {keyword.word}
-                  </span>
-                  <span className="text-sm text-blue-500">{keyword.frequency}</span>
-                </div>
+                  </div>
+                  <div className="text-sm py-2 border-t border-gray-100 text-right">
+                    {keyword.frequency}
+                  </div>
+                </React.Fragment>
               ))}
           </div>
         </div>
@@ -80,9 +83,9 @@ export function MissedKeywordsTable({
             aria-label={isExpanded ? "Collapse" : "Expand"}
           >
             {isExpanded ? (
-              <ChevronUp className="h-5 w-5" />
+              <ChevronUp className="h-4 w-4" />
             ) : (
-              <ChevronDown className="h-5 w-5" />
+              <ChevronDown className="h-4 w-4" />
             )}
           </button>
         </div>
@@ -92,11 +95,11 @@ export function MissedKeywordsTable({
 
   return (
     <div
-      className={`bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden ${
-        !isExpanded ? "h-[182px]" : "h-full"
+      className={`bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden ${
+        !isExpanded ? "h-[202px]" : "h-full"
       }`}
     >
-      <div className="p-4 relative">
+      <div className="p-4 border-b dark:border-gray-700 relative">
         {/* Title in a single line */}
         <h3 className="font-medium text-center mb-0">{t("keywords.missed")}</h3>
 
@@ -113,29 +116,21 @@ export function MissedKeywordsTable({
       </div>
 
       <div className="p-4 overflow-auto">
-        {/* Заголовки */}
-        <div className="flex justify-between mb-2">
-          <span className="font-medium text-sm">
-            {t("keywords.column.keywords")}
-          </span>
-          <span className="font-medium text-sm">
+        <div className="grid grid-cols-2 gap-2 text-sm mb-2">
+          <span className="font-medium">{t("keywords.column.keywords")}</span>
+          <span className="font-medium text-right">
             {t("keywords.column.frequency")}
           </span>
         </div>
-
-        {/* Список ключевых слов без разделителей */}
-        <div className="space-y-1">
-          {keywords
-            .slice(0, isExpanded ? undefined : 2)
-            .map((keyword, index) => (
-              <div key={index} className="flex justify-between items-center">
-                <span className={`text-sm ${textColorClass}`}>
-                  {keyword.word}
-                </span>
-                <span className="text-sm text-blue-500">{keyword.frequency}</span>
-              </div>
-            ))}
-        </div>
+        {keywords.slice(0, isExpanded ? undefined : 2).map((keyword, index) => (
+          <div
+            key={index}
+            className="grid grid-cols-2 gap-2 text-sm py-1 border-b border-gray-100 dark:border-gray-700"
+          >
+            <span className={`${textColorClass} truncate`}>{keyword.word}</span>
+            <span className="text-right">{keyword.frequency}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export function ArchiveItemDetailsModal({
   onClose,
   children,
   title,
-  contentClassName,
+  contentClassName
 }: ArchiveItemDetailsModalProps) {
   // Handle escape key press to close modal
   useEffect(() => {
@@ -46,29 +46,27 @@ export function ArchiveItemDetailsModal({
         onClick={onClose}
       ></div>
       <div
-        className="bg-white dark:bg-[#2C2B2B] rounded-3xl w-[90%] max-w-3xl h-[70%] flex flex-col z-50 text-black dark:text-white p-4 scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 dark:scrollbar-track-gray-800 dark:scrollbar-thumb-gray-600 overflow-y-auto"
+        className="bg-white dark:bg-[#1e1e1e] rounded-3xl w-[90%] max-w-3xl h-[80%] flex flex-col z-50 text-black dark:text-white"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgb(75 85 99) rgb(31 41 55)",
-        }}
       >
-        {/* Заголовок с кнопкой закрытия */}
-        <div className="flex items-center justify-between mb-4 flex-shrink-0">
-          <h2 className="text-lg font-medium text-black dark:text-white flex-1 text-center">
+        <div className="top-0 bg-white dark:bg-[#333333] z-10 border-b dark:border-gray-700 p-4 relative flex items-center justify-center rounded-t-3xl">
+          <h2 className="text-lg font-medium absolute left-1/2 transform -translate-x-1/2 text-black dark:text-white">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white flex-shrink-0"
+            className="ml-auto p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white"
             aria-label="Close"
           >
-            <X className="h-5 w-5 dark:text-blue-600" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Контент */}
-        <div className={`flex-1 ${contentClassName}`}>{children}</div>
+        <div
+          className={`flex-1 overflow-y-auto p-4 rounded-3xl bg-white dark:bg-[#333333] dark:text-black`}
+        >
+          <div className={contentClassName}>{children}</div>
+        </div>
       </div>
     </div>
   );
