@@ -42,7 +42,7 @@ export function MissedKeywordsTable({
         <div className="p-4">
           {/* Simplified header with just the title */}
           <div className="flex items-center justify-center mb-3">
-            <h3 className="text-sm font-medium text-center" title={title}>
+            <h3 className="text-md font-medium text-center" title={title}>
               {t("keywords.missed")}
             </h3>
           </div>
@@ -66,7 +66,7 @@ export function MissedKeywordsTable({
                   <span className={`text-sm ${textColorClass}`}>
                     {keyword.word}
                   </span>
-                  <span className="text-sm">{keyword.frequency}</span>
+                  <span className="text-sm text-blue-500">{keyword.frequency}</span>
                 </div>
               ))}
           </div>
@@ -132,7 +132,7 @@ export function MissedKeywordsTable({
                 <span className={`text-sm ${textColorClass}`}>
                   {keyword.word}
                 </span>
-                <span className="text-sm">{keyword.frequency}</span>
+                <span className="text-sm text-blue-500">{keyword.frequency}</span>
               </div>
             ))}
         </div>

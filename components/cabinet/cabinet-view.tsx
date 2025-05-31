@@ -113,11 +113,11 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
   const getItemStyle = (itemId: string) => {
     // Базовые классы, которые всегда применяются
     const baseClasses =
-      "bg-white rounded-[25px] shadow-md transition-all duration-200";
+      "bg-white rounded-[25px]  transition-all duration-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]";
 
     // Добавляем тень снизу для темной темы
     const darkModeClasses =
-      "dark:bg-[#333333] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]";
+      "dark:bg-[#333333] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] ";
 
     // Если элемент выбран - тонкая синяя граница
     if (selectedItem === itemId) {
@@ -230,10 +230,10 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
           <div
             className={`${getItemStyle(
               "balance-statement"
-            )} p-6 mb-4 h-[70px] cursor-pointer`}
+            )} p-6 mb-4 h-[70px] cursor-pointer `}
             onClick={handleButtonClick("balance-history", "balance-statement")}
           >
-            <div className="flex justify-between items-center h-full">
+            <div className="flex justify-between items-center h-full ">
               <span className="text-base md:text-base leading-tight">
                 {t("cabinet.balance.statement")}
               </span>

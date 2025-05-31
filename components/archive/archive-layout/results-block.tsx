@@ -60,7 +60,11 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
         fullHeight ? "h-full" : !isExpanded ? "h-auto" : ""
       }`}
     >
-      <div className="flex items-center justify-center p-4  dark:border-gray-700 relative">
+      <div
+        className={`flex items-center justify-center ${
+          isMobile ? "p-2 pb-1" : "p-4"
+        } dark:border-gray-700 relative`}
+      >
         <h3 className="font-medium text-center">{t("results.title")}</h3>
 
         {/* Add maximize icon in top right corner */}
@@ -79,7 +83,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
         )}
       </div>
 
-      <div className="p-4 overflow-auto">
+      <div className={`${isMobile ? "px-4 pt-1 pb-4" : "p-4"} overflow-auto`}>
         {fullHeight ? (
           <div className="flex items-center justify-center h-full">
             <div className={`text-6xl font-bold ${ratingColor}`}>
@@ -110,13 +114,13 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
             {/* Показываем только первые 3 метрики в нераскрытом состоянии, как на мобильном */}
             <div className="space-y-1">
               <div className="flex justify-between items-center">
-                <span className="text-gray-700 dark:text-gray-300 text-sm">
+                <span className="text-gray-700  dark:text-gray-300 text-md">
                   {t("results.visibility")}
                 </span>
                 <span className="font-medium text-sm">{visibility} %</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-700 dark:text-gray-300 text-sm">
+                <span className="text-gray-700 dark:text-gray-300 text-md">
                   {t("results.keywords.presence")}
                 </span>
                 <span className="font-medium text-sm">
@@ -124,10 +128,10 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-700 dark:text-gray-300 text-sm">
+                <span className="text-gray-700 dark:text-gray-300 text-md">
                   {t("results.missed.keywords")}
                 </span>
-                <span className="font-medium text-sm">
+                <span className="font-medium text-md">
                   {missedKeywordsCount}
                 </span>
               </div>
@@ -136,18 +140,18 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
               {isExpanded && (
                 <>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">
+                    <span className="text-gray-700 dark:text-gray-300 text-md">
                       {t("results.missed.coverage")}
                     </span>
-                    <span className="font-medium text-sm">
+                    <span className="font-medium text-md">
                       {formatNumber(missedCoverage)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300 text-sm">
+                    <span className="text-gray-700 dark:text-gray-300 text-md">
                       {t("results.irrelevant.words")}
                     </span>
-                    <span className="font-medium text-sm">
+                    <span className="font-medium text-md">
                       {irrelevantCount}
                     </span>
                   </div>

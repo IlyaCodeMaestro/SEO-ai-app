@@ -24,7 +24,7 @@ export function TariffSwitchConfirmModal({
             {t("tariff.confirm.switch")} «{tariffName}»?
           </p>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 ">
           <Button
             className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full py-3"
             onClick={onConfirm}

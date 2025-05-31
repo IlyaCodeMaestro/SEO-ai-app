@@ -73,7 +73,7 @@ export function KeywordsTable({
             >
               <Copy
                 className={`h-4 w-4 ${
-                  copiedSection === section ? "text-green-500" : ""
+                  copiedSection === section ? "text-blue-900" : "text-blue-600"
                 }`}
               />
             </button>
@@ -97,7 +97,7 @@ export function KeywordsTable({
                 alt="Share"
                 width={16}
                 height={16}
-                className="h-4 w-4"
+                className="h-5 w-7"
               />
             </button>
           </div>
@@ -118,10 +118,10 @@ export function KeywordsTable({
               .slice(0, isExpanded ? undefined : 3)
               .map((keyword, index) => (
                 <div key={index} className="flex justify-between items-center">
-                  <span className={`text-sm ${textColorClass}`}>
+                  <span className={`text-sm ${textColorClass} text-green-500`}>
                     {keyword.word}
                   </span>
-                  <span className="text-sm">
+                  <span className="text-sm text-green-500">
                     {formatFrequency(keyword.frequency)}
                   </span>
                 </div>
@@ -159,7 +159,7 @@ export function KeywordsTable({
           >
             <Copy
               className={`h-5 w-5 ${
-                copiedSection === section ? "text-green-500" : "text-blue-500"
+                copiedSection === section ? "text-blue-900" : "text-blue-500"
               }`}
             />
           </button>
@@ -183,7 +183,7 @@ export function KeywordsTable({
               alt="Share"
               width={16}
               height={16}
-              className="h-6 w-6"
+              className="h-5 w-7"
             />
           </button>
 

@@ -4,7 +4,7 @@ import type React from "react";
 
 import { format, parseISO } from "date-fns";
 import { ru } from "date-fns/locale";
-import { Inbox, Copy, Check } from "lucide-react";
+import { Inbox, Copy } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { useGetArchiveQuery } from "@/store/services/main";
 import { Button } from "@/components/ui/button";
@@ -292,7 +292,7 @@ export function ArchiveView({
                           aria-label={t("common.copy")}
                         >
                           {copiedCardId === card.id ? (
-                            <Check className="h-4 w-4 text-green-500" />
+                            <Copy className="h-4 w-4 text-blue-900" />
                           ) : (
                             <Copy className="h-4 w-4 text-blue-600" />
                           )}

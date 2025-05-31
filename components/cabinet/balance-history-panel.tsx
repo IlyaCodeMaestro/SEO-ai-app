@@ -65,6 +65,22 @@ export function BalanceHistoryPanel({ onClose }: BalanceHistoryPanelProps) {
     }
   };
 
+  // Format time string to remove seconds (HH:MM:SS -> HH:MM)
+  const formatTime = (timeString: string) => {
+    try {
+      // If time is in HH:MM:SS format, remove seconds
+      if (timeString && timeString.includes(":")) {
+        const timeParts = timeString.split(":");
+        if (timeParts.length >= 2) {
+          return `${timeParts[0]}:${timeParts[1]}`;
+        }
+      }
+      return timeString;
+    } catch (error) {
+      return timeString;
+    }
+  };
+
   // Handle load more
   const handleLoadMore = () => {
     setIsLoadingMore(true);
@@ -178,7 +194,9 @@ export function BalanceHistoryPanel({ onClose }: BalanceHistoryPanelProps) {
                       <div className="flex justify-between items-start">
                         <div>
                           <p className="font-medium">{event.title}</p>
-                          <p className="text-xs text-gray-500">{event.time}</p>
+                          <p className="text-xs text-gray-500">
+                            {formatTime(event.time)}
+                          </p>
                         </div>
                         <span
                           style={{ color: event.text_color }}

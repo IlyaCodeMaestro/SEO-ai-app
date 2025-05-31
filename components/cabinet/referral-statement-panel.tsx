@@ -196,7 +196,9 @@ export function ReferralStatementPanel({
                           {referral.name}
                         </p>
                       </div>
-                      <span className="text-gray-500">{referral.phone}</span>
+                      <span className="text-black dark:text-white font-light">
+                        {referral.phone}
+                      </span>
                     </div>
                   ))}
                 </div>

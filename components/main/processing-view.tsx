@@ -93,7 +93,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
   return (
     <div className="h-full flex flex-col dark:bg-[#404040]">
       {/* Заголовок с кнопкой закрытия */}
-      <div className="p-6 border-b">
+      <div className="p-6">
         <div className="flex items-center justify-between relative">
           {isMobile && (
             <button

@@ -26,11 +26,17 @@ export function TopKeywords({
 
   const handleCopy = (sku: string) => {
     navigator.clipboard.writeText(sku);
-    // Не меняем состояние copied, чтобы цвет оставался прежним
+    setCopied(sku);
+    setTimeout(() => {
+      setCopied(null);
+    }, 1000);
   };
 
   // Функция для определения цвета SKU и иконки копирования
-  const getSkuColor = (index: number) => {
+  const getSkuColor = (index: number, sku: string) => {
+    if (copied === sku) {
+      return "text-blue-900"; // Цвет при копировании
+    }
     return index === 0 ? "text-green-500" : "text-blue-600";
   };
 
@@ -38,7 +44,7 @@ export function TopKeywords({
     return (
       <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)]  rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
         <div className="p-4">
-          <h3 className="font-medium text-sm mb-3 text-center">
+          <h3 className="font-medium text-md mb-3 text-center">
             {t("top.keywords.title")}
           </h3>
           <div className="space-y-3">
@@ -67,7 +73,12 @@ export function TopKeywords({
                   <div className="flex-1 min-w-0">
                     <p className="text-sm leading-tight mb-2">{keyword.name}</p>
                     <div className="flex items-center">
-                      <p className={`text-base ${getSkuColor(index)}`}>
+                      <p
+                        className={`text-base ${getSkuColor(
+                          index,
+                          keyword.sku
+                        )}`}
+                      >
                         {keyword.sku}
                       </p>
                       <button
@@ -75,7 +86,10 @@ export function TopKeywords({
                         className="ml-2"
                         aria-label={t("common.copy")}
                       >
-                        <Copy size={16} className={getSkuColor(index)} />
+                        <Copy
+                          size={16}
+                          className={getSkuColor(index, keyword.sku)}
+                        />
                       </button>
                     </div>
                   </div>
@@ -146,7 +160,9 @@ export function TopKeywords({
                     {keyword.name}
                   </p>
                   <div className="flex items-center justify-center sm:justify-start">
-                    <p className={`text-base ${getSkuColor(index)}`}>
+                    <p
+                      className={`text-base ${getSkuColor(index, keyword.sku)}`}
+                    >
                       {keyword.sku}
                     </p>
                     <button
@@ -154,7 +170,10 @@ export function TopKeywords({
                       className="ml-2"
                       aria-label={t("common.copy")}
                     >
-                      <Copy size={16} className={getSkuColor(index)} />
+                      <Copy
+                        size={16}
+                        className={getSkuColor(index, keyword.sku)}
+                      />
                     </button>
                   </div>
                 </div>

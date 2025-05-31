@@ -47,7 +47,7 @@ export function DescriptionBlock({
             >
               <Copy
                 className={`h-4 w-4 ${
-                  copiedSection === section ? "text-green-500" : ""
+                  copiedSection === section ? "text-blue-900" : "text-blue-600"
                 }`}
               />
             </button>
@@ -71,7 +71,7 @@ export function DescriptionBlock({
                 alt="Share"
                 width={16}
                 height={16}
-                className="h-4 w-4"
+                className="h-5 w-7"
               />
             </button>
           </div>
@@ -120,7 +120,7 @@ export function DescriptionBlock({
           >
             <Copy
               className={`h-5 w-5 ${
-                copiedSection === section ? "text-green-500" : "text-blue-500"
+                copiedSection === section ? "text-blue-900" : "text-blue-600"
               }`}
             />
           </button>
@@ -144,7 +144,7 @@ export function DescriptionBlock({
               alt="Share"
               width={16}
               height={16}
-              className="h-6 w-6"
+              className="h-5 w-7"
             />
           </button>
           <button

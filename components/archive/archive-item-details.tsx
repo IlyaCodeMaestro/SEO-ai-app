@@ -440,7 +440,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`h-8 w-8 ${
+                    className={`h-5 w-5 ${
                       star <= Math.round(analysisResults.rating)
                         ? "text-yellow-400 fill-yellow-400"
                         : "text-gray-300 dark:text-gray-600"
@@ -448,7 +448,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                   />
                 ))}
               </div>
-              <span className="text-2xl font-bold text-black dark:text-white">
+              <span className="text-lg pr-5 font-medium text-black dark:text-white">
                 {analysisResults.rating.toFixed(1)}
               </span>
             </div>
@@ -734,8 +734,8 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               <div className="flex justify-center mt-4 sm:mt-6">
                 <button
                   onClick={handleWriteDescription}
-                  className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[40px] sm:h-[45px] border border-white shadow-around inline-block px-6 sm:px-8 text-sm sm:text-base"
-                  style={{ width: "fit-content" }}
+                  className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[50px] sm:h-[50px] border border-white shadow-around inline-block px-4 sm:px-8 text-base sm:text-base max-w-full whitespace-normal text-center"
+                  style={{ width: "fit-content", wordBreak: "break-word" }}
                 >
                   {analysisData?.button?.text || t("archive.write.description")}
                 </button>
@@ -995,7 +995,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               <div className="flex justify-center mt-6">
                 <button
                   onClick={handleWriteDescription}
-                  className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[45px] border border-white shadow-around inline-block px-8"
+                  className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[50px] text-sm border border-white shadow-around inline-block px-8"
                   style={{ width: "fit-content" }}
                 >
                   {analysisData?.button?.text || t("archive.write.description")}

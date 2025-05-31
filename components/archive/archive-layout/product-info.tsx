@@ -4,7 +4,6 @@ import { useLanguage } from "@/components/provider/language-provider";
 import { Copy } from "lucide-react";
 import { useState } from "react";
 
-
 interface ProductInfoProps {
   item: {
     id: string;
@@ -79,7 +78,9 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-sm leading-tight">{item.name}</p>
+            <p className="font-medium dark:text-gray-200 text-md leading-tight">
+              {item.name}
+            </p>
             <div className="flex items-center mt-1">
               <p className="text-sm text-blue-600">{item.sku}</p>
               <button
@@ -89,13 +90,13 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
               >
                 <Copy
                   size={14}
-                  className={copied ? "text-green-500" : "text-blue-600"}
+                  className={copied ? "text-blue-900" : "text-blue-600 "}
                 />
               </button>
             </div>
           </div>
           <div className="ml-2 flex-shrink-0">
-            <div className="text-xs text-blue-600 whitespace-nowrap">
+            <div className="text-md text-blue-600 whitespace-nowrap">
               {formatStatusText(getItemStatus(item))}
             </div>
           </div>
@@ -132,7 +133,7 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
           >
             <Copy
               size={14}
-              className={copied ? "text-green-500" : "text-blue-600 "}
+              className={copied ? "text-blue-900" : "text-blue-600 "}
             />
           </button>
         </div>

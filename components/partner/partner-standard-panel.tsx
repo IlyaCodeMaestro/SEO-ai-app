@@ -53,7 +53,7 @@ export default function PartnerStandardPanel({
   };
 
   return (
-    <div className="max-w-md dark:bg-[#404040] md:max-w-2xl lg:max-w-4xl mb-7 mx-auto h-full flex flex-col">
+    <div className="max-w-md dark:bg-[#404040] md:max-w-2xl lg:max-w-4xl mb-7 mx-auto h-full flex flex-col rounded-3xl overflow-hidden">
       {/* Header */}
       <div className="flex items-center p-4 bg-white relative dark:bg-[#404040]">
         {isMobile ? (
@@ -99,7 +99,7 @@ export default function PartnerStandardPanel({
 
         <div className="space-y-8 relative">
           {/* Vertical line */}
-          <div className="absolute left-[19px] top-[32px] bottom-[32px] w-0.5 bg-gray-200 "></div>
+          <div className="absolute left-[19px] top-[32px] bottom-[32px] border-l-2 border-dashed border-blue-600"></div>
 
           {/* Step 1 */}
           <div className="flex">
@@ -200,10 +200,10 @@ export default function PartnerStandardPanel({
 
       {/* ShareMenu with overlay */}
       {shareContent && (
-        <div className="absolute  inset-0 z-50 flex items-center justify-center overflow-y-auto  overflow-x-hidden">
+        <div className="absolute inset-0 z-50 flex items-center justify-center overflow-y-auto rounded-3xl overflow-x-hidden">
           <div
             onClick={onClose}
-            className="absolute mt-7 mb-6  inset-0 bg-opacity-50"
+            className="absolute mt-7 mb-6 inset-0 bg-[#1e1e1e] bg-opacity-50"
           >
             <ShareMenuWithoutCopy
               content={shareContent.content}

@@ -41,7 +41,7 @@ export function IrrelevantKeywordsTable({
       <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
         <div className="p-4">
           <div className="flex items-center justify-center w-full mb-3">
-            <h3 className="font-medium text-sm text-center">
+            <h3 className="font-medium text-md text-center">
               {t("keywords.irrelevant")}
             </h3>
           </div>
@@ -63,7 +63,7 @@ export function IrrelevantKeywordsTable({
               .map((keyword, index) => (
                 <div key={index} className="flex justify-between items-center">
                   <span className="text-sm text-blue-500">{keyword.word}</span>
-                  <span className="text-sm">{keyword.frequency}</span>
+                  <span className="text-sm text-blue-500">{keyword.frequency}</span>
                 </div>
               ))}
           </div>
@@ -121,7 +121,7 @@ export function IrrelevantKeywordsTable({
                 <span className="text-sm text-blue-500 truncate">
                   {keyword.word}
                 </span>
-                <span className="text-sm">{keyword.frequency}</span>
+                <span className="text-sm text-blue-500">{keyword.frequency}</span>
               </div>
             ))}
         </div>

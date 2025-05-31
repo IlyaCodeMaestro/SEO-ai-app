@@ -65,6 +65,22 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
     }
   };
 
+  // Format time string to remove seconds (HH:MM:SS -> HH:MM)
+  const formatTime = (timeString: string) => {
+    try {
+      // If time is in HH:MM:SS format, remove seconds
+      if (timeString && timeString.includes(":")) {
+        const timeParts = timeString.split(":");
+        if (timeParts.length >= 2) {
+          return `${timeParts[0]}:${timeParts[1]}`;
+        }
+      }
+      return timeString;
+    } catch (error) {
+      return timeString;
+    }
+  };
+
   // Get text color based on transaction type
   const getTextColor = (typeId: number) => {
     // Если это пополнение бонусов (type_id = 8), то зеленый цвет
@@ -208,7 +224,9 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
                           <p className="font-medium">
                             {event.title} {event.from_name && event.from_name}
                           </p>
-                          <p className="text-xs text-gray-500">{event.time}</p>
+                          <p className="text-xs text-gray-500">
+                            {formatTime(event.time)}
+                          </p>
                         </div>
                         <span
                           className={`font-medium ${getTextColor(

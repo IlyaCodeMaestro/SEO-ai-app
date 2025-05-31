@@ -98,7 +98,7 @@ export default function PartnerPremiumPanel({
 
         <div className="space-y-8 relative">
           {/* Vertical line */}
-          <div className="absolute left-[19px] top-[32px] bottom-[32px] w-0.5 bg-gray-200"></div>
+          <div className="absolute left-[19px] top-[32px] bottom-[32px] border-l-2 border-dashed border-blue-600"></div>
 
           {/* Step 1 */}
           <div className="flex">
@@ -195,17 +195,17 @@ export default function PartnerPremiumPanel({
         </div>
         {/* ShareMenu with overlay */}
         {shareContent && (
-         <div className="absolute  inset-0 z-50 flex items-center justify-center overflow-y-auto rounded-3xl overflow-x-hidden">
-          <div
-            onClick={onClose}
-            className="absolute mt-7 mb-6 inset-0 bg-[#1e1e1e] bg-opacity-50"
-          >
-            <ShareMenuWithoutCopy
-              content={shareContent.content}
-              title={shareContent.title}
-              onClose={handleCloseShareMenu}
-            />
-          </div>
+          <div className="absolute  inset-0 z-50 flex items-center justify-center overflow-y-auto rounded-3xl overflow-x-hidden">
+            <div
+              onClick={onClose}
+              className="absolute mt-7 mb-6 inset-0 bg-[#1e1e1e] bg-opacity-50"
+            >
+              <ShareMenuWithoutCopy
+                content={shareContent.content}
+                title={shareContent.title}
+                onClose={handleCloseShareMenu}
+              />
+            </div>
           </div>
         )}
       </div>
