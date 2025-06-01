@@ -118,10 +118,10 @@ export function KeywordsTable({
               .slice(0, isExpanded ? undefined : 3)
               .map((keyword, index) => (
                 <div key={index} className="flex justify-between items-center">
-                  <span className={`text-sm ${textColorClass} text-green-500`}>
+                  <span className={`text-sm ${textColorClass}`}>
                     {keyword.word}
                   </span>
-                  <span className="text-sm text-green-500">
+                  <span className="text-sm">
                     {formatFrequency(keyword.frequency)}
                   </span>
                 </div>
