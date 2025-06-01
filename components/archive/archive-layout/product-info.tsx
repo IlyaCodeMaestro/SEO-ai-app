@@ -4,7 +4,6 @@ import { useLanguage } from "@/components/provider/language-provider";
 import { Copy } from "lucide-react";
 import { useState } from "react";
 
-
 interface ProductInfoProps {
   item: {
     id: string;
@@ -61,7 +60,7 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
 
   if (isMobile) {
     return (
-      <div className="bg-white dark:bg-[#333333] rounded-xl p-4 shadow-around mb-4">
+      <div className="bg-white dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl p-4  mb-4">
         <div className="flex">
           <div className="w-16 h-16 bg-gray-200 rounded-lg mr-3 overflow-hidden flex-shrink-0">
             {item.image ? (
@@ -79,7 +78,9 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-sm leading-tight">{item.name}</p>
+            <p className="font-medium dark:text-gray-200 text-md leading-tight">
+              {item.name}
+            </p>
             <div className="flex items-center mt-1">
               <p className="text-sm text-blue-600">{item.sku}</p>
               <button
@@ -89,13 +90,13 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
               >
                 <Copy
                   size={14}
-                  className={copied ? "text-green-500" : "text-blue-600"}
+                  className={copied ? "text-blue-900" : "text-blue-600 "}
                 />
               </button>
             </div>
           </div>
           <div className="ml-2 flex-shrink-0">
-            <div className="text-xs text-blue-600 whitespace-nowrap">
+            <div className="text-md text-blue-600 whitespace-nowrap">
               {formatStatusText(getItemStatus(item))}
             </div>
           </div>
@@ -105,7 +106,7 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
   }
 
   return (
-    <div className="bg-white dark:bg-[#333333] rounded-xl p-4 w-full sm:w-auto sm:max-w-[550px] sm:ml-0 md:ml-28 shadow-md mb-6 flex flex-col sm:flex-row items-center">
+    <div className="bg-white dark:bg-[#2C2B2B] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl p-4 w-full sm:w-auto sm:max-w-[550px] sm:ml-0 md:ml-28  mb-6 flex flex-col sm:flex-row items-center">
       <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg mb-3 sm:mb-0 sm:mr-3 overflow-hidden">
         {item.image ? (
           <img
@@ -132,7 +133,7 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
           >
             <Copy
               size={14}
-              className={copied ? "text-green-500" : "text-blue-600 "}
+              className={copied ? "text-blue-900" : "text-blue-600 "}
             />
           </button>
         </div>

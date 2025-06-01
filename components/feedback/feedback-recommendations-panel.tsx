@@ -75,7 +75,7 @@ export function FeedbackRecommendationsPanel({
             >
               <span>{t("feedback.write.to")}</span>
               <Image
-                src="icons//telegram-logo.png"
+                src="/icons/telegram-logo.png"
                 alt="Telegram"
                 width={20}
                 height={20}

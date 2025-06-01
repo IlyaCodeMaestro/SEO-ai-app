@@ -3,7 +3,6 @@
 import { useLanguage } from "@/components/provider/language-provider";
 import { ArrowLeft, X } from "lucide-react";
 
-
 interface ArchiveHeaderProps {
   onClose: () => void;
   isMobile: boolean;
@@ -38,7 +37,7 @@ export function ArchiveHeader({
           <button onClick={onClose} className="mr-3" aria-label="Back">
             <ArrowLeft className="h-5 w-5 text-gray-500 dark:text-blue-600" />
           </button>
-          <h2 className="text-blue-600 font-medium text-xl mx-auto">
+          <h2 className="text-blue-600 font-medium text-xl mx-[100px]">
             {t("archive.title")}
           </h2>
         </div>

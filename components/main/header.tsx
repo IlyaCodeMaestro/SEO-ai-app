@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTheme } from "../provider/theme-provider";
 import { useLanguage } from "../provider/language-provider";
 import { Sun, Moon, Menu } from "lucide-react";
@@ -57,8 +57,11 @@ export function Header({ activeTab }: { activeTab?: string }) {
           <div className="absolute top-3 right-4">
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
-                <div className="w-[40px] h-[40px] flex items-center justify-center">
+                <div className="w-[40px] h-[40px] flex items-center justify-center relative">
                   <Menu className="w-[35px] h-[35px] stroke-[1.5px]" />
+                  {hasNewItems && activeTab !== "archive" && (
+                    <span className="absolute top-0 right-0 bg-blue-600 w-4 h-4 rounded-full"></span>
+                  )}
                 </div>
               </SheetTrigger>
               <SheetContent
@@ -95,7 +98,7 @@ export function Header({ activeTab }: { activeTab?: string }) {
                     >
                       {t("common.archive")}
                       {hasNewItems && activeTab !== "archive" && (
-                        <span className="absolute top-3 right-4 bg-blue-600 w-3 h-3 rounded-full"></span>
+                        <span className="absolute top-3 bg-blue-600 w-3 h-3 rounded-full"></span>
                       )}
                     </button>
                     <button

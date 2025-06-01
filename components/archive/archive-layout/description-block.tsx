@@ -4,7 +4,6 @@ import { useLanguage } from "@/components/provider/language-provider";
 import { ChevronDown, ChevronUp, Copy, Maximize2 } from "lucide-react";
 import Image from "next/image";
 
-
 interface DescriptionBlockProps {
   title: string;
   description: string;
@@ -36,7 +35,7 @@ export function DescriptionBlock({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
         <div className="p-4">
           {/* Верхняя строка: копировать — заголовок — поделиться */}
           <div className="relative flex items-center justify-between mb-3">
@@ -48,7 +47,7 @@ export function DescriptionBlock({
             >
               <Copy
                 className={`h-4 w-4 ${
-                  copiedSection === section ? "text-green-500" : ""
+                  copiedSection === section ? "text-blue-900" : "text-blue-600"
                 }`}
               />
             </button>
@@ -72,7 +71,7 @@ export function DescriptionBlock({
                 alt="Share"
                 width={16}
                 height={16}
-                className="h-4 w-4"
+                className="h-5 w-7"
               />
             </button>
           </div>
@@ -90,7 +89,7 @@ export function DescriptionBlock({
           <div className="flex justify-center mt-2">
             <button
               onClick={() => onToggle(section)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-400 hover:text-gray-600"
               aria-label={isExpanded ? "Collapse" : "Expand"}
             >
               {isExpanded ? (
@@ -107,11 +106,11 @@ export function DescriptionBlock({
 
   return (
     <div
-      className={`bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden ${
+      className={`bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden ${
         fullWidth ? "col-span-2" : ""
       }`}
     >
-      <div className="relative flex flex-col sm:flex-row items-center p-4 border-b dark:border-gray-700">
+      <div className="relative flex flex-col sm:flex-row items-center p-4">
         {/* Левая иконка копирования */}
         <div className="flex items-center z-10 mb-2 sm:mb-0">
           <button
@@ -121,7 +120,7 @@ export function DescriptionBlock({
           >
             <Copy
               className={`h-5 w-5 ${
-                copiedSection === section ? "text-green-500" : "text-blue-500"
+                copiedSection === section ? "text-blue-900" : "text-blue-600"
               }`}
             />
           </button>
@@ -145,7 +144,7 @@ export function DescriptionBlock({
               alt="Share"
               width={16}
               height={16}
-              className="h-6 w-6"
+              className="h-5 w-7"
             />
           </button>
           <button

@@ -3,8 +3,6 @@
 import { useLanguage } from "@/components/provider/language-provider";
 import { ChevronDown, ChevronUp, Copy, Maximize2 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
-
 
 interface KeywordsTableProps {
   title: string;
@@ -61,7 +59,7 @@ export function KeywordsTable({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
         <div className="p-4">
           {/* Верхняя строка: иконка - заголовок - иконка */}
           <div className="relative flex items-center justify-between mb-3">
@@ -75,21 +73,20 @@ export function KeywordsTable({
             >
               <Copy
                 className={`h-4 w-4 ${
-                  copiedSection === section ? "text-green-500" : ""
+                  copiedSection === section ? "text-blue-900" : "text-blue-600"
                 }`}
               />
             </button>
 
             {/* Заголовок — по центру, в одну строку, обрезается при переполнении */}
             <h3
-              className="absolute left-1/2 transform -translate-x-1/2 text-sm font-medium  max-w-[70%] text-center"
+              className="absolute left-1/2 transform -translate-x-1/2 text-sm font-medium max-w-[70%] text-center"
               title={title}
             >
               {t("keywords.used")}
             </h3>
 
             {/* Правая иконка — поделиться */}
-            {/* Правая иконка */}
             <button
               className="text-blue-600 z-10"
               onClick={() => onShare(keywords, title)}
@@ -100,33 +97,34 @@ export function KeywordsTable({
                 alt="Share"
                 width={16}
                 height={16}
-                className="h-4 w-4"
+                className="h-5 w-7"
               />
             </button>
           </div>
 
-          {/* Сетка с ключевыми словами */}
-          <div className="grid grid-cols-2 gap-x-4 text-sm">
-            <div className="font-medium mb-2">
+          {/* Заголовки */}
+          <div className="flex justify-between mb-2">
+            <div className="font-medium text-sm">
               {t("keywords.column.keywords")}
             </div>
-            <div className="font-medium mb-2 text-right">
+            <div className="font-medium text-sm">
               {t("keywords.column.frequency")}
             </div>
+          </div>
 
+          {/* Список ключевых слов без разделителей */}
+          <div className="space-y-1">
             {keywords
               .slice(0, isExpanded ? undefined : 3)
               .map((keyword, index) => (
-                <React.Fragment key={index}>
-                  <div
-                    className={`text-sm py-2 border-t border-gray-100 ${textColorClass}`}
-                  >
+                <div key={index} className="flex justify-between items-center">
+                  <span className={`text-sm ${textColorClass} text-green-500`}>
                     {keyword.word}
-                  </div>
-                  <div className="text-sm py-2 border-t border-gray-100 text-right">
+                  </span>
+                  <span className="text-sm text-green-500">
                     {formatFrequency(keyword.frequency)}
-                  </div>
-                </React.Fragment>
+                  </span>
+                </div>
               ))}
           </div>
         </div>
@@ -139,9 +137,9 @@ export function KeywordsTable({
             aria-label={isExpanded ? "Collapse" : "Expand"}
           >
             {isExpanded ? (
-              <ChevronUp className="h-4 w-4" />
+              <ChevronUp className="h-5 w-5" />
             ) : (
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-5 w-5" />
             )}
           </button>
         </div>
@@ -150,8 +148,8 @@ export function KeywordsTable({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden h-[225px]">
-      <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-b dark:border-gray-700 relative">
+    <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden h-[225px]">
+      <div className="flex flex-col sm:flex-row items-center justify-between p-4 relative">
         {/* Левая часть — только копирование */}
         <div className="flex items-center space-x-2 mb-2 sm:mb-0 z-10">
           <button
@@ -161,7 +159,7 @@ export function KeywordsTable({
           >
             <Copy
               className={`h-5 w-5 ${
-                copiedSection === section ? "text-green-500" : "text-blue-500"
+                copiedSection === section ? "text-blue-900" : "text-blue-500"
               }`}
             />
           </button>
@@ -185,7 +183,7 @@ export function KeywordsTable({
               alt="Share"
               width={16}
               height={16}
-              className="h-6 w-6"
+              className="h-5 w-7"
             />
           </button>
 
@@ -200,23 +198,31 @@ export function KeywordsTable({
       </div>
 
       <div className="p-4 overflow-auto">
-        <div className="grid grid-cols-2 gap-2 text-sm mb-2">
-          <span className="font-medium">{t("keywords.column.keywords")}</span>
-          <span className="font-medium text-right">
+        {/* Заголовки */}
+        <div className="flex justify-between mb-2">
+          <span className="font-medium text-sm">
+            {t("keywords.column.keywords")}
+          </span>
+          <span className="font-medium text-sm">
             {t("keywords.column.frequency")}
           </span>
         </div>
-        {keywords.slice(0, isExpanded ? undefined : 2).map((keyword, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-2 gap-2 text-sm py-1 border-b border-gray-100 dark:border-gray-700"
-          >
-            <span className={`${textColorClass} truncate`}>{keyword.word}</span>
-            <span className="text-right">
-              {formatFrequency(keyword.frequency)}
-            </span>
-          </div>
-        ))}
+
+        {/* Список ключевых слов без разделителей */}
+        <div className="space-y-1">
+          {keywords
+            .slice(0, isExpanded ? undefined : 3)
+            .map((keyword, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <span className={`text-sm ${textColorClass} truncate`}>
+                  {keyword.word}
+                </span>
+                <span className="text-sm">
+                  {formatFrequency(keyword.frequency)}
+                </span>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

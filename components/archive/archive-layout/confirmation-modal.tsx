@@ -2,8 +2,6 @@
 
 import { useLanguage } from "@/components/provider/language-provider";
 
-
-
 interface ConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -26,7 +24,7 @@ export function ConfirmationModal({
 
       {/* Сам pop-up */}
       <div
-        className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-lg w-full max-w-xs animate-in slide-in-from-bottom z-50"
+        className="bg-white dark:bg-gray-800 rounded-3xl p-6 sm:mt-0 mt-48 shadow-lg w-full max-w-xs animate-in slide-in-from-bottom z-50"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-center space-y-4">

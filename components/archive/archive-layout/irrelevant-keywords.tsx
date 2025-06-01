@@ -2,8 +2,6 @@
 
 import { useLanguage } from "@/components/provider/language-provider";
 import { ChevronDown, ChevronUp, Maximize2 } from "lucide-react";
-import React from "react";
-
 
 interface KeywordsTableProps {
   title: string;
@@ -40,35 +38,33 @@ export function IrrelevantKeywordsTable({
 
   if (isMobile) {
     return (
-      <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-xl shadow-md overflow-hidden">
+      <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
         <div className="p-4">
           <div className="flex items-center justify-center w-full mb-3">
-            <h3 className="font-medium text-sm text-center">
+            <h3 className="font-medium text-md text-center">
               {t("keywords.irrelevant")}
             </h3>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 text-sm">
-            <div className="font-medium mb-2">
+          {/* Заголовки */}
+          <div className="flex justify-between mb-2">
+            <div className="font-medium text-sm">
               {t("keywords.column.irrelevant")}
             </div>
-            <div className="font-medium mb-2 text-right">
+            <div className="font-medium text-sm">
               {t("keywords.column.frequency")}
             </div>
+          </div>
 
+          {/* Список ключевых слов без разделителей */}
+          <div className="space-y-1">
             {keywords
               .slice(0, isExpanded ? undefined : 3)
               .map((keyword, index) => (
-                <React.Fragment key={index}>
-                  <div
-                    className={`text-sm py-2 border-t border-gray-100 text-blue-500`}
-                  >
-                    {keyword.word}
-                  </div>
-                  <div className="text-sm py-2 border-t border-gray-100 text-right">
-                    {keyword.frequency}
-                  </div>
-                </React.Fragment>
+                <div key={index} className="flex justify-between items-center">
+                  <span className="text-sm text-blue-500">{keyword.word}</span>
+                  <span className="text-sm text-blue-500">{keyword.frequency}</span>
+                </div>
               ))}
           </div>
         </div>
@@ -79,9 +75,9 @@ export function IrrelevantKeywordsTable({
             aria-label={isExpanded ? "Collapse" : "Expand"}
           >
             {isExpanded ? (
-              <ChevronUp className="h-4 w-4" />
+              <ChevronUp className="h-5 w-5" />
             ) : (
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-5 w-5" />
             )}
           </button>
         </div>
@@ -90,8 +86,8 @@ export function IrrelevantKeywordsTable({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-[#333333] rounded-[20px] shadow-md overflow-hidden">
-      <div className="flex flex-col items-center p-4 border-b dark:border-gray-700 relative">
+    <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl  overflow-hidden">
+      <div className="flex flex-col items-center p-4 relative">
         <h3 className="font-medium mb-2 text-center">
           {t("keywords.irrelevant")}
         </h3>
@@ -106,21 +102,29 @@ export function IrrelevantKeywordsTable({
         </div>
       </div>
       <div className="p-4">
-        <div className="grid grid-cols-2 gap-2 text-sm mb-2">
-          <span className="font-medium">{t("keywords.column.irrelevant")}</span>
-          <span className="font-medium text-right">
+        {/* Заголовки */}
+        <div className="flex justify-between mb-2">
+          <span className="font-medium text-sm">
+            {t("keywords.column.irrelevant")}
+          </span>
+          <span className="font-medium text-sm">
             {t("keywords.column.frequency")}
           </span>
         </div>
-        {keywords.slice(0, isExpanded ? undefined : 2).map((keyword, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-2 gap-2 text-sm py-1 border-b border-gray-100 dark:border-gray-700"
-          >
-            <span className={`text-blue-500 truncate`}>{keyword.word}</span>
-            <span className="text-right">{keyword.frequency}</span>
-          </div>
-        ))}
+
+        {/* Список ключевых слов без разделителей */}
+        <div className="space-y-1">
+          {keywords
+            .slice(0, isExpanded ? undefined : 6)
+            .map((keyword, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <span className="text-sm text-blue-500 truncate">
+                  {keyword.word}
+                </span>
+                <span className="text-sm text-blue-500">{keyword.frequency}</span>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

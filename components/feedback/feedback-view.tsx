@@ -56,7 +56,7 @@ export function FeedbackView() {
   // Function to get the style for the main feedback button
   const getMainButtonStyle = () => {
     const baseClasses =
-      "w-full cursor-default bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white text-lg font-normal py-4 rounded-[24px] shadow-md transition-all duration-200";
+      "w-full cursor-default bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white text-lg font-normal py-4 rounded-[24px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] transition-all duration-200";
 
     if (selectedItem === "main-feedback") {
       return `${baseClasses} border-2 border-blue-600`;
