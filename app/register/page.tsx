@@ -35,15 +35,17 @@ export default function Register() {
 
     setIsLoading(true);
     try {
+      console.log(accept, name, phone, codeId, email);
       await checkRegistration({
         accept,
         name,
         phone: phone,
-        code_id: codeId,
+        phone_code_id: codeId,
         email,
       });
 
       const query = new URLSearchParams({
+        email,
         name,
         phone,
         code_id: codeId.toString(),

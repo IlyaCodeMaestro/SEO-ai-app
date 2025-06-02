@@ -31,8 +31,34 @@ export async function checkRegistration(data: {
   accept: boolean;
   name: string;
   phone: string;
-  code_id: number;
+  phone_code_id: number;
   email: string;
+}) {
+  const res = await fetch(`${BASE_URL}/v1/registration/check`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Platform-Type": "WEB",
+      Version: "1",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const json = await res.json();
+  console.log(json);
+  if (!json.output?.result)
+    throw new Error(json.output.message_ru || json.output.message);
+  return json;
+}
+
+export async function checkRegistration2(data: {
+  login: string;
+  password: string;
+  email: string;
+  phone: string;
+  phone_code_id: number;
+  name: string;
+  accept: boolean;
 }) {
   const res = await fetch(`${BASE_URL}/v1/registration/check`, {
     method: "POST",
@@ -55,11 +81,11 @@ export async function registerUser(data: {
   password: string;
   email: string;
   phone: string;
-  code_id: number;
+  phone_code_id: number;
   name: string;
   code: string;
   accept: boolean;
-  url: string;
+  install_url: string;
 }) {
   const res = await fetch(`${BASE_URL}/v1/registration`, {
     method: "POST",

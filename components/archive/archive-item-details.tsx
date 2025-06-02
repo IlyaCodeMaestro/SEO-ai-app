@@ -21,6 +21,7 @@ import {
   useGetCardAnalysisQuery,
   useGetCardDescriptionQuery,
   useStartDescriptionMutation,
+  useStartAnalysisDescriptionMutation,
 } from "@/store/services/main";
 
 interface ArchiveItemDetailsProps {
@@ -48,8 +49,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   const [copied, setCopied] = useState<string | null>(null);
   // Determine which API queries to use based on item type
   const shouldFetchAnalysis = item.type === "analysis" || item.type === "both";
-  const shouldFetchDescription =
-    item.type === "description" || item.type === "both";
+  const shouldFetchDescription = item.type === "description";
 
   // Fetch analysis data if needed
   const {
@@ -81,8 +81,8 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   });
 
   // Добавляем хук для запуска процесса создания описания
-  const [startDescription, { isLoading: isStartingDescription }] =
-    useStartDescriptionMutation();
+  const [startAnalysisDescription, { isLoading: isStartingDescription }] =
+    useStartAnalysisDescriptionMutation();
 
   const [expandedSections, setExpandedSections] = useState<
     Record<string, boolean>
@@ -151,7 +151,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
     // Извлекаем количество нерелевантных слов из API
     irrelevantCount: analysisData?.analysis?.irrelevant?.count || 0,
     topKeywords:
-      descriptionData?.cards?.slice(0, 5).map((card) => ({
+      descriptionData?.cards?.slice(0, 10).map((card) => ({
         name: card.name,
         sku: card.article,
         image: card.images?.[0]?.image,
@@ -198,96 +198,96 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   };
 
   const handleWriteDescription = async () => {
-    try {
-      // Get the CUSTOMER_URL from environment variables or use the default
-      const CUSTOMER_URL =
-        process.env.NEXT_PUBLIC_CUSTOMER_URL || "https://api.stage.seo-ai.kz/c";
+    // try {
+    //   // Get the CUSTOMER_URL from environment variables or use the default
+    //   const CUSTOMER_URL =
+    //     process.env.NEXT_PUBLIC_CUSTOMER_URL || "https://api.stage.seo-ai.kz/c";
 
-      // Send GET request to the analysis endpoint
-      const response = await fetch(
-        `${CUSTOMER_URL}/v1/card/analysis?card_id=${item.id}`
-      );
+    //   // Send GET request to the analysis endpoint
+    //   const response = await fetch(
+    //     `${CUSTOMER_URL}/v1/card/analysis?card_id=${item.id}`
+    //   );
 
-      // Check if the response is ok
-      if (!response.ok) {
-        console.error(
-          `API responded with status: ${response.status} ${response.statusText}`
-        );
-        throw new Error(`API error: ${response.status} ${response.statusText}`);
-      }
+    //   // Check if the response is ok
+    //   if (!response.ok) {
+    //     console.error(
+    //       `API responded with status: ${response.status} ${response.statusText}`
+    //     );
+    //     throw new Error(`API error: ${response.status} ${response.statusText}`);
+    //   }
 
-      // Get the response text first to debug
-      const responseText = await response.text();
-      console.log("Raw API response text:", responseText);
+    //   // Get the response text first to debug
+    //   const responseText = await response.text();
+    //   console.log("Raw API response text:", responseText);
 
-      // Try to parse the JSON
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("Failed to parse JSON response:", parseError);
-        console.error("Response text:", responseText);
-        throw new Error("Invalid JSON response from API");
-      }
+    //   // Try to parse the JSON
+    //   let data;
+    //   try {
+    //     data = JSON.parse(responseText);
+    //   } catch (parseError) {
+    //     console.error("Failed to parse JSON response:", parseError);
+    //     console.error("Response text:", responseText);
+    //     throw new Error("Invalid JSON response from API");
+    //   }
 
-      // Log the complete response for debugging
-      console.log("Raw card analysis response:", data);
+    //   // Log the complete response for debugging
+    //   console.log("Raw card analysis response:", data);
 
-      // Apply transformation logic to ensure miss.words exists
-      if (!data.analysis) {
-        console.warn("Analysis object is missing from the API response");
-        data.analysis = {};
-      }
+    //   // Apply transformation logic to ensure miss.words exists
+    //   if (!data.analysis) {
+    //     console.warn("Analysis object is missing from the API response");
+    //     data.analysis = {};
+    //   }
 
-      if (!data.analysis.miss) {
-        console.warn("miss object is missing from the API response");
-        data.analysis.miss = { count: 0, coverage: 0, words: [] };
-      } else if (!data.analysis.miss.words) {
-        console.warn("miss.words array is missing from the API response");
-        data.analysis.miss.words = [];
-      }
+    //   if (!data.analysis.miss) {
+    //     console.warn("miss object is missing from the API response");
+    //     data.analysis.miss = { count: 0, coverage: 0, words: [] };
+    //   } else if (!data.analysis.miss.words) {
+    //     console.warn("miss.words array is missing from the API response");
+    //     data.analysis.miss.words = [];
+    //   }
 
-      // Log the miss.words array for debugging
-      console.log("Missed words array:", data.analysis.miss.words);
+    //   // Log the miss.words array for debugging
+    //   console.log("Missed words array:", data.analysis.miss.words);
 
-      if (data.output && data.output.result) {
-        console.log("Analysis with description data:", data);
+    //   if (data.output && data.output.result) {
+    //     console.log("Analysis with description data:", data);
 
-        // Update the current item type to "both" to show both analysis and description blocks
-        item.type = "both";
+    //     // Update the current item type to "both" to show both analysis and description blocks
+    //     item.type = "both";
 
-        // Add the item to processing with type "both" for "анализ и описание"
-        addProcessingItem("both", {
-          sku: item.sku,
-          competitorSku: item.competitorSku || "",
-          cardId: item.id,
-          cardData: {
-            ...data.card,
-            type_id: 3, // Set type_id to 3 for "both" (Анализ и описание)
-          },
-        });
+    //     // Add the item to processing with type "both" for "анализ и описание"
+    //     addProcessingItem("both", {
+    //       sku: item.sku,
+    //       competitorSku: item.competitorSku || "",
+    //       cardId: item.id,
+    //       cardData: {
+    //         ...data.card,
+    //         type_id: 3, // Set type_id to 3 for "both" (Анализ и описание)
+    //       },
+    //     });
 
-        // Force a re-render to show both analysis and description blocks
-        // Expand all relevant sections to show both analysis and description content
-        setExpandedSections({
-          results: true, // Show analysis results
-          topKeywords: true, // Show top keywords
-          usedKeywords: true, // Show used keywords
-          missedKeywords: true, // Show missed keywords
-          irrelevantKeywords: true, // Show irrelevant keywords
-          description: true, // Show description
-        });
-      } else {
-        console.error(
-          "Failed to get analysis with description:",
-          data?.output?.message_ru || data?.output?.message || "Unknown error"
-        );
-        setShowModal(true);
-      }
-    } catch (error) {
-      console.error("Error fetching analysis with description:", error);
-      setShowModal(true);
-    }
+    //     // Force a re-render to show both analysis and description blocks
+    //     // Expand all relevant sections to show both analysis and description content
+    //     setExpandedSections({
+    //       results: true, // Show analysis results
+    //       topKeywords: true, // Show top keywords
+    //       usedKeywords: true, // Show used keywords
+    //       missedKeywords: true, // Show missed keywords
+    //       irrelevantKeywords: true, // Show irrelevant keywords
+    //       description: true, // Show description
+    //     });
+    //   } else {
+    //     console.error(
+    //       "Failed to get analysis with description:",
+    //       data?.output?.message_ru || data?.output?.message || "Unknown error"
+    //     );
+    //     setShowModal(true);
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching analysis with description:", error);
+    // }
+    setShowModal(true);
   };
 
   const handleContinue = async () => {
@@ -295,15 +295,15 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
 
     try {
       // Запускаем процесс создания описания
-      const result = await startDescription({
+      const result = await startAnalysisDescription({
         card_id: item.id,
       }).unwrap();
 
       if (result.output.result) {
         // Добавляем элемент в обработку с типом "description"
-        addProcessingItem("description", {
+        addProcessingItem("both", {
           sku: item.sku,
-          competitorSku: item.competitorSku || "",
+          competitorSku: item.competitorSku || undefined,
           cardId: item.id,
           cardData: descriptionData?.card || item,
         });
@@ -828,7 +828,9 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                     isExpanded={expandedSections["topKeywords"]}
                     onToggle={toggleSection}
                     isMobile={false}
-                    onMaximize={(title) => handleMaximize("topKeywords", title)}
+                    onMaximize={(section, title) =>
+                      handleMaximize(section, title)
+                    }
                   />
                 </div>
 
@@ -1027,7 +1029,8 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 section="topKeywords"
                 isExpanded={expandedSections["topKeywords"]}
                 onToggle={toggleSection}
-                isMobile={true}
+                isMobile={false}
+                onMaximize={(section, title) => handleMaximize(section, title)}
               />
 
               {/* Использованные ключевые слова */}

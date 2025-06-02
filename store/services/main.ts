@@ -166,6 +166,14 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ["Process", "Archive"], // Invalidate both Process and Archive tags
     }),
+    startAnalysisDescription: builder.mutation<IResponseStartDescription, any>({
+      query: (body) => ({
+        url: "/v1/static/card/analysis",
+        method: "PUT",
+        data: body,
+      }),
+      invalidatesTags: ["Process", "Archive"], // Invalidate both Process and Archive tags
+    }),
     getProcessList: builder.query<IProcessResponse, void>({
       query: () => ({
         url: "/v2/process",
@@ -233,6 +241,7 @@ export const {
   usePostCardMutation,
   useStartAnalysisMutation,
   useStartDescriptionMutation,
+  useStartAnalysisDescriptionMutation,
   useGetProcessListQuery,
   useGetCardAnalysisQuery,
   useGetCardDescriptionQuery,

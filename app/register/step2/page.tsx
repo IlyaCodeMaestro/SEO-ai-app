@@ -4,7 +4,7 @@ import type React from "react";
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import AuthInput from "@/components/provider/auth-input";
-import { registerUser } from "@/utils/authService";
+import { registerUser, checkRegistration2 } from "@/utils/authService";
 import { useSearchParams } from "next/navigation";
 
 // Create a separate component that uses useSearchParams
@@ -15,6 +15,7 @@ function RegisterForm() {
   const [verificationCode, setVerificationCode] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [emailCode, setEmailCode] = useState(false);
 
   const searchParams = useSearchParams();
 
@@ -34,17 +35,22 @@ function RegisterForm() {
 
     try {
       setIsLoading(true);
-      await registerUser({
+      console.log(email, login, password, phone, name, accept);
+      const res = await checkRegistration2({
         login,
         password,
         email,
         phone: phone,
-        code_id: 6,
+        phone_code_id: 1,
         name: name,
-        code: verificationCode,
+        // code: verificationCode,
         accept: accept,
-        url: "73G2V0DA",
+        // url: "73G2V0DA",
       });
+
+      if (res.output.result) {
+        setEmailCode(true);
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -52,8 +58,97 @@ function RegisterForm() {
     }
   };
 
+  const handleSubmitFinal = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Пароли не совпадают");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      console.log(email, login, password, phone, name, accept);
+      const res = await registerUser({
+        login,
+        password,
+        email,
+        phone: phone,
+        phone_code_id: 1,
+        name: name,
+        code: verificationCode,
+        accept: accept,
+        install_url: "google.com",
+      });
+
+      if (res.output.result) {
+        window.location.href = "/login";
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (!emailCode) {
+    return (
+      <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
+        <AuthInput
+          icon="user"
+          type="text"
+          placeholder="Логин"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+          required
+        />
+
+        <AuthInput
+          icon="lock"
+          type="password"
+          placeholder="Пароль"
+          showPasswordToggle
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <AuthInput
+          icon="lock"
+          type="password"
+          placeholder="Повторить пароль"
+          showPasswordToggle
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+
+        <p className="text-xs sm:text-sm text-gray-600 text-center">
+          Код отправлен Вам на электронную почту
+        </p>
+
+        <div className="h-5">
+          {error && (
+            <div className="text-red-500 text-xs sm:text-sm text-center">
+              {error}
+            </div>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent rounded-full shadow-sm text-xs sm:text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50"
+        >
+          {isLoading ? "Загрузка..." : "Зарегистрироваться"}
+        </button>
+      </form>
+    );
+  }
+
   return (
-    <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmitFinal}>
       <AuthInput
         icon="user"
         type="text"

@@ -46,28 +46,31 @@ export function ArchiveView({
   // console.log("Processed card IDs:", processedCardIds);
 
   // Filter archive data to only show items that have been processed by the user
-  const filteredArchiveData = archiveData && {
-    ...archiveData,
-    card_dates: archiveData.card_dates
-      .map((dateGroup) => ({
-        ...dateGroup,
-        cards: dateGroup.cards.filter((card) =>
-          processedCardIds.includes(card.id)
-        ),
-      }))
-      .filter((dateGroup) => dateGroup.cards.length > 0),
-  };
+  console.log(archiveData);
+  // const filteredArchiveData =
+  //   archiveData && archiveData.card_dates.length > 0
+  //     ? {
+  //         ...archiveData,
+  //         card_dates: archiveData?.card_dates
+  //           .map((dateGroup) => ({
+  //             ...dateGroup,
+  //             cards: dateGroup.cards.filter((card) =>
+  //               processedCardIds.includes(card.id)
+  //             ),
+  //           }))
+  //           .filter((dateGroup) => dateGroup.cards.length > 0),
+  //       }
+  //     : null;
 
-  console.log("zxc", archiveData);
-  console.log("qwe", filteredArchiveData);
+  // console.log("zxc", archiveData);
+  // console.log("qwe", filteredArchiveData);
 
   // Функция для безопасной проверки пустого архива
   const isArchiveEmpty = () => {
     return (
-      !filteredArchiveData ||
-      !filteredArchiveData.card_dates ||
-      filteredArchiveData.card_dates.length === 0 ||
-      processedCardIds.length === 0
+      !archiveData ||
+      !archiveData.card_dates ||
+      archiveData.card_dates.length === 0
     );
   };
 
@@ -122,7 +125,7 @@ export function ArchiveView({
     checkScrollability();
     window.addEventListener("resize", checkScrollability);
     return () => window.removeEventListener("resize", checkScrollability);
-  }, [filteredArchiveData]);
+  }, [archiveData]);
 
   const handleScroll = () => {
     checkScrollability();
@@ -250,7 +253,7 @@ export function ArchiveView({
           </div>
         ) : (
           <div>
-            {filteredArchiveData.card_dates.map((dateGroup) => (
+            {archiveData?.card_dates.map((dateGroup) => (
               <div key={dateGroup.id} className="mb-6">
                 <h3 className="text-[#333333] dark:text-white font-medium mb-4 text-lg md:text-lg sm:text-base">
                   {formatDate(dateGroup.date)}
