@@ -93,7 +93,7 @@ export function MissedKeywordsTable({
   return (
     <div
       className={`bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden ${
-        !isExpanded ? "h-[182px]" : "h-full"
+        !isExpanded ? "h-[193px]" : "h-full"
       }`}
     >
       <div className="p-4 relative">

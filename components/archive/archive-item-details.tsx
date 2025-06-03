@@ -732,13 +732,16 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
 
               {/* Кнопка "Написать описание" */}
               <div className="flex justify-center mt-4 sm:mt-6">
-                <button
-                  onClick={handleWriteDescription}
-                  className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[50px] sm:h-[50px] border border-white shadow-around inline-block px-4 sm:px-8 text-base sm:text-base max-w-full whitespace-normal text-center"
-                  style={{ width: "fit-content", wordBreak: "break-word" }}
-                >
-                  {analysisData?.button?.text || t("archive.write.description")}
-                </button>
+                {analysisData?.button?.visible === true && (
+                  <button
+                    onClick={handleWriteDescription}
+                    className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[50px] sm:h-[50px] border border-white shadow-around inline-block px-4 sm:px-8 text-base sm:text-base max-w-full whitespace-normal text-center"
+                    style={{ width: "fit-content", wordBreak: "break-word" }}
+                  >
+                    {analysisData?.button?.text ||
+                      t("archive.write.description")}
+                  </button>
+                )}
               </div>
             </>
           )}
@@ -823,6 +826,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 {/* Ключевые слова ТОП позиций */}
                 <div className="space-y-4 sm:space-y-6">
                   <TopKeywords
+                    height="193px"
                     keywords={analysisResults.topKeywords}
                     section="topKeywords"
                     isExpanded={expandedSections["topKeywords"]}
@@ -993,13 +997,16 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               />
               {/* Кнопка "Написать описание" */}
               <div className="flex justify-center mt-6">
-                <button
-                  onClick={handleWriteDescription}
-                  className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[50px] text-sm border border-white shadow-around inline-block px-8"
-                  style={{ width: "fit-content" }}
-                >
-                  {analysisData?.button?.text || t("archive.write.description")}
-                </button>
+                {analysisData?.button?.visible === true && (
+                  <button
+                    onClick={handleWriteDescription}
+                    className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[50px] text-sm border border-white shadow-around inline-block px-8"
+                    style={{ width: "fit-content" }}
+                  >
+                    {analysisData?.button?.text ||
+                      t("archive.write.description")}
+                  </button>
+                )}
               </div>
             </div>
           )}

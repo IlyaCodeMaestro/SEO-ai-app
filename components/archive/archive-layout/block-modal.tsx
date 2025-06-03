@@ -54,10 +54,8 @@ export function ArchiveItemDetailsModal({
         }}
       >
         {/* Заголовок с кнопкой закрытия */}
-        <div className="flex items-center justify-between mb-4 flex-shrink-0">
-          <h2 className="text-lg font-medium text-black dark:text-white flex-1 text-center">
-            {title}
-          </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-medium text-black dark:text-white flex-1 text-center"></h2>
           <button
             onClick={onClose}
             className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white flex-shrink-0"

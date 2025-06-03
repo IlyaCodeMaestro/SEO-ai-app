@@ -20,6 +20,7 @@ export function TopKeywords({
   isMobile,
   keywords = [],
   onMaximize,
+  height = "225px",
 }: TopKeywordsProps) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState<string | null>(null);
@@ -114,7 +115,10 @@ export function TopKeywords({
   }
 
   return (
-    <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden h-[225px]">
+    <div
+      className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden"
+      style={{ height }}
+    >
       <div className="relative px-4 py-3 flex flex-col sm:flex-row items-center">
         <h3 className="text-center font-medium text-base mx-auto w-max">
           {t("top.keywords.title")}

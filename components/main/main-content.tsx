@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   useGetMainInfoQuery,
   useGetProcessListQuery,
+  useGetProfileQuery,
 } from "@/store/services/main";
 import { useLanguage } from "../provider/language-provider";
 
@@ -20,6 +21,7 @@ export function MainContent({
 }: MainContentProps) {
   const { processingItems } = useProcessingContext();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+    const { data: profileData} = useGetProfileQuery();
   const { data: mainData, isLoading: mainLoading } = useGetMainInfoQuery(
     undefined,
     {
@@ -78,7 +80,7 @@ export function MainContent({
           {t("common.main")}
         </h2>
         <h1 className="text-[25px] md:text-xl font-normal mb-4">
-          {t("common.greeting")}
+          {t("common.greeting")} {profileData?.user.name || "Загрузка..."}
         </h1>
 
         {/* First card */}
