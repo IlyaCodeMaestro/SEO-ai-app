@@ -154,8 +154,7 @@ export function ProductDescriptionForm({
                     </p>
                   )}
                 </div>
-                <div className="text-xs text-gray-500 mt-3 text-center px-4">
-                  <br />
+                <div className="text-xs text-gray-500  text-center px-4">
                   {t("product.description.note")}
                 </div>
               </div>
@@ -232,8 +231,7 @@ export function ProductDescriptionForm({
                   </p>
                 )}
               </div>
-              <div className="text-xs text-gray-500 mt-3 text-center px-4">
-                <br />
+              <div className="text-xs text-gray-500  text-center px-4">
                 {t("product.description.note")}
               </div>
             </div>

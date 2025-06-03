@@ -156,8 +156,7 @@ export function ProductAnalysisForm({
                     </p>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-3 text-center px-4">
-                  <br />
+                <p className="text-xs text-gray-500  text-center px-4">
                   {t("product.analysis.note")}
                 </p>
               </div>
@@ -231,8 +230,7 @@ export function ProductAnalysisForm({
                   </p>
                 )}
               </div>
-              <p className="text-xs text-gray-500 mt-3 text-center px-4">
-                <br />
+              <p className="text-xs text-gray-500   text-center px-4">
                 {t("product.analysis.note")}
               </p>
             </div>
