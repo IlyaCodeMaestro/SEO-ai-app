@@ -58,7 +58,7 @@ export const translations = {
     "common.archive": "Архив",
     "common.notifications": "Уведомления",
     "common.cabinet": "Личный кабинет",
-    "common.partner": "Партнерская программа",
+    "common.partner": "Реферальная программа",
     "common.feedback": "Отзыв",
     "common.greeting": "Здравствуйте, ",
     "common.processing": "В обработке...",

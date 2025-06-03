@@ -351,19 +351,19 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                   </div>
                   <div className="text-sm text-gray-600 dark:text-white">
                     <p>
-                      {t("tariff.next.payment")}{" "}
-                      {formatDateByLanguage(
-                        tariffsData.tariff.end_time,
-                        language
-                      )}
-                    </p>
-                    <p>
                       {t("tariff.analysis.remaining")}{" "}
                       {tariffsData.tariff.analyses} {t("tariff.pieces")}.
                     </p>
                     <p>
                       {t("tariff.description.remaining")}{" "}
                       {tariffsData.tariff.descriptions} {t("tariff.pieces")}.
+                    </p>
+                    <p>
+                      {t("tariff.next.payment")}{" "}
+                      {formatDateByLanguage(
+                        tariffsData.tariff.end_time,
+                        language
+                      )}
                     </p>
                   </div>
                 </div>
@@ -604,19 +604,19 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                   </div>
                   <div className="text-sm text-gray-600 dark:text-white">
                     <p>
-                      {t("tariff.next.payment")}{" "}
-                      {formatDateByLanguage(
-                        tariffsData.tariff.end_time,
-                        language
-                      )}
-                    </p>
-                    <p>
                       {t("tariff.analysis.remaining")}{" "}
                       {tariffsData.tariff.analyses} {t("tariff.pieces")}.
                     </p>
                     <p>
                       {t("tariff.description.remaining")}{" "}
                       {tariffsData.tariff.descriptions} {t("tariff.pieces")}.
+                    </p>
+                    <p>
+                      {t("tariff.next.payment")}{" "}
+                      {formatDateByLanguage(
+                        tariffsData.tariff.end_time,
+                        language
+                      )}
                     </p>
                   </div>
                 </div>
