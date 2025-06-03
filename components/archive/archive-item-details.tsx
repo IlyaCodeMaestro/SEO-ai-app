@@ -828,9 +828,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                     isExpanded={expandedSections["topKeywords"]}
                     onToggle={toggleSection}
                     isMobile={false}
-                    onMaximize={(section, title) =>
-                      handleMaximize(section, title)
-                    }
+                    onMaximize={(title) => handleMaximize("topKeywords", title)}
                   />
                 </div>
 
@@ -1029,8 +1027,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 section="topKeywords"
                 isExpanded={expandedSections["topKeywords"]}
                 onToggle={toggleSection}
-                isMobile={false}
-                onMaximize={(section, title) => handleMaximize(section, title)}
+                isMobile={true}
               />
 
               {/* Использованные ключевые слова */}
