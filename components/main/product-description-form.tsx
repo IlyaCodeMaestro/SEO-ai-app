@@ -119,6 +119,7 @@ export function ProductDescriptionForm({
                 </p>
                 <div>
                   <Input
+                    inputMode="numeric"
                     id="sku"
                     className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
                       errors.sku ? "border-red-500" : ""
@@ -141,6 +142,7 @@ export function ProductDescriptionForm({
                 </p>
                 <div>
                   <Input
+                    inputMode="numeric"
                     id="competitorSku"
                     className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
                       errors.competitorSku ? "border-red-500" : ""
@@ -197,6 +199,7 @@ export function ProductDescriptionForm({
               <div>
                 <Input
                   id="sku"
+                  inputMode="numeric"
                   className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
                     errors.sku ? "border-red-500" : ""
                   }`}
@@ -218,6 +221,7 @@ export function ProductDescriptionForm({
               </p>
               <div>
                 <Input
+                  inputMode="numeric"
                   id="competitorSku"
                   className={`mt-1 bg-gray-100 rounded-full  h-[45px] text-center max-w-[320px] mx-auto ${
                     errors.competitorSku ? "border-red-500" : ""
