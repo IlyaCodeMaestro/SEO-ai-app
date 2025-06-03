@@ -223,6 +223,21 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
         id: apiId,
       }).unwrap();
 
+      // Автоматически включаем автосписание при подключении нового тарифа
+      try {
+        await reconnectTariff({
+          auto_reconnect: true,
+        }).unwrap();
+
+        setAutoRenewal(true);
+      } catch (autoRenewalError) {
+        // Если не удалось включить автосписание, показываем предупреждение, но не блокируем основной процесс
+        console.warn(
+          "Не удалось автоматически включить автосписание:",
+          autoRenewalError
+        );
+      }
+
       toast({
         title: t("success"),
         description: t("tariff.buy.success"),
@@ -306,7 +321,6 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
         return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC] ";
     }
   };
-
   // Mobile view
   if (isMobile) {
     return (
@@ -339,33 +353,31 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
             </div>
           ) : tariffsData?.tariff ? (
             <div className="mb-6 bg-gray-100 p-4 border rounded-3xl dark:bg-[#2C2B2B] dark:border-none">
-              <div className="flex justify-between items-start mb-1">
-                <div>
-                  <div className="mb-1">
-                    <span className="text-gray-600 dark:text-white">
-                      {t("tariff.my")}
-                    </span>
-                    <span className="font-bold text-lg ml-2">
-                      {translateApiContent(tariffsData.tariff.title)}
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-600 dark:text-white">
-                    <p>
-                      {t("tariff.analysis.remaining")}{" "}
-                      {tariffsData.tariff.analyses} {t("tariff.pieces")}.
-                    </p>
-                    <p>
-                      {t("tariff.description.remaining")}{" "}
-                      {tariffsData.tariff.descriptions} {t("tariff.pieces")}.
-                    </p>
-                    <p>
-                      {t("tariff.next.payment")}{" "}
-                      {formatDateByLanguage(
-                        tariffsData.tariff.end_time,
-                        language
-                      )}
-                    </p>
-                  </div>
+              <div className="mb-3">
+                <div className="flex items-baseline justify-between mb-2">
+                  <span className="text-gray-600 dark:text-white text-sm">
+                    {t("tariff.my")}
+                  </span>
+                  <span className="font-bold text-lg">
+                    {translateApiContent(tariffsData.tariff.title)}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-white space-y-1">
+                  <p>
+                    {t("tariff.next.payment")}{" "}
+                    {formatDateByLanguage(
+                      tariffsData.tariff.end_time,
+                      language
+                    )}
+                  </p>
+                  <p>
+                    {t("tariff.analysis.remaining")}{" "}
+                    {tariffsData.tariff.analyses} {t("tariff.pieces")}.
+                  </p>
+                  <p>
+                    {t("tariff.description.remaining")}{" "}
+                    {tariffsData.tariff.descriptions} {t("tariff.pieces")}.
+                  </p>
                 </div>
               </div>
             </div>
@@ -376,21 +388,23 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
           )}
 
           {/* Auto-renewal toggle */}
-          <div className="flex items-center justify-between mt-8 mb-6">
-            <span className="text-gray-600 dark:text-white">
-              {t("tariff.auto.renewal")}
-            </span>
-            <div
-              className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors duration-300 ${
-                autoRenewal ? "bg-[#4361EE]" : "bg-gray-300"
-              }`}
-              onClick={handleAutoRenewalToggle}
-            >
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600 dark:text-white font-medium">
+                {t("tariff.auto.renewal")}
+              </span>
               <div
-                className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
-                  autoRenewal ? "translate-x-6" : ""
+                className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors duration-300 ${
+                  autoRenewal ? "bg-[#4361EE]" : "bg-gray-300"
                 }`}
-              />
+                onClick={handleAutoRenewalToggle}
+              >
+                <div
+                  className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
+                    autoRenewal ? "translate-x-6" : ""
+                  }`}
+                />
+              </div>
             </div>
           </div>
 
@@ -593,16 +607,23 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
           ) : tariffsData?.tariff ? (
             <div className="mb-6 bg-gray-100 p-4 border rounded-3xl dark:bg-[#2C2B2B] dark:border-none">
               <div className="flex justify-between items-start">
-                <div>
-                  <div className="mb-1">
-                    <span className="text-gray-600 dark:text-white">
+                <div className="flex-1">
+                  <div className="flex items-baseline justify-between mb-2">
+                    <span className="text-gray-600 dark:text-white text-sm">
                       {t("tariff.my")}
                     </span>
-                    <span className="font-bold text-lg ml-2">
+                    <span className="font-bold text-lg">
                       {translateApiContent(tariffsData.tariff.title)}
                     </span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-white">
+                  <div className="text-sm text-gray-600 dark:text-white space-y-1">
+                    <p>
+                      {t("tariff.next.payment")}{" "}
+                      {formatDateByLanguage(
+                        tariffsData.tariff.end_time,
+                        language
+                      )}
+                    </p>
                     <p>
                       {t("tariff.analysis.remaining")}{" "}
                       {tariffsData.tariff.analyses} {t("tariff.pieces")}.
@@ -610,13 +631,6 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                     <p>
                       {t("tariff.description.remaining")}{" "}
                       {tariffsData.tariff.descriptions} {t("tariff.pieces")}.
-                    </p>
-                    <p>
-                      {t("tariff.next.payment")}{" "}
-                      {formatDateByLanguage(
-                        tariffsData.tariff.end_time,
-                        language
-                      )}
                     </p>
                   </div>
                 </div>
