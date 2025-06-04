@@ -3,10 +3,15 @@
 import { useLanguage } from "@/components/provider/language-provider";
 import { ChevronDown, ChevronUp, Copy, Maximize2 } from "lucide-react";
 import Image from "next/image";
+import {
+  useGetCardAnalysisQuery,
+  useGetCardDescriptionQuery,
+} from "@/store/services/main";
 
 interface DescriptionBlockProps {
   title: string;
   description: string;
+  descriptionLength?: number; // добавить опциональный проп
   section: string;
   isExpanded: boolean;
   onToggle: (section: string) => void;
@@ -16,11 +21,14 @@ interface DescriptionBlockProps {
   fullWidth?: boolean;
   isMobile: boolean;
   onMaximize?: (title: string) => void;
+  cardId?: number; // добавить новый проп для ID карточки
+  itemType?: "analysis" | "description" | "both"; // добавить тип элемента
 }
 
 export function DescriptionBlock({
   title,
   description,
+  descriptionLength,
   section,
   isExpanded,
   onToggle,
@@ -30,8 +38,31 @@ export function DescriptionBlock({
   fullWidth = false,
   isMobile,
   onMaximize,
+  cardId,
+  itemType,
 }: DescriptionBlockProps) {
   const { t } = useLanguage();
+
+  // Определяем, какие API запросы нужно делать
+  const shouldFetchAnalysis = itemType === "analysis" || itemType === "both";
+  const shouldFetchDescription =
+    itemType === "description" || itemType === "both";
+
+  // Получаем данные через API
+  const { data: analysisData } = useGetCardAnalysisQuery(cardId!, {
+    skip: !shouldFetchAnalysis || !cardId,
+  });
+
+  const { data: descriptionData } = useGetCardDescriptionQuery(cardId!, {
+    skip: !shouldFetchDescription || !cardId,
+  });
+
+  // Вычисляем количество символов из API данных
+  const symbolsCount =
+    descriptionLength ||
+    descriptionData?.description?.length ||
+    analysisData?.analysis?.description?.length ||
+    0;
 
   if (isMobile) {
     return (
@@ -78,12 +109,19 @@ export function DescriptionBlock({
 
           {/* Основной текст — выравниваем по левому краю */}
           <p
-            className={`text-sm leading-relaxed text-left ${
+            className={`text-xs leading-relaxed text-left ${
               isExpanded ? "" : "line-clamp-3"
             } whitespace-pre-wrap`}
           >
             {description}
           </p>
+
+          {/* Количество символов - показываем только при расширенном состоянии */}
+          {isExpanded && symbolsCount > 0 && (
+            <p className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+              {t("symbols")} {symbolsCount}
+            </p>
+          )}
 
           {/* Иконка раскрытия / скрытия */}
           <div className="flex justify-center mt-2">

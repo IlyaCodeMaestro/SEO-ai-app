@@ -442,7 +442,21 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
             </div>
           </div>
 
-          {/* Удалить аккаунт */}
+        {/* {Выйти} */}
+          <div
+            className={`${getItemStyle(
+              "exit-account"
+            )} p-6 mb-4 h-[70px] cursor-pointer`}
+            onClick={handleButtonClick("exit-account", "exit-account")}
+          >
+            <div className="flex justify-between items-center h-full">
+              <span className="text-base md:text-base text-black dark:text-white leading-tight">
+                {t("exit-account")}
+              </span>
+              <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white flex-shrink-0" />
+            </div>
+          </div>
+            {/* Удалить аккаунт */}
           <div
             className={`${getItemStyle(
               "delete-account"

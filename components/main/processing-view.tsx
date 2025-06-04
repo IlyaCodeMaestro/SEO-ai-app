@@ -86,7 +86,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
   const getTypeText = (type: string | number) => {
     if (typeof type === "string") {
       if (type === "both") {
-        return "Анализ и описание";
+        return t("processing.analysys-description");
       }
       return type === "analysis"
         ? t("processing.analysis")
@@ -94,7 +94,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
     } else {
       // For numeric type_id values
       if (type === 3) {
-        return "Анализ и описание";
+         return t("processing.analysys-description");
       }
       return type === 1
         ? t("processing.description")
@@ -172,7 +172,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
                     className="bg-white rounded-xl p-4 shadow-sm border mb-4 dark:bg-[#333333] "
                   >
                     <div className="flex items-center">
-                      <div className="w-16 h-16 bg-gray-200 rounded-md mr-3 overflow-hidden">
+                      <div className="w-32 h-24 bg-gray-200 rounded-md mr-3 overflow-hidden">
                         {card.images && card.images.length > 0 ? (
                           <img
                             src={`https://upload.seo-ai.kz/test/images/${card.images[0].image}`}
@@ -182,15 +182,13 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
                         ) : null}
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">{card.name}</p>
+                        <p className="font-medium text:sm">{card.name}</p>
                         <p className="text-sm text-gray-500">
                           SKU: {card.article}
                         </p>
                       </div>
-                      <div className="flex items-center">
-                        <span className="text-sm text-blue-600">
-                          {getTypeText(card.type_id)}
-                        </span>
+                      <div className="ml-2 max-w-[100px]  text-md text-blue-600">
+                        {getTypeText(card.type_id)}
                       </div>
                     </div>
                   </div>

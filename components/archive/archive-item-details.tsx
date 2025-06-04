@@ -23,6 +23,7 @@ import {
   useStartDescriptionMutation,
   useStartAnalysisDescriptionMutation,
 } from "@/store/services/main";
+import { useRouter } from "next/navigation";
 
 interface ArchiveItemDetailsProps {
   onClose: () => void;
@@ -50,7 +51,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   // Determine which API queries to use based on item type
   const shouldFetchAnalysis = item.type === "analysis" || item.type === "both";
   const shouldFetchDescription = item.type === "description";
-
+  const router = useRouter();
   // Fetch analysis data if needed
   const {
     data: analysisData,
@@ -155,7 +156,13 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
         name: card.name,
         sku: card.article,
         image: card.images?.[0]?.image,
-      })) || [],
+      })) ||
+      analysisData?.cards?.slice(0, 10).map((card) => ({
+        name: card.name,
+        sku: card.article,
+        image: card.images?.[0]?.image,
+      })) ||
+      [],
     usedKeywords:
       (
         analysisData?.analysis?.used?.words ||
@@ -187,6 +194,10 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
       descriptionData?.description?.text ||
       analysisData?.analysis?.description?.text ||
       "Описание товара отсутствует",
+    descriptionLength:
+      descriptionData?.description?.length ||
+      analysisData?.analysis?.description?.length ||
+      0,
   };
 
   // Функция для переключения состояния раскрытия секции
@@ -311,7 +322,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
         // Закрываем панель деталей и переходим на главную
         onClose();
         // Переключаемся на вкладку "main"
-        window.location.hash = "main";
+        router.push("/dashboard/main");
       } else {
         console.error(
           "Failed to start description:",
@@ -613,6 +624,9 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               <p className="text-lg text-black dark:text-white leading-relaxed whitespace-pre-wrap">
                 {analysisResults.description}
               </p>
+              <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                {t("symbols")} {analysisResults.descriptionLength}
+              </p>
             </div>
           </div>
         );
@@ -788,6 +802,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 <DescriptionBlock
                   title="Описание карточки товара"
                   description={analysisResults.description}
+                  descriptionLength={analysisResults.descriptionLength}
                   section="description"
                   isExpanded={expandedSections["description"]}
                   onToggle={toggleSection}
@@ -940,6 +955,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               <DescriptionBlock
                 title="Описание карточки товара"
                 description={analysisResults.description}
+                descriptionLength={analysisResults.descriptionLength}
                 section="description"
                 isExpanded={expandedSections["description"]}
                 onToggle={toggleSection}
@@ -1054,6 +1070,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               <DescriptionBlock
                 title="Описание карточки товара"
                 description={analysisResults.description}
+                descriptionLength={analysisResults.descriptionLength}
                 section="description"
                 isExpanded={expandedSections["description"]}
                 onToggle={toggleSection}

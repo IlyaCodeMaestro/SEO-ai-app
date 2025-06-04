@@ -95,10 +95,9 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
               </button>
             </div>
           </div>
-          <div className="ml-2 flex-shrink-0">
-            <div className="text-md text-blue-600 whitespace-nowrap">
-              {formatStatusText(getItemStatus(item))}
-            </div>
+
+          <div className="ml-2 max-w-[100px]  text-md text-blue-600">
+            {formatStatusText(getItemStatus(item))}
           </div>
         </div>
       </div>

@@ -1,8 +1,11 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import type { IDeleteAccountInfoResponse, IDeleteAccountResponse } from "../types"
-import { axiosBaseQuery } from "@/axios/axiosBaseQuery"
+import { createApi } from "@reduxjs/toolkit/query/react";
+import type {
+  IDeleteAccountInfoResponse,
+  IDeleteAccountResponse,
+} from "../types";
+import { axiosBaseQuery } from "@/axios/axiosBaseQuery";
 
-const BASE_URL = "https://api.stage.seo-ai.kz/c"
+const BASE_URL = "https://api.stage.seo-ai.kz/c";
 
 export const profileApi = createApi({
   reducerPath: "profileApi",
@@ -35,8 +38,21 @@ export const profileApi = createApi({
       }),
       invalidatesTags: ["DeleteRequest", "Profile"],
     }),
-  }),
-})
 
-export const { useGetDeleteAccountInfoQuery, useRequestDeleteAccountMutation, useConfirmDeleteAccountMutation } =
-  profileApi
+    // Отмена запроса на удаление аккаунта
+    cancelDeleteAccount: builder.mutation<IDeleteAccountResponse, void>({
+      query: () => ({
+        url: "/v1/profile/delete/cancel",
+        method: "POST",
+      }),
+      invalidatesTags: ["DeleteRequest", "Profile"],
+    }),
+  }),
+});
+
+export const {
+  useGetDeleteAccountInfoQuery,
+  useRequestDeleteAccountMutation,
+  useConfirmDeleteAccountMutation,
+  useCancelDeleteAccountMutation,
+} = profileApi;

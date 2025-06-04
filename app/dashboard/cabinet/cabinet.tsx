@@ -11,6 +11,7 @@ import { ReferralStatementPanel } from "@/components/cabinet/referral-statement-
 import { TariffPanel } from "@/components/cabinet/tariff-panel";
 import { ActiveDevicesPanel } from "@/components/cabinet/active-devices-panel";
 import { DeleteAccountPanel } from "@/components/cabinet/delete-account-panel";
+import { ExitAccountPanel } from "@/components/cabinet/exit-account-panel";
 
 type ActivePanel =
   | null
@@ -25,6 +26,7 @@ type ActivePanel =
   | "referral-statement"
   | "tariff"
   | "active-devices"
+  | "exit-account"
   | "delete-account"
   | "standard-program"
   | "premium-program"
@@ -105,14 +107,14 @@ export function Cabinet() {
       return <BonusExchangePanel onClose={handleClosePanel} />;
     } else if (activePanel === "bonus-statement") {
       return <BonusStatementPanel onClose={handleClosePanel} />;
-    } else if (activePanel === "bonus-statement") {
-      return <BonusStatementPanel onClose={handleClosePanel} />;
     } else if (activePanel === "referral-statement") {
       return <ReferralStatementPanel onClose={handleClosePanel} />;
     } else if (activePanel === "tariff") {
       return <TariffPanel onClose={handleClosePanel} />;
     } else if (activePanel === "active-devices") {
       return <ActiveDevicesPanel onClose={handleClosePanel} />;
+    } else if (activePanel === "exit-account") {
+      return <ExitAccountPanel onClose={handleClosePanel} />;
     } else if (activePanel === "delete-account") {
       return <DeleteAccountPanel onClose={handleClosePanel} />;
     }

@@ -123,11 +123,11 @@ function RegisterForm() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-
         <p className="text-xs sm:text-sm text-gray-600 text-center">
-          Код отправлен Вам на электронную почту
+          Пароль должен содержать не менее 8 символов, включая как минимум одну
+          строчную букву, одну заглавную букву, одну цифру и один специальный
+          символ (например, !, @, #, $, %, _ и т.п.).
         </p>
-
         <div className="h-5">
           {error && (
             <div className="text-red-500 text-xs sm:text-sm text-center">

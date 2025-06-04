@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        "xs-range": { raw: "(min-width: 405px) and (max-width: 639px)" },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -49,17 +52,18 @@ const config = {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
       },
       boxShadow: {
-        'bottom-only': '0px 10px 20px rgba(0, 0, 0, 0.3)',  
-        'intense': '0px 10px 40px rgba(0, 0, 0, 0.4)',
-        'bottom-md': '0 6px 12px rgba(0, 0, 0, 0.25)',
-        'custom': "4px 4px 8px 0px rgba(0, 0, 0, 0.25)",
-        'around': '0 0 10px rgba(0, 0, 0, 0.15)',
+        "bottom-only": "0px 10px 20px rgba(0, 0, 0, 0.3)",
+        intense: "0px 10px 40px rgba(0, 0, 0, 0.4)",
+        "bottom-md": "0 6px 12px rgba(0, 0, 0, 0.25)",
+        custom: "4px 4px 8px 0px rgba(0, 0, 0, 0.25)",
+        around: "0 0 10px rgba(0, 0, 0, 0.15)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -82,17 +86,16 @@ const config = {
       },
     },
   },
- plugins: [
-  require("tailwindcss-animate"),
-  function ({ addUtilities }) {
-    addUtilities({
-      ".overflow-overlay": {
-        "overflow-y": "overlay",
-      },
-    });
-  },
-],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }) {
+      addUtilities({
+        ".overflow-overlay": {
+          "overflow-y": "overlay",
+        },
+      });
+    },
+  ],
+} satisfies Config;
 
-} satisfies Config
-
-export default config
+export default config;

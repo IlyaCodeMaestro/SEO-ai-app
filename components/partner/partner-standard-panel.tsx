@@ -100,7 +100,7 @@ export default function PartnerStandardPanel({
         <div className="space-y-8 relative">
           {/* Vertical line */}
           {/* Dotted vertical line */}
-          <div className="absolute left-[20px] top-[20px] md:h-[400px] h-[600px] w-px border-l border-dashed border-blue-700 z-0" />
+          <div className="absolute left-[20px] top-[20px] md:h-[400px] h-[610px] sm:h-[590px] xs-range:h-[590px] w-px border-l border-dashed border-blue-700 z-0" />
 
           {/* Step 1 */}
           <div className="flex">

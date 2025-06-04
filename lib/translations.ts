@@ -2,6 +2,11 @@
 
 export const translations = {
   ru: {
+    "exit":"Выйти",
+    "confirm":"Вы желаете выйти из аккаунта?",
+    "yes":"Да",
+    "exit-account": "Выйти из аккаунта",
+    symbols: "Количество символов:",
     "archive.title": "Архив",
     "archive.loading": "Загрузка данных...",
     "archive.error": "Ошибка при загрузке данных",
@@ -350,6 +355,11 @@ export const translations = {
   },
 
   kz: {
+    "exit":"Шығу",
+    "confirm":"Тіркелгіңізден шыққыңыз келе ме?",
+    "yes":"Иә",
+    "exit-account": "Аккаунтан шығу",
+    symbols: "Таңбалар саны:",
     "archive.title": "Мұрағат",
     "archive.loading": "Деректер жүктелуде...",
     "archive.error": "Деректерді жүктеу кезінде қате",
@@ -376,10 +386,10 @@ export const translations = {
     // Keywords tables
     "keywords.used": "Пайдаланылған\nкілт сөздер",
     "keywords.missed": "Жіберіп алған кілт сөздер",
-    "keywords.irrelevant": "Қатысты емес кілт сөздер",
+    "keywords.irrelevant": "Қолданылған маңызды емес сөздер",
     "keywords.column.keywords": "Кілт сөздер",
-    "keywords.column.irrelevant": "Қатысты емес сөздер",
-    "keywords.column.frequency": "Жиілік қосындысы",
+    "keywords.column.irrelevant": "Маңызды емес сөздер",
+    "keywords.column.frequency": "Жалпы жиілік",
 
     // Description block
     "description.title": "Тауар сипаттамасы",
@@ -391,11 +401,11 @@ export const translations = {
 
     // Results block
     "results.title": "Талдау нәтижелері",
-    "results.visibility": "Көрінушілік:",
+    "results.visibility": "Картаның көрінуі:",
     "results.keywords.presence": "Кілт сөздердің болуы:",
-    "results.missed.keywords": "Жіберіп алған кілт сөздер:",
-    "results.missed.coverage": "Жіберіп алған қамту:",
-    "results.irrelevant.words": "Қатысты емес сөздердің болуы:",
+    "results.missed.keywords": "Жіберіп алынған кілт сөздер:",
+    "results.missed.coverage": "Ескерілмеген қамту:",
+    "results.irrelevant.words": "Қатысты жоқ сөздердің болуы:",
 
     // Top keywords
     "top.keywords.title": "ТОП карточкалардың кілт сөздері",
@@ -529,7 +539,7 @@ export const translations = {
     "results.analysis": "Талдау нәтижелері",
     "results.keywords.missed": "Жіберіп алған кілт сөздер:",
     "results.coverage.missed": "Жіберіп алған қамту:",
-    "results.keywords.missed.words": "Жіберіп алған кілт сөздер",
+    "results.keywords.missed.words": "Жіберіп алынған кілт сөздер",
     "results.keywords": "Кілт сөздер",
     "results.frequency": "Жиілік",
     "results.loading": "Талдау нәтижелерін жүктеу...",
@@ -708,6 +718,11 @@ export const translations = {
   },
 
   en: {
+    "exit":"Exit",
+    "confirm":"Do you want to exit from account?",
+    "yes":"Yes",
+    "exit-account": "Log out",
+    symbols: "Number of characters:",
     "archive.title": "Archive",
     "archive.loading": "Loading data...",
     "archive.error": "Error loading data",

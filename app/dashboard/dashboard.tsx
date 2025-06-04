@@ -37,6 +37,7 @@ import {
   useStartAnalysisMutation,
   useStartDescriptionMutation,
 } from "@/store/services/main";
+import { ExitAccountPanel } from "@/components/cabinet/exit-account-panel";
 
 type ActivePanel =
   | null
@@ -51,6 +52,7 @@ type ActivePanel =
   | "referral-statement"
   | "tariff"
   | "active-devices"
+  | "exit-account"
   | "delete-account"
   | "standard-program"
   | "premium-program"
@@ -394,14 +396,14 @@ export function Dashboard() {
         return <BonusExchangePanel onClose={handleClosePanel} />;
       } else if (activePanel === "bonus-statement") {
         return <BonusStatementPanel onClose={handleClosePanel} />;
-      } else if (activePanel === "bonus-statement") {
-        return <BonusStatementPanel onClose={handleClosePanel} />;
       } else if (activePanel === "referral-statement") {
         return <ReferralStatementPanel onClose={handleClosePanel} />;
       } else if (activePanel === "tariff") {
         return <TariffPanel onClose={handleClosePanel} />;
       } else if (activePanel === "active-devices") {
         return <ActiveDevicesPanel onClose={handleClosePanel} />;
+      } else if (activePanel === "exit-account") {
+        return <ExitAccountPanel onClose={handleClosePanel} />;
       } else if (activePanel === "delete-account") {
         return <DeleteAccountPanel onClose={handleClosePanel} />;
       }

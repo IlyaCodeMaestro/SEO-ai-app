@@ -100,7 +100,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                   />
                 ))}
               </div>
-              <span className="font-medium text-sm -mt-1">
+              <span className="font-sm text-md -mt-1">
                 {rating.toFixed(1)}
               </span>
             </div>
@@ -111,13 +111,13 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                 <span className="text-gray-700  dark:text-gray-300 text-md">
                   {t("results.visibility")}
                 </span>
-                <span className="font-medium text-sm">{visibility} %</span>
+                <span className="font-sm text-md">{visibility} %</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-700 dark:text-gray-300 text-md">
                   {t("results.keywords.presence")}
                 </span>
-                <span className="font-medium text-sm">
+                <span className="font-sm text-md">
                   {keywordsPresence} %
                 </span>
               </div>
@@ -125,7 +125,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                 <span className="text-gray-700 dark:text-gray-300 text-md">
                   {t("results.missed.keywords")}
                 </span>
-                <span className="font-medium text-md">
+                <span className="font-sm text-md">
                   {missedKeywordsCount}
                 </span>
               </div>
@@ -137,7 +137,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                     <span className="text-gray-700 dark:text-gray-300 text-md">
                       {t("results.missed.coverage")}
                     </span>
-                    <span className="font-medium text-md">
+                    <span className="font-sm text-md">
                       {formatNumber(missedCoverage)}
                     </span>
                   </div>
@@ -145,7 +145,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                     <span className="text-gray-700 dark:text-gray-300 text-md">
                       {t("results.irrelevant.words")}
                     </span>
-                    <span className="font-medium text-md">
+                    <span className="font-sm text-md">
                       {irrelevantCount}
                     </span>
                   </div>
