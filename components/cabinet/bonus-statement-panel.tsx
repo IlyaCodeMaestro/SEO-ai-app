@@ -30,18 +30,23 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
 
   // Update allEvents when new data is loaded
   useEffect(() => {
-    if (bonusHistory?.date_events) {
-      if (currentPage === 1) {
-        setAllEvents(bonusHistory.date_events);
-        setLoadedPages(1);
+    if (bonusHistory) {
+      if (bonusHistory.date_events) {
+        if (currentPage === 1) {
+          setAllEvents(bonusHistory.date_events);
+          setLoadedPages(1);
+        } else {
+          setAllEvents((prev) => [...prev, ...bonusHistory.date_events]);
+          setLoadedPages(currentPage);
+        }
+
+        setHasMoreContent(bonusHistory.date_events.length > 0);
       } else {
-        // Append new events to existing ones
-        setAllEvents((prev) => [...prev, ...bonusHistory.date_events]);
-        setLoadedPages(currentPage);
+        // Если date_events отсутствует — скорее всего данных больше нет
+        setHasMoreContent(false);
       }
 
-      // Check if there's more content to load
-      setHasMoreContent(bonusHistory.date_events.length > 0);
+      // Обязательно сбрасываем флаг загрузки
       setIsLoadingMore(false);
     }
   }, [bonusHistory, currentPage]);
@@ -229,7 +234,7 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
                           </p>
                         </div>
                         <span
-                          className={`font-medium ${getTextColor(
+                          className={`font-medium whitespace-nowrap ${getTextColor(
                             event.type_id
                           )}`}
                         >

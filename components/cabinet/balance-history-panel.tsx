@@ -30,18 +30,23 @@ export function BalanceHistoryPanel({ onClose }: BalanceHistoryPanelProps) {
 
   // Update allEvents when new data is loaded
   useEffect(() => {
-    if (balanceHistory?.date_events) {
-      if (currentPage === 1) {
-        setAllEvents(balanceHistory.date_events);
-        setLoadedPages(1);
+    if (balanceHistory) {
+      if (balanceHistory.date_events) {
+        if (currentPage === 1) {
+          setAllEvents(balanceHistory.date_events);
+          setLoadedPages(1);
+        } else {
+          setAllEvents((prev) => [...prev, ...balanceHistory.date_events]);
+          setLoadedPages(currentPage);
+        }
+
+        setHasMoreContent(balanceHistory.date_events.length > 0);
       } else {
-        // Append new events to existing ones
-        setAllEvents((prev) => [...prev, ...balanceHistory.date_events]);
-        setLoadedPages(currentPage);
+        // Если date_events отсутствует — скорее всего данных больше нет
+        setHasMoreContent(false);
       }
 
-      // Check if there's more content to load
-      setHasMoreContent(balanceHistory.date_events.length > 0);
+      // Обязательно сбрасываем флаг загрузки
       setIsLoadingMore(false);
     }
   }, [balanceHistory, currentPage]);

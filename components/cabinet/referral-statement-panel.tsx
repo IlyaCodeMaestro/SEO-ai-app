@@ -32,18 +32,28 @@ export function ReferralStatementPanel({
 
   // Update allReferrals when new data is loaded
   useEffect(() => {
-    if (referralHistory?.date_referrals) {
-      if (currentPage === 1) {
-        setAllReferrals(referralHistory.date_referrals);
-        setLoadedPages(1);
+    if (referralHistory) {
+      if (referralHistory.date_referrals) {
+        if (currentPage === 1) {
+          setAllReferrals(referralHistory.date_referrals);
+          setLoadedPages(1);
+        } else {
+          // Append new referrals to existing ones
+          setAllReferrals((prev) => [
+            ...prev,
+            ...referralHistory.date_referrals,
+          ]);
+          setLoadedPages(currentPage);
+        }
+
+        // Check if there's more content to load
+        setHasMoreContent(referralHistory.date_referrals.length > 0);
       } else {
-        // Append new referrals to existing ones
-        setAllReferrals((prev) => [...prev, ...referralHistory.date_referrals]);
-        setLoadedPages(currentPage);
+        // Если date_referrals отсутствует — скорее всего данных больше нет
+        setHasMoreContent(false);
       }
 
-      // Check if there's more content to load
-      setHasMoreContent(referralHistory.date_referrals.length > 0);
+      // Обязательно сбрасываем флаг загрузки
       setIsLoadingMore(false);
     }
   }, [referralHistory, currentPage]);
