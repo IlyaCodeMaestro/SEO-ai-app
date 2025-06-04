@@ -68,7 +68,7 @@ export function FeedbackRecommendationsPanel({
           {/* Кнопка Телеграм */}
           <div className="flex justify-center">
             <a
-              href="https://t.me/seo_ai_news?text=Рекомендация:"
+              href="https://t.me/seoerlan?text=Рекомендация:"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 shadow-md bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full py-2 px-5 transition-colors text-sm"
