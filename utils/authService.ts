@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://api.stage.seo-ai.kz/b";
 
@@ -130,10 +128,8 @@ export async function loginUser(data: {
   const { sessionId, userId } = json.user;
 
   // Set cookies and localStorage synchronously
-  Cookies.set("sessionId", sessionId);
-  Cookies.set("userId", userId.toString());
-  localStorage.setItem("sessionId", sessionId);
-  localStorage.setItem("userId", userId.toString());
+  sessionStorage.setItem("sessionId", sessionId);
+  sessionStorage.setItem("userId", userId.toString());
 
   return json;
 }
@@ -141,6 +137,4 @@ export async function loginUser(data: {
 export function logout() {
   localStorage.removeItem("sessionId");
   localStorage.removeItem("userId");
-  Cookies.remove("sessionId");
-  Cookies.remove("userId");
 }
