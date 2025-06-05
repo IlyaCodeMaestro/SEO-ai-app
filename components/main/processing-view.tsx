@@ -172,7 +172,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
                     className="bg-white rounded-xl p-4 shadow-sm border mb-4 dark:bg-[#333333] "
                   >
                     <div className="flex items-center">
-                      <div className="w-32 h-24 bg-gray-200 rounded-md mr-3 overflow-hidden">
+                      <div className="w-16 h-16 bg-gray-200 rounded-md mr-3 overflow-hidden">
                         {card.images && card.images.length > 0 ? (
                           <img
                             src={`https://upload.seo-ai.kz/test/images/${card.images[0].image}`}

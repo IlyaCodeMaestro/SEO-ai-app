@@ -294,7 +294,7 @@ export const translations = {
     "bonus.exchange.confirm": "Вы желаете обменять бонусы на услуги?",
     "bonus.exchange.title": "Обмен бонусов",
     "bonus.balance": "Бонусы",
-
+    "common.copied_success": "Артикул скопирован в буфер обмена",
     // Опции обмена
     "bonus.exchange.all.analysis": "Обменять все на анализ карточки",
     "bonus.exchange.all.description": "Обменять все на описание карточки",
@@ -394,7 +394,7 @@ export const translations = {
     "keywords.column.keywords": "Кілт сөздер",
     "keywords.column.irrelevant": "Маңызды емес сөздер",
     "keywords.column.frequency": "Жалпы жиілік",
-
+    "common.copied_success": "Артикул алмасу буферіне көшірілді.",
     // Description block
     "description.title": "Тауар сипаттамасы",
 
@@ -726,6 +726,7 @@ export const translations = {
   },
 
   en: {
+    "common.copied_success": "The article has been copied to the clipboard.",
     exit: "Exit",
     confirm: "Do you want to exit from account?",
     yes: "Yes",

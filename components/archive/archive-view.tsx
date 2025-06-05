@@ -10,6 +10,7 @@ import { useGetArchiveQuery } from "@/store/services/main";
 import { Button } from "@/components/ui/button";
 import { useProcessingContext } from "../main/processing-provider";
 import { useLanguage } from "../provider/language-provider";
+import { notification } from "antd"; // Добавляем импорт notification
 
 interface ArchiveViewProps {
   onSelectItem: (item: any) => void;
@@ -42,28 +43,7 @@ export function ArchiveView({
   const [canScrollUp, setCanScrollUp] = useState(false);
   const [canScrollDown, setCanScrollDown] = useState(false);
   const [copiedCardId, setCopiedCardId] = useState<number | null>(null);
-
-  // console.log("Processed card IDs:", processedCardIds);
-
-  // Filter archive data to only show items that have been processed by the user
-  console.log(archiveData);
-  // const filteredArchiveData =
-  //   archiveData && archiveData.card_dates.length > 0
-  //     ? {
-  //         ...archiveData,
-  //         card_dates: archiveData?.card_dates
-  //           .map((dateGroup) => ({
-  //             ...dateGroup,
-  //             cards: dateGroup.cards.filter((card) =>
-  //               processedCardIds.includes(card.id)
-  //             ),
-  //           }))
-  //           .filter((dateGroup) => dateGroup.cards.length > 0),
-  //       }
-  //     : null;
-
-  // console.log("zxc", archiveData);
-  // console.log("qwe", filteredArchiveData);
+  const [api, contextHolder] = notification.useNotification(); // Добавляем хук для уведомлений
 
   // Функция для безопасной проверки пустого архива
   const isArchiveEmpty = () => {
@@ -180,16 +160,40 @@ export function ArchiveView({
     }
   };
 
+  // Обновленная функция копирования с уведомлениями
   const handleCopySku = (e: React.MouseEvent, cardId: number, sku: string) => {
     e.stopPropagation(); // Prevent triggering the card click
     navigator.clipboard
       .writeText(sku)
       .then(() => {
         setCopiedCardId(cardId);
+
+        // Показываем уведомление об успешном копировании
+        api.success({
+          message: t("common.copied") || "Скопировано",
+          description:
+            t("common.copied_success") ||
+            "Текст успешно скопирован в буфер обмена",
+          placement: "bottomRight",
+          duration: 2,
+          style: {
+            backgroundColor: "#f6ffed",
+            border: "1px solid #b7eb8f",
+          },
+        });
+
         setTimeout(() => setCopiedCardId(null), 2000); // Reset after 2 seconds
       })
       .catch((err) => {
         console.error("Failed to copy SKU:", err);
+
+        // Показываем уведомление об ошибке
+        api.error({
+          message: "Ошибка",
+          description: "Не удалось скопировать текст",
+          placement: "bottomRight",
+          duration: 3,
+        });
       });
   };
 
@@ -232,94 +236,104 @@ export function ArchiveView({
   }
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="py-4 flex justify-between items-center px-4">
-        <h2 className="text-blue-600 font-medium text-center text-xl flex-1">
-          {t("archive.title")}
-        </h2>
-      </div>
+    <>
+      {contextHolder}{" "}
+      {/* Добавляем contextHolder для отображения уведомлений */}
+      <div className="h-full flex flex-col">
+        <div className="py-4 flex justify-between items-center px-4">
+          <h2 className="text-blue-600 font-medium text-center text-xl flex-1">
+            {t("archive.title")}
+          </h2>
+        </div>
 
-      <div
-        ref={scrollContainerRef}
-        className="flex-1 overflow-auto px-4"
-        onScroll={handleScroll}
-      >
-        {isArchiveEmpty() ? (
-          <div className="text-center py-8 text-[#161616] dark:text-white flex flex-col items-center justify-center">
-            <Inbox className="w-12 h-12 text-gray-400 mb-3" />
-            <p className="font-medium text-base dark:text-white">
-              {t("archive.empty")}
-            </p>
-          </div>
-        ) : (
-          <div>
-            {archiveData?.card_dates.map((dateGroup) => (
-              <div key={dateGroup.id} className="mb-6">
-                <h3 className="text-[#333333] dark:text-white font-medium mb-4 text-lg md:text-lg sm:text-base">
-                  {formatDate(dateGroup.date)}
-                </h3>
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-auto px-4"
+          onScroll={handleScroll}
+        >
+          {isArchiveEmpty() ? (
+            <div className="text-center py-8 text-[#161616] dark:text-white flex flex-col items-center justify-center">
+              <Inbox className="w-12 h-12 text-gray-400 mb-3" />
+              <p className="font-medium text-base dark:text-white">
+                {t("archive.empty")}
+              </p>
+            </div>
+          ) : (
+            <div>
+              {archiveData?.card_dates.map((dateGroup) => (
+                <div key={dateGroup.id} className="mb-6">
+                  <h3 className="text-[#333333] dark:text-white font-medium mb-4 text-lg md:text-lg sm:text-base">
+                    {formatDate(dateGroup.date)}
+                  </h3>
 
-                {dateGroup.cards.map((card) => (
-                  <div
-                    key={card.id}
-                    className={getItemStyle(card.id)}
-                    onClick={() => handleItemClick(card)}
-                  >
-                    <div className="w-16 h-16 rounded-md mr-4 overflow-hidden flex-shrink-0">
-                      {card.images && card.images.length > 0 ? (
-                        <img
-                          src={`https://upload.seo-ai.kz/test/images/${card.images[0].image}`}
-                          alt={card.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <img
-                          src={`/placeholder.svg?height=64&width=64&query=product`}
-                          alt="Product"
-                          className="w-full h-full object-cover"
-                        />
+                  {dateGroup.cards.map((card) => (
+                    <div
+                      key={card.id}
+                      className={getItemStyle(card.id)}
+                      onClick={() => handleItemClick(card)}
+                    >
+                      <div className="w-16 h-16 rounded-md mr-4 overflow-hidden flex-shrink-0">
+                        {card.images && card.images.length > 0 ? (
+                          <img
+                            src={`https://upload.seo-ai.kz/test/images/${card.images[0].image}`}
+                            alt={card.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <img
+                            src={`/placeholder.svg?height=64&width=64&query=product`}
+                            alt="Product"
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+
+                      <div className="flex-1 flex flex-col">
+                        <div className="font-normal md:text-md sm:text-md text-md text-black dark:text-white leading-tight mb-2">
+                          {formatProductName(card.name)}
+                        </div>
+
+                        <div className="flex items-center mt-1">
+                          {/* Добавляем обработчик клика на сам артикул */}
+                          <p
+                            className="text-blue-600 md:text-base sm:text-md text-md cursor-pointer hover:underline"
+                            onClick={(e) =>
+                              handleCopySku(e, card.id, card.article)
+                            }
+                          >
+                            {card.article}
+                          </p>
+                          <button
+                            onClick={(e) =>
+                              handleCopySku(e, card.id, card.article)
+                            }
+                            className="ml-1 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                            aria-label={t("common.copy")}
+                          >
+                            {copiedCardId === card.id ? (
+                              <Copy className="h-4 w-4 text-blue-900" />
+                            ) : (
+                              <Copy className="h-4 w-4 text-blue-600" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="text-blue-600 text-right mt-3 md:text-md sm:text-md text-md font-normal ml-2 md:w-28 sm:w-24 w-24">
+                        {formatStatusText(getItemStatus(card))}
+                      </div>
+
+                      {card.badge_visible && (
+                        <div className="absolute right-1 top-1 w-6 h-6 bg-blue-600 rounded-full"></div>
                       )}
                     </div>
-
-                    <div className="flex-1 flex flex-col">
-                      <div className="font-normal md:text-md sm:text-md text-md text-black dark:text-white leading-tight mb-2">
-                        {formatProductName(card.name)}
-                      </div>
-
-                      <div className="flex items-center mt-1">
-                        <p className="text-blue-600 md:text-base sm:text-md text-md">
-                          {card.article}
-                        </p>
-                        <button
-                          onClick={(e) =>
-                            handleCopySku(e, card.id, card.article)
-                          }
-                          className="ml-1 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-                          aria-label={t("common.copy")}
-                        >
-                          {copiedCardId === card.id ? (
-                            <Copy className="h-4 w-4 text-blue-900" />
-                          ) : (
-                            <Copy className="h-4 w-4 text-blue-600" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="text-blue-600 text-right mt-3 md:text-md sm:text-md text-md font-normal ml-2 md:w-28 sm:w-24 w-24">
-                      {formatStatusText(getItemStatus(card))}
-                    </div>
-
-                    {card.badge_visible && (
-                      <div className="absolute right-1 top-1 w-6 h-6 bg-blue-600 rounded-full"></div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -24,6 +24,7 @@ import {
   useStartAnalysisDescriptionMutation,
 } from "@/store/services/main";
 import { useRouter } from "next/navigation";
+import { notification } from "antd";
 
 interface ArchiveItemDetailsProps {
   onClose: () => void;
@@ -52,6 +53,26 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   const shouldFetchAnalysis = item.type === "analysis" || item.type === "both";
   const shouldFetchDescription = item.type === "description";
   const router = useRouter();
+  const [api, contextHolder] = notification.useNotification();
+  // Функция для копирования с уведомлением
+  const handleCopy = (text: string, section: string) => {
+    navigator.clipboard.writeText(text);
+
+    // Показываем уведомление
+    api.success({
+      message: "Скопировано",
+      description: "Текст успешно скопирован в буфер обмена",
+      placement: "bottomRight",
+      duration: 2,
+      style: {
+        backgroundColor: "#f6ffed",
+        border: "1px solid #b7eb8f",
+      },
+    });
+  };
+  const handleSkuClick = (sku: string) => {
+    handleCopy(sku, "topKeywords");
+  };
   // Fetch analysis data if needed
   const {
     data: analysisData,
@@ -335,17 +356,6 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   };
 
   // Функция для копирования контента
-  const handleCopy = (content: string, section: string) => {
-    navigator.clipboard
-      .writeText(content)
-      .then(() => {
-        setCopiedSection(section);
-        setTimeout(() => setCopiedSection(null), 2000);
-      })
-      .catch((err) => {
-        console.error("Ошибка при копировании текста: ", err);
-      });
-  };
 
   // Функция для шеринга ключевых слов
   const handleShareKeywords = (
@@ -398,49 +408,57 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
         };
 
         content = (
-          <div className="bg-white dark:bg-[#2C2B2B] p-6">
-            <div className="space-y-2">
-              {analysisResults.topKeywords.map((keyword, index) => (
-                <div
-                  key={index}
-                  className="bg-white dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl p-3 flex items-start"
-                >
-                  <div className="w-[80px] h-[80px] bg-gray-200 rounded-lg mr-4 overflow-hidden flex-shrink-0">
-                    {keyword.image ? (
-                      <img
-                        src={`https://upload.seo-ai.kz/test/images/${keyword.image}`}
-                        alt={keyword.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <img
-                        src={`/placeholder.svg?height=80&width=80&query=product`}
-                        alt="Product"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-lg font-medium dark:text-white text-black leading-tight mb-2">
-                      {keyword.name}
-                    </p>
-                    <div className="flex items-center">
-                      <p className={`text-lg ${getModalSkuColor(index)}`}>
-                        {keyword.sku}
+          <>
+            {contextHolder}
+            <div className="bg-white dark:bg-[#2C2B2B] p-6">
+              <div className="space-y-2">
+                {analysisResults.topKeywords.map((keyword, index) => (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-[#2C2B2B] dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] rounded-3xl p-3 flex items-start"
+                  >
+                    <div className="w-[80px] h-[80px] bg-gray-200 rounded-lg mr-4 overflow-hidden flex-shrink-0">
+                      {keyword.image ? (
+                        <img
+                          src={`https://upload.seo-ai.kz/test/images/${keyword.image}`}
+                          alt={keyword.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={`/placeholder.svg?height=80&width=80&query=product`}
+                          alt="Product"
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-lg font-medium dark:text-white text-black leading-tight mb-2">
+                        {keyword.name}
                       </p>
-                      <button
-                        onClick={() => handleCopy(keyword.sku, "topKeywords")}
-                        className="ml-2"
-                        aria-label="Copy SKU"
-                      >
-                        <Copy size={16} className={getModalSkuColor(index)} />
-                      </button>
+                      <div className="flex items-center">
+                        <p
+                          className={`text-lg cursor-pointer hover:underline ${getModalSkuColor(
+                            index
+                          )}`}
+                          onClick={() => handleSkuClick(keyword.sku)}
+                        >
+                          {keyword.sku}
+                        </p>
+                        <button
+                          onClick={() => handleCopy(keyword.sku, "topKeywords")}
+                          className="ml-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          aria-label="Copy SKU"
+                        >
+                          <Copy size={16} className={getModalSkuColor(index)} />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          </>
         );
         break;
       case "results":
@@ -788,8 +806,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                     className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full h-[50px] sm:h-[50px] border border-white shadow-around inline-block px-4 sm:px-8 text-base sm:text-base max-w-full whitespace-normal text-center"
                     style={{ width: "fit-content", wordBreak: "break-word" }}
                   >
-                    {analysisData?.button?.text ||
-                      t("archive.write.description")}
+                    {t("archive.write.description")}
                   </button>
                 )}
               </div>
