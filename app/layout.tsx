@@ -8,6 +8,7 @@ import { TariffProvider } from "@/components/provider/tariff-provider";
 import { ProcessingProvider } from "@/components/main/processing-provider";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
               </Provider>
             </TariffProvider>
           </LanguageProvider>
+             <Toaster />
         </ThemeProvider>
       </body>
     </html>

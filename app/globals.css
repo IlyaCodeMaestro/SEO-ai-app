@@ -75,7 +75,6 @@
   }
 }
 
-
 /* Toast animations */
 @keyframes toastSlideIn {
   from {
@@ -94,4 +93,29 @@
 }
 html {
   overflow-y: scroll;
+}
+
+/* Позиционирование тостера для мобильных устройств */
+@media (min-width: 300px) {
+  [data-sonner-toaster] {
+    bottom: 1rem !important;
+    top: auto !important;
+    left: 1rem !important;
+    right: 1rem !important;
+  }
+
+  [data-sonner-toast] {
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* Для десктопа оставляем стандартное позиционирование */
+@media (min-width: 641px) {
+  [data-sonner-toaster] {
+    top: 1rem !important;
+    bottom: auto !important;
+    right: 1rem !important;
+    left: auto !important;
+  }
 }

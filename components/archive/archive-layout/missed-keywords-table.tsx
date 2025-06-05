@@ -36,7 +36,21 @@ export function MissedKeywordsTable({
     return keywords.map((k) => `${k.word}: ${k.frequency}`).join("\n");
   };
 
+  // Функция для получения прозрачности элемента
+  const getOpacity = (index: number, totalVisible: number) => {
+    // Применяем затухание только в раскрытом состоянии
+    if (!isExpanded) return 1;
+
+    // Для последних двух элементов применяем затухание
+    if (index === totalVisible - 2) return 0.6;
+    if (index === totalVisible - 1) return 0.3;
+
+    return 1;
+  };
+
   if (isMobile) {
+    const visibleKeywords = keywords.slice(0, isExpanded ? undefined : 3);
+
     return (
       <div className="bg-[#f9f8f8] dark:bg-[#2C2B2B] rounded-3xl dark:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden">
         <div className="p-4">
@@ -57,18 +71,22 @@ export function MissedKeywordsTable({
             </div>
           </div>
 
-          {/* Список ключевых слов без разделителей */}
+          {/* Список ключевых слов с эффектом затухания */}
           <div className="space-y-1">
-            {keywords
-              .slice(0, isExpanded ? undefined : 3)
-              .map((keyword, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <span className={`text-sm ${textColorClass}`}>
-                    {keyword.word}
-                  </span>
-                  <span className="text-sm text-blue-500">{keyword.frequency}</span>
-                </div>
-              ))}
+            {visibleKeywords.map((keyword, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center transition-opacity duration-300"
+                style={{ opacity: getOpacity(index, visibleKeywords.length) }}
+              >
+                <span className={`text-sm ${textColorClass}`}>
+                  {keyword.word}
+                </span>
+                <span className="text-sm text-blue-500">
+                  {keyword.frequency}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -89,6 +107,8 @@ export function MissedKeywordsTable({
       </div>
     );
   }
+
+  const visibleKeywords = keywords.slice(0, isExpanded ? undefined : 2);
 
   return (
     <div
@@ -123,18 +143,25 @@ export function MissedKeywordsTable({
           </span>
         </div>
 
-        {/* Список ключевых слов без разделителей */}
-        <div className="space-y-1">
-          {keywords
-            .slice(0, isExpanded ? undefined : 2)
-            .map((keyword, index) => (
-              <div key={index} className="flex justify-between items-center">
-                <span className={`text-sm ${textColorClass}`}>
-                  {keyword.word}
-                </span>
-                <span className="text-sm text-blue-500">{keyword.frequency}</span>
-              </div>
-            ))}
+        {/* Список ключевых слов с эффектом затухания */}
+        <div className="space-y-1 relative">
+          {visibleKeywords.map((keyword, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center transition-opacity duration-300"
+              style={{ opacity: getOpacity(index, visibleKeywords.length) }}
+            >
+              <span className={`text-sm ${textColorClass}`}>
+                {keyword.word}
+              </span>
+              <span className="text-sm text-blue-500">{keyword.frequency}</span>
+            </div>
+          ))}
+
+          {/* Дополнительный эффект затухания с градиентом (опционально) */}
+          {isExpanded && keywords.length > 2 && (
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#f9f8f8] dark:from-[#2C2B2B] to-transparent pointer-events-none" />
+          )}
         </div>
       </div>
     </div>

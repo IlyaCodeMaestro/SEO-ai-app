@@ -583,11 +583,38 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                   </div>
                 </div>
               ))}
+
+              {/* Warning Messages */}
+              <div className="mt-6 space-y-4">
+                <div className="flex gap-3">
+                  <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
+                    !
+                  </span>
+                  <p className="text-sm text-black dark:text-white leading-relaxed text-left">
+                    {t("keywords.warning.categories")}
+                  </p>
+                </div>
+                <div className="flex gap-3">
+                  <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
+                    !
+                  </span>
+                  <p className="text-sm text-black dark:text-white leading-relaxed text-left">
+                    {t("keywords.warning.budget")}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         );
         break;
       case "missedKeywords":
+        // Функция для получения прозрачности элемента
+        const getOpacity = (index, totalLength) => {
+          if (index === totalLength - 2) return 0.6; // Предпоследний элемент
+          if (index === totalLength - 1) return 0.3; // Последний элемент
+          return 1; // Все остальные элементы
+        };
+
         content = (
           <div className="bg-white dark:bg-[#2C2B2B] p-6">
             <div className="space-y-2">
@@ -600,7 +627,16 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 </div>
               </div>
               {analysisResults.missedKeywords.map((keyword, index) => (
-                <div key={index} className="grid grid-cols-2 gap-4">
+                <div
+                  key={index}
+                  className="grid grid-cols-2 gap-4 transition-opacity duration-300"
+                  style={{
+                    opacity: getOpacity(
+                      index,
+                      analysisResults.missedKeywords.length
+                    ),
+                  }}
+                >
                   <div className="bg-white dark:bg-[#2C2B2B] p-3">
                     <p className="text-lg text-blue-500">{keyword.word}</p>
                   </div>

@@ -2,9 +2,9 @@
 
 export const translations = {
   ru: {
-    "exit":"Выйти",
-    "confirm":"Вы желаете выйти из аккаунта?",
-    "yes":"Да",
+    exit: "Выйти",
+    confirm: "Вы желаете выйти из аккаунта?",
+    yes: "Да",
     "exit-account": "Выйти из аккаунта",
     symbols: "Количество символов:",
     "archive.title": "Архив",
@@ -324,6 +324,10 @@ export const translations = {
 
     "bonus.point": "балл",
     "bonus.points.2_4": "балла", // для 2, 3, 4 балла
+    "keywords.warning.categories":
+      "Использование нерелевантных слов в описании товара приводит к его отображению в неподходящих категориях, что снижает кликабельность (CTR) карточки и отрицательно сказывается на её рейтинге.",
+    "keywords.warning.budget":
+      "Использование нерелевантных слов в описании приводит к пустой трате вашего рекламного бюджета при подключении автоматической рекламы.",
 
     // Загрузка и ошибки
     "bonus.loading": "Загрузка...",
@@ -355,9 +359,9 @@ export const translations = {
   },
 
   kz: {
-    "exit":"Шығу",
-    "confirm":"Тіркелгіңізден шыққыңыз келе ме?",
-    "yes":"Иә",
+    exit: "Шығу",
+    confirm: "Тіркелгіңізден шыққыңыз келе ме?",
+    yes: "Иә",
     "exit-account": "Аккаунтан шығу",
     symbols: "Таңбалар саны:",
     "archive.title": "Мұрағат",
@@ -710,6 +714,10 @@ export const translations = {
     "card.number": "Карта нөмірі",
     "card.expiry": "Жарамдылық мерзімі",
     "card.cvv": "CVV",
+    "keywords.warning.categories":
+      "Тауар сипаттамасында орынсыз сөздерді пайдалану оның сәйкес келмейтін санаттарда көрсетілуіне әкеледі, бұл карточканың басылу жиілігін (CTR) төмендетеді және оның рейтингіне теріс әсер етеді.",
+    "keywords.warning.budget":
+      "Сипаттамада орынсыз сөздерді пайдалану автоматты жарнаманы қосқан кезде жарнама бюджетіңізді бос жұмсауға әкеледі.",
 
     // Платеж
     "payment.amount": "Төлемге",
@@ -718,9 +726,9 @@ export const translations = {
   },
 
   en: {
-    "exit":"Exit",
-    "confirm":"Do you want to exit from account?",
-    "yes":"Yes",
+    exit: "Exit",
+    confirm: "Do you want to exit from account?",
+    yes: "Yes",
     "exit-account": "Log out",
     symbols: "Number of characters:",
     "archive.title": "Archive",
@@ -1042,7 +1050,10 @@ export const translations = {
     "tariff.buy.success": "Tariff successfully connected",
     "tariff.switch.error": "Error switching tariff",
     success: "Success",
-
+    "keywords.warning.categories":
+      "Using irrelevant words in product descriptions leads to display in inappropriate categories, which reduces card clickability (CTR) and negatively affects its rating.",
+    "keywords.warning.budget":
+      "Using irrelevant words in descriptions leads to wasting your advertising budget when connecting automatic advertising.",
     // Бонусы
     "bonus.from": "Bonus from",
 
