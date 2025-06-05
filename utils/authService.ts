@@ -216,7 +216,7 @@ export async function resetPassword(data: {
   new_password: string;
 }) {
   const res = await fetch(`${BASE_URL}/v1/password/reset`, {
-    method: "POST",
+    method: "PUT",
     headers: getHeaders(),
     body: JSON.stringify({
       email: data.email,

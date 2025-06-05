@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp, Copy, Maximize2 } from "lucide-react";
 import Image from "next/image";
 import { notification } from "antd";
 
-interface KeywordsTableProps {
+interface KeywordsTable2Props {
   title: string;
   keywords: { word: string; frequency: string | number; type?: number }[];
   section: string;
@@ -22,7 +22,7 @@ interface KeywordsTableProps {
   onMaximize?: (title: string) => void;
 }
 
-export function KeywordsTable({
+export function KeywordsTable2({
   title,
   keywords,
   section,
@@ -34,7 +34,7 @@ export function KeywordsTable({
   textColorClass = "",
   isMobile,
   onMaximize,
-}: KeywordsTableProps) {
+}: KeywordsTable2Props) {
   const { t } = useLanguage();
   const [api, contextHolder] = notification.useNotification();
 
@@ -56,6 +56,7 @@ export function KeywordsTable({
     onCopy(content, section);
     api.success({
       message: t("common.copied") || "Скопировано",
+
       placement: "bottomRight",
       duration: 2,
       style: {
@@ -71,14 +72,6 @@ export function KeywordsTable({
       return new Intl.NumberFormat().format(frequency);
     }
     return frequency;
-  };
-
-  // Function to get text color class based on type
-  const getTextColorClass = (type?: number) => {
-    if (type === 1) {
-      return "text-blue-600";
-    }
-    return textColorClass; // Default theme-based color for type 1 or undefined
   };
 
   if (isMobile) {
@@ -149,14 +142,10 @@ export function KeywordsTable({
                     key={index}
                     className="flex justify-between items-center"
                   >
-                    <span
-                      className={`text-sm ${getTextColorClass(keyword.type)}`}
-                    >
+                    <span className={`text-sm ${textColorClass}`}>
                       {keyword.word}
                     </span>
-                    <span
-                      className={`text-sm ${getTextColorClass(keyword.type)}`}
-                    >
+                    <span className="text-sm">
                       {formatFrequency(keyword.frequency)}
                     </span>
                   </div>
@@ -252,16 +241,10 @@ export function KeywordsTable({
               .slice(0, isExpanded ? undefined : 3)
               .map((keyword, index) => (
                 <div key={index} className="flex justify-between items-center">
-                  <span
-                    className={`text-sm ${getTextColorClass(
-                      keyword.type
-                    )} truncate`}
-                  >
+                  <span className={`text-sm ${textColorClass} truncate`}>
                     {keyword.word}
                   </span>
-                  <span
-                    className={`text-sm ${getTextColorClass(keyword.type)}`}
-                  >
+                  <span className="text-sm">
                     {formatFrequency(keyword.frequency)}
                   </span>
                 </div>

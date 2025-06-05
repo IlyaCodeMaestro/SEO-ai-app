@@ -25,6 +25,7 @@ import {
 } from "@/store/services/main";
 import { useRouter } from "next/navigation";
 import { notification } from "antd";
+import { KeywordsTable2 } from "./archive-layout/keywords-table2";
 
 interface ArchiveItemDetailsProps {
   onClose: () => void;
@@ -833,7 +834,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
 
                 {/* Правая колонка */}
                 <div>
-                  <KeywordsTable
+                  <KeywordsTable2
                     title="Использованные ключевые слова"
                     keywords={analysisResults.usedKeywords}
                     section="usedKeywords"
@@ -992,7 +993,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               />
 
               {/* Использованные ключевые слова */}
-              <KeywordsTable
+              <KeywordsTable2
                 title="Использованные ключевые слова"
                 keywords={analysisResults.usedKeywords}
                 section="usedKeywords"
