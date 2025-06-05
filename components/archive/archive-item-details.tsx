@@ -544,7 +544,57 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
           </div>
         );
         break;
+      case "usedKeywords2":
+        content = (
+          <div className="bg-white dark:bg-[#2C2B2B] p-6">
+            {" "}
+            <div className="space-y-2">
+              {" "}
+              <div className="grid grid-cols-2 gap-4 mb-3">
+                {" "}
+                <div className="font-medium text-lg text-black dark:text-white">
+                  {" "}
+                  Ключевые слова{" "}
+                </div>{" "}
+                <div className="font-medium text-black dark:text-white text-lg text-right">
+                  {" "}
+                  Сумм. частотность{" "}
+                </div>{" "}
+              </div>{" "}
+              {analysisResults.usedKeywords.map((keyword, index) => (
+                <div key={index} className="grid grid-cols-2 gap-4">
+                  {" "}
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    {" "}
+                    <p className="text-lg text-black dark:text-white">
+                      {" "}
+                      {keyword.word}{" "}
+                    </p>{" "}
+                  </div>{" "}
+                  <div className="bg-white dark:bg-[#2C2B2B] p-3">
+                    {" "}
+                    <p className="text-lg text-right text-black dark:text-white">
+                      {" "}
+                      {typeof keyword.frequency === "number"
+                        ? new Intl.NumberFormat().format(keyword.frequency)
+                        : keyword.frequency}{" "}
+                    </p>{" "}
+                  </div>{" "}
+                </div>
+              ))}{" "}
+            </div>{" "}
+          </div>
+        );
+        break;
       case "usedKeywords":
+        // Function to get text color class based on type
+        const getTextColorClass = (type?: number) => {
+          if (type === 1) {
+            return "text-blue-600";
+          }
+          return "text-black dark:text-white"; // Default theme-based color for type 1 or undefined
+        };
+
         content = (
           <div className="bg-white dark:bg-[#2C2B2B] p-6">
             <div className="space-y-2">
@@ -559,12 +609,16 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               {analysisResults.usedKeywords.map((keyword, index) => (
                 <div key={index} className="grid grid-cols-2 gap-4">
                   <div className="bg-white dark:bg-[#2C2B2B] p-3">
-                    <p className="text-lg text-black dark:text-white">
+                    <p className={`text-lg ${getTextColorClass(keyword.type)}`}>
                       {keyword.word}
                     </p>
                   </div>
                   <div className="bg-white dark:bg-[#2C2B2B] p-3">
-                    <p className="text-lg text-right text-black dark:text-white">
+                    <p
+                      className={`text-lg text-right ${getTextColorClass(
+                        keyword.type
+                      )}`}
+                    >
                       {typeof keyword.frequency === "number"
                         ? new Intl.NumberFormat().format(keyword.frequency)
                         : keyword.frequency}
@@ -837,7 +891,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                   <KeywordsTable2
                     title="Использованные ключевые слова"
                     keywords={analysisResults.usedKeywords}
-                    section="usedKeywords"
+                    section="usedKeywords2"
                     isExpanded={expandedSections["usedKeywords"]}
                     onToggle={toggleSection}
                     onCopy={handleCopy}
@@ -845,7 +899,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                     copiedSection={copiedSection}
                     isMobile={false}
                     onMaximize={(title) =>
-                      handleMaximize("usedKeywords", title)
+                      handleMaximize("usedKeywords2", title)
                     }
                   />
                 </div>

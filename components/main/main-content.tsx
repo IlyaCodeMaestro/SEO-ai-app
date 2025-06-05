@@ -21,17 +21,11 @@ export function MainContent({
 }: MainContentProps) {
   const { processingItems } = useProcessingContext();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
-    const { data: profileData} = useGetProfileQuery();
-  const { data: mainData, isLoading: mainLoading } = useGetMainInfoQuery(
-    undefined,
-    {
-      pollingInterval: 5000, // Refresh every 5 seconds
-    }
-  );
+  const { data: profileData } = useGetProfileQuery();
+  const { data: mainData, isLoading: mainLoading } =
+    useGetMainInfoQuery(undefined);
   const { data: processData, isLoading: processLoading } =
-    useGetProcessListQuery(undefined, {
-      pollingInterval: 5000, // Refresh every 5 seconds
-    });
+    useGetProcessListQuery(undefined);
   const { t } = useLanguage();
 
   // Check if there are any items in processing

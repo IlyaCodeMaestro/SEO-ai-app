@@ -35,9 +35,7 @@ export function ArchiveView({
     isLoading,
     error,
     refetch,
-  } = useGetArchiveQuery(1, {
-    pollingInterval: 10000, // Poll every 10 seconds
-  });
+  } = useGetArchiveQuery(1);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showScrollButtons, setShowScrollButtons] = useState(false);
   const [canScrollUp, setCanScrollUp] = useState(false);
