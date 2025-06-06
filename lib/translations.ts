@@ -2,6 +2,10 @@
 
 export const translations = {
   ru: {
+    "cabinet.confirm.delete-cancel":"Вы желаете отозвать запрос на удаление аккаунта?",
+    "cabinet.delete-cancel":"Отозвать",
+    "cabinet.delete.request.processing": "Запрос на удаление в обработке",
+    "common.closed": "Отозвать запрос",
     exit: "Выйти",
     confirm: "Вы желаете выйти из аккаунта?",
     yes: "Да",
@@ -359,6 +363,10 @@ export const translations = {
   },
 
   kz: {
+    "cabinet.confirm.delete-cancel":"Есептік жазбаңызды жою туралы сұрауды қайтарып алғыңыз келе ме?",
+    "cabinet.delete-cancel":"Күшін жою",
+    "cabinet.delete.request.processing": "Жою сұрауы өңделуде",
+    "common.closed": "Сұранысты жабу",
     exit: "Шығу",
     confirm: "Тіркелгіңізден шыққыңыз келе ме?",
     yes: "Иә",
@@ -726,6 +734,10 @@ export const translations = {
   },
 
   en: {
+    "cabinet.confirm.delete-cancel":"Do you want to revoke the request to delete your account?",
+    "cabinet.delete-cancel":"Cancel",
+    "cabinet.delete.request.processing": "Request to delete is being processed",
+    "common.closed": "Close request",
     "common.copied_success": "The article has been copied to the clipboard.",
     exit: "Exit",
     confirm: "Do you want to exit from account?",

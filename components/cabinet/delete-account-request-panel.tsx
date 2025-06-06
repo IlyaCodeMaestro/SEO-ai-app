@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { X, ArrowLeft, AlertCircle, Info } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, ArrowLeft, Info, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLanguage } from "../provider/language-provider";
@@ -10,29 +10,30 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import {
-  useConfirmDeleteAccountMutation,
   useGetDeleteAccountInfoQuery,
-  useRequestDeleteAccountMutation,
+  useConfirmDeleteAccountMutation,
 } from "@/store/services/profile-api";
-import { DeleteAccountRequestPanel } from "./delete-account-request-panel";
 
-interface DeleteAccountPanelProps {
+interface DeleteAccountRequestPanelProps {
   onClose: () => void;
+  onBack?: () => void; // Новый пропс для возврата к предыдущему экрану
 }
 
-export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
+export function DeleteAccountRequestPanel({
+  onClose,
+  onBack,
+}: DeleteAccountRequestPanelProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { t } = useLanguage();
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const router = useRouter();
-  const [showRequestPanel, setShowRequestPanel] = useState(false);
+
+  // Добавить состояние для управления модальным окном
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Получаем информацию о запросе на удаление
   const { data: deleteInfo, isLoading, error } = useGetDeleteAccountInfoQuery();
 
-  // Мутации для запроса и подтверждения удаления
-  const [requestDelete, { isLoading: isRequesting }] =
-    useRequestDeleteAccountMutation();
+  // Мутация для подтверждения удаления
   const [confirmDelete, { isLoading: isConfirming }] =
     useConfirmDeleteAccountMutation();
 
@@ -42,7 +43,7 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
       toast({
         title: (
           <div className="flex items-center gap-2 text-red-600">
-            <AlertCircle className="h-5 w-5" />
+            <Info className="h-5 w-5" />
             <span>{t("error")}</span>
           </div>
         ),
@@ -52,58 +53,38 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
     }
   }, [error, t]);
 
-  const handleDeleteClick = async () => {
-    try {
-      // Если запрос на удаление уже существует, показываем модальное окно подтверждения
-      if (deleteInfo?.delete_request?.request_send) {
-        setShowConfirmModal(true);
-      } else {
-        // Иначе создаем запрос на удаление
-        await requestDelete().unwrap();
-        setShowConfirmModal(true);
-      }
-    } catch (error) {
-      toast({
-        title: (
-          <div className="flex items-center gap-2 text-red-600">
-            <AlertCircle className="h-5 w-5" />
-            <span>{t("error")}</span>
-          </div>
-        ),
-        description: t("error.request.delete"),
-        className: "bg-red-50 border-red-200 text-red-800",
-      });
+  const handleBackToHome = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
     }
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmClose = async () => {
     try {
-      await requestDelete().unwrap();
+      await confirmDelete().unwrap();
 
-      // Показываем успешное сообщение
       toast({
         title: (
           <div className="flex items-center gap-2 text-green-600">
-            <Info className="h-5 w-5" />
+            <CheckCircle className="h-5 w-5" />
             <span>{t("success")}</span>
           </div>
         ),
-        description: t("cabinet.delete.success"),
+        description: t("cabinet.delete.confirmed"),
         className: "bg-green-50 border-green-200 text-green-800",
       });
 
-      // Закрываем модальное окно
       setShowConfirmModal(false);
-
-      // Переключаемся на панель запроса удаления
-      setTimeout(() => {
-        setShowRequestPanel(true);
-      }, 1000);
+      onClose();
     } catch (error) {
       toast({
         title: (
           <div className="flex items-center gap-2 text-red-600">
-            <AlertCircle className="h-5 w-5" />
+            <Info className="h-5 w-5" />
             <span>{t("error")}</span>
           </div>
         ),
@@ -114,46 +95,34 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
     }
   };
 
-  const handleCancelDelete = () => {
+  const handleCancelClose = () => {
     setShowConfirmModal(false);
   };
 
-  // Если показываем панель запроса удаления
-  if (showRequestPanel) {
-    return (
-      <DeleteAccountRequestPanel
-        onClose={onClose}
-        onBack={() => setShowRequestPanel(false)}
-      />
-    );
-  }
-
   return (
     <div className="h-full flex flex-col justify-start bg-white px-4 md:px-0 dark:bg-[#404040] delete-account-panel">
-      <Toaster />
-
       {/* Модалка с затемнённым фоном */}
       {showConfirmModal && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 rounded-3xl mt-0 sm:mt-7">
           <div className="bg-white rounded-xl p-6 max-w-xs w-full mb-64 mx-4 dark:bg-gray-800">
             <p className="text-center font-medium mb-6">
-              {t("cabinet.confirm.delete")}
+              {t("cabinet.confirm.delete-cancel")}
             </p>
 
             <div className="space-y-3">
               <div className="flex justify-center">
                 <Button
-                  onClick={handleConfirmDelete}
+                  onClick={handleConfirmClose}
                   disabled={isConfirming}
                   className="w-36 bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full"
                 >
-                  {isConfirming ? t("loading") : t("cabinet.delete")}
+                  {isConfirming ? t("loading") : t("cabinet.delete-cancel")}
                 </Button>
               </div>
 
               <div className="flex justify-center">
                 <Button
-                  onClick={handleCancelDelete}
+                  onClick={handleCancelClose}
                   disabled={isConfirming}
                   className="w-36 bg-gray-400 hover:bg-gray-500 text-white rounded-full"
                 >
@@ -164,13 +133,14 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
           </div>
         </div>
       )}
+      <Toaster />
 
       {/* Заголовок с кнопкой закрытия */}
       <div className="flex items-center justify-between mb-4 mt-3">
         {isMobile ? (
           <>
             <button
-              onClick={onClose}
+              onClick={onBack || onClose}
               className="p-1"
               aria-label={t("common.back")}
             >
@@ -198,16 +168,16 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
       </div>
 
       <div className="flex-1 pt-0 max-w-md mx-auto w-full px-2 md:px-0">
-        {/* Заголовок */}
+        {/* Заголовок успеха */}
         <div className="w-full border border-white bg-blue-600 dark:border-none py-5 rounded-[25px] text-xl font-medium shadow-md p-4 mb-6 text-white text-center">
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center gap-2">
             <span className="text-lg font-medium">
               {t("cabinet.delete.account")}
             </span>
           </div>
         </div>
 
-        {/* Информация об удалении */}
+        {/* Информация о статусе запроса */}
         <div className="bg-white rounded-3xl p-6 shadow-md border dark:bg-[#2C2B2B] dark:border-none">
           {isLoading ? (
             <div className="flex items-center justify-center h-40">
@@ -226,23 +196,16 @@ export function DeleteAccountPanel({ onClose }: DeleteAccountPanelProps) {
             <>
               <div className="space-y-4 text-center mb-6">
                 <p className="text-gray-700 dark:text-white">
-                  {t("cabinet.delete.personal.data")}
-                </p>
-                <p className="text-gray-700 dark:text-white">
-                  {t("cabinet.delete.archive")}
-                </p>
-                <p className="text-gray-700 dark:text-white">
-                  {t("cabinet.delete.balance")}
+                  {t("cabinet.delete.request.processing")}
                 </p>
               </div>
 
-              <div className="flex justify-center">
+              <div className="flex justify-center space-x-4">
                 <Button
-                  onClick={handleDeleteClick}
-                  disabled={isRequesting}
-                  className="w-36 bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full"
+                  onClick={handleBackToHome}
+                  className="w-64 h-12 bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] border border-white text-white rounded-full text-lg font-normal"
                 >
-                  {isRequesting ? t("loading") : t("cabinet.delete")}
+                  {t("common.closed")}
                 </Button>
               </div>
             </>

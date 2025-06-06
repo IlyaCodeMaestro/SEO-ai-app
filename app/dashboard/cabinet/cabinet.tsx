@@ -12,6 +12,7 @@ import { TariffPanel } from "@/components/cabinet/tariff-panel";
 import { ActiveDevicesPanel } from "@/components/cabinet/active-devices-panel";
 import { DeleteAccountPanel } from "@/components/cabinet/delete-account-panel";
 import { ExitAccountPanel } from "@/components/cabinet/exit-account-panel";
+import { DeleteAccountRequestPanel } from "@/components/cabinet/delete-account-request-panel";
 
 type ActivePanel =
   | null

@@ -38,6 +38,7 @@ import {
   useStartDescriptionMutation,
 } from "@/store/services/main";
 import { ExitAccountPanel } from "@/components/cabinet/exit-account-panel";
+import { DeleteAccountRequestPanel } from "@/components/cabinet/delete-account-request-panel";
 
 type ActivePanel =
   | null

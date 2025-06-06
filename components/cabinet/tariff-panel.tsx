@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, ArrowLeft } from "lucide-react";
+import {
+  X,
+  ArrowLeft,
+  CheckCircle,
+  CircleIcon as ExclamationCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
-
-import { toast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
+import { notification } from "antd";
 import {
   useBuyTariffMutation,
   useGetTariffsQuery,
@@ -76,7 +79,7 @@ const getLocaleByLanguage = (lang: string): string => {
     case "en":
       return "en-US";
     case "kz":
-      return "kk"; // Используем просто "kk" для лучшей поддержки
+      return "kk";
     case "ru":
     default:
       return "ru-RU";
@@ -87,11 +90,8 @@ const getLocaleByLanguage = (lang: string): string => {
 const formatDateByLanguage = (dateString: string, language: string): string => {
   const date = new Date(dateString);
 
-  // Если язык казахский, используем собственное форматирование
   if (language === "kz") {
     const day = date.getDate().toString().padStart(2, "0");
-
-    // Массив месяцев на казахском
     const kazMonths = [
       "қаңтар",
       "ақпан",
@@ -106,12 +106,10 @@ const formatDateByLanguage = (dateString: string, language: string): string => {
       "қараша",
       "желтоқсан",
     ];
-
     const month = kazMonths[date.getMonth()];
     return `${day} ${month}`;
   }
 
-  // Для других языков используем стандартное форматирование
   return date.toLocaleDateString(getLocaleByLanguage(language), {
     day: "2-digit",
     month: "long",
@@ -148,19 +146,78 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
     useReconnectTariffMutation();
   const [buyTariff, { isLoading: isBuying }] = useBuyTariffMutation();
 
+  // Initialize notification API
+  const [api, contextHolder] = notification.useNotification();
+
+  // Функция для показа уведомлений с Ant Design
+  const showNotification = (
+    type: "success" | "error" | "info" | "warning",
+    title: string,
+    description: string
+  ) => {
+    const config = {
+      message: title,
+      description: description,
+      placement: "topRight" as const,
+      duration: 4.5,
+      style: {
+        borderRadius: "12px",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+      },
+    };
+
+    switch (type) {
+      case "success":
+        api.success({
+          ...config,
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            ...config.style,
+            borderLeft: "4px solid #52c41a",
+          },
+        });
+        break;
+      case "error":
+        api.error({
+          ...config,
+          icon: <ExclamationCircle className="text-red-500" />,
+          style: {
+            ...config.style,
+            borderLeft: "4px solid #ff4d4f",
+          },
+        });
+        break;
+      case "info":
+        api.info({
+          ...config,
+          style: {
+            ...config.style,
+            borderLeft: "4px solid #1890ff",
+          },
+        });
+        break;
+      case "warning":
+        api.warning({
+          ...config,
+          icon: <ExclamationCircle className="text-yellow-500" />,
+          style: {
+            ...config.style,
+            borderLeft: "4px solid #faad14",
+          },
+        });
+        break;
+    }
+  };
+
   // Функция для перевода динамического контента из API
   const translateApiContent = (text: string): string => {
     if (!text) return text;
 
-    // Проверяем, есть ли точное совпадение для этого текста
     if (apiTranslations[text]) {
       return apiTranslations[text][language] || text;
     }
 
-    // Если точного совпадения нет, ищем частичное совпадение
-    // Это может помочь, если текст с API немного отличается (например, разные пробелы или переносы строк)
     for (const key in apiTranslations) {
-      // Удаляем все пробелы и переносы строк для сравнения
       const normalizedKey = key.replace(/\s+/g, "");
       const normalizedText = text.replace(/\s+/g, "");
 
@@ -172,13 +229,11 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
       }
     }
 
-    // Если совпадения не найдено, возвращаем оригинальный текст
     return text;
   };
 
   useEffect(() => {
     if (tariffsData?.tariff) {
-      // Устанавливаем состояние переключателя на основе данных с сервера
       setAutoRenewal(tariffsData.tariff.auto_reconnect);
     }
   }, [tariffsData]);
@@ -231,25 +286,17 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
 
         setAutoRenewal(true);
       } catch (autoRenewalError) {
-        // Если не удалось включить автосписание, показываем предупреждение, но не блокируем основной процесс
         console.warn(
           "Не удалось автоматически включить автосписание:",
           autoRenewalError
         );
       }
 
-      toast({
-        title: t("success"),
-        description: t("tariff.buy.success"),
-        variant: "default",
-        className: "bg-green-50 border-green-200 text-green-800",
-      });
+      // Показываем уведомление об успехе с Ant Design
+      showNotification("success", t("success"), t("tariff.buy.success"));
     } catch (error) {
-      toast({
-        title: t("common.error"),
-        description: t("tariff.switch.error"),
-        variant: "destructive",
-      });
+      // Показываем уведомление об ошибке с Ant Design
+      showNotification("error", t("common.error"), t("tariff.switch.error"));
     }
 
     setTariffToSwitch(null);
@@ -263,11 +310,9 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
 
   const handleAutoRenewalToggle = () => {
     if (!autoRenewal) {
-      // Если автопродление выключено, показываем модальное окно для включения
       setAutoRenewalAction("enable");
       setShowAutoRenewalModal(true);
     } else {
-      // Если автопродление включено, показываем модальное окно для выключения
       setAutoRenewalAction("disable");
       setShowAutoRenewalModal(true);
     }
@@ -275,27 +320,27 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
 
   const handleAutoRenewalChange = async (enabled: boolean) => {
     try {
-      // Отправляем запрос на изменение статуса автосписания
       await reconnectTariff({
         auto_reconnect: enabled,
       }).unwrap();
 
       setAutoRenewal(enabled);
 
-      toast({
-        title: t("success"),
-        description: enabled
+      // Показываем уведомление об изменении автопродления с Ant Design
+      showNotification(
+        "success",
+        t("success"),
+        enabled
           ? t("tariff.auto.renewal.enabled")
-          : t("tariff.auto.renewal.disabled"),
-        variant: "default",
-        className: "bg-green-50 border-green-200 text-green-800",
-      });
+          : t("tariff.auto.renewal.disabled")
+      );
     } catch (error) {
-      toast({
-        title: t("common.error"),
-        description: t("tariff.auto.renewal.error"),
-        variant: "destructive",
-      });
+      // Показываем уведомление об ошибке с Ant Design
+      showNotification(
+        "error",
+        t("common.error"),
+        t("tariff.auto.renewal.error")
+      );
     }
   };
 
@@ -312,21 +357,22 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
   const getTariffGradient = (tariffId: string) => {
     switch (tariffId) {
       case "seller":
-        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC]   ";
+        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC]";
       case "manager":
-        return "bg-gradient-to-r from-[rgba(0,131,172,0.71)] to-[#3460D1]  ";
+        return "bg-gradient-to-r from-[rgba(0,131,172,0.71)] to-[#3460D1]";
       case "premium":
-        return "bg-gradient-to-r from-[#2663FF] to-[#0B3CBB]  ";
+        return "bg-gradient-to-r from-[#2663FF] to-[#0B3CBB]";
       default:
-        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC] ";
+        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC]";
     }
   };
+
   // Mobile view
   if (isMobile) {
     return (
       <div className="h-full flex flex-col justify-start bg-white dark:bg-[#404040]">
-        {/* Add Toaster component to ensure toasts are displayed */}
-        <Toaster />
+        {/* Ant Design notification context */}
+        {contextHolder}
 
         {/* Header with back button and centered "Личный кабинет" text */}
         <div className="flex items-center justify-between p-4 relative">
@@ -342,7 +388,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
               {t("common.cabinet")}
             </div>
           </div>
-          <div className="w-5"></div> {/* Empty div for balanced spacing */}
+          <div className="w-5"></div>
         </div>
 
         <div className="flex-1 p-4 pt-0 max-w-md mx-auto w-full">
@@ -421,7 +467,6 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
             <div className="space-y-4">
               {tariffsData?.tariffs.map((apiTariff) => {
                 const tariffId = mapApiIdToComponentId(apiTariff.id);
-                // Проверяем, является ли этот тариф текущим
                 const isCurrent = tariffsData?.tariff?.id === apiTariff.id;
 
                 return (
@@ -510,6 +555,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
             </div>
           )}
         </div>
+
         {/* Confirmation modal */}
         {showConfirmModal && tariffToSwitch && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-3xl">
@@ -580,11 +626,11 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
   // Desktop view
   return (
     <div className="bg-white w-full dark:bg-[#404040]">
-      {/* Add Toaster component to ensure toasts are displayed */}
-      <Toaster />
+      {/* Ant Design notification context */}
+      {contextHolder}
 
       <div className="max-w-3xl mx-auto p-6">
-        {/* Header - now with black text and no blue background */}
+        {/* Header */}
         <div className="flex items-center justify-center relative mb-6">
           <h2 className="text-lg font-medium text-black dark:text-white">
             {t("cabinet.title")}
@@ -674,7 +720,6 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
             <div className="space-y-4">
               {tariffsData?.tariffs.map((apiTariff) => {
                 const tariffId = mapApiIdToComponentId(apiTariff.id);
-                // Проверяем, является ли этот тариф текущим
                 const isCurrent = tariffsData?.tariff?.id === apiTariff.id;
 
                 return (
@@ -684,7 +729,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       tariffId
                     )} shadow-sm`}
                   >
-                    <div className="p-4 text-white ">
+                    <div className="p-4 text-white">
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="text-2xl font-bold mb-2">
