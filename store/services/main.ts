@@ -30,6 +30,12 @@ import { axiosBaseQuery } from "@/axios/axiosBaseQuery";
 
 const BASE_URL = "https://api.stage.seo-ai.kz/c";
 
+// New interface for cursor-based pagination
+interface IBonusHistoryRequest {
+  cursor?: string | null;
+  limit?: number;
+}
+
 export const mainApi = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery({ baseUrl: BASE_URL }),
@@ -79,7 +85,7 @@ export const mainApi = createApi({
     }),
     getBalanceHistory: builder.query<IBalanceHistoryResponse, number>({
       query: (page = 1) => ({
-        url: `/v2/balance/extract?page=${page}`,
+        url: `/v1/balance/extract?page=${page}`,
         method: "GET",
       }),
       providesTags: ["BalanceHistory"],
@@ -102,16 +108,47 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ["Profile", "BonusExchange", "BonusHistory"],
     }),
-    getBonusHistory: builder.query<IBonusHistoryResponse, number>({
-      query: (page = 1) => ({
-        url: `/v2/bonuses/extract?page=${page}`,
-        method: "GET",
-      }),
-      providesTags: ["BonusHistory"],
-    }),
+    // Updated getBonusHistory to use cursor-based pagination
+    getBonusHistory: builder.query<IBonusHistoryResponse, IBonusHistoryRequest>(
+      {
+        query: ({ cursor = null, limit = 10 }) => {
+          let url = `/v2/bonuses/extract?limit=${limit}`;
+          if (cursor) {
+            url += `&cursor=${encodeURIComponent(cursor)}`;
+          }
+          return {
+            url,
+            method: "GET",
+          };
+        },
+        providesTags: ["BonusHistory"],
+        // Merge results for infinite scroll behavior
+        serializeQueryArgs: ({ endpointName }) => {
+          return endpointName;
+        },
+        merge: (currentCache, newItems, { arg }) => {
+          // If no cursor, replace cache (first load)
+          if (!arg.cursor) {
+            return newItems;
+          }
+          // Otherwise, merge with existing cache
+          return {
+            ...newItems,
+            date_events: [
+              ...(currentCache?.date_events || []),
+              ...(newItems.date_events || []),
+            ],
+          };
+        },
+        forceRefetch({ currentArg, previousArg }) {
+          return currentArg?.cursor !== previousArg?.cursor;
+        },
+      }
+    ),
+    // Оставляем старый API для рефералов пока не обновим бэкенд
     getReferralHistory: builder.query<IReferralHistoryResponse, number>({
       query: (page = 1) => ({
-        url: `/v2/referrals/extract?page=${page}`,
+        url: `/v1/referrals/extract?page=${page}`,
         method: "GET",
       }),
       providesTags: ["ReferralHistory"],
@@ -134,7 +171,6 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ["Tariffs", "Profile"],
     }),
-
     buyTariff: builder.mutation<ITariffBuyResponse, ITariffBuyRequest>({
       query: (body) => ({
         url: "/v2/tariff/buy",
@@ -156,7 +192,7 @@ export const mainApi = createApi({
         method: "PUT",
         data: body,
       }),
-      invalidatesTags: ["Process", "Archive"], // Invalidate cache when analysis starts
+      invalidatesTags: ["Process", "Archive"],
     }),
     startDescription: builder.mutation<IResponseStartDescription, any>({
       query: (body) => ({
@@ -164,7 +200,7 @@ export const mainApi = createApi({
         method: "PUT",
         data: body,
       }),
-      invalidatesTags: ["Process", "Archive"], // Invalidate both Process and Archive tags
+      invalidatesTags: ["Process", "Archive"],
     }),
     startAnalysisDescription: builder.mutation<IResponseStartDescription, any>({
       query: (body) => ({
@@ -172,7 +208,7 @@ export const mainApi = createApi({
         method: "PUT",
         data: body,
       }),
-      invalidatesTags: ["Process", "Archive"], // Invalidate both Process and Archive tags
+      invalidatesTags: ["Process", "Archive"],
     }),
     getProcessList: builder.query<IProcessResponse, void>({
       query: () => ({
@@ -200,7 +236,6 @@ export const mainApi = createApi({
       }),
       providesTags: ["Archive"],
     }),
-    // Добавляем новые эндпоинты для удаления аккаунта
     getDeleteAccountInfo: builder.query<IDeleteAccountInfoResponse, void>({
       query: () => ({
         url: "/v1/profile/delete",
@@ -246,7 +281,6 @@ export const {
   useGetCardAnalysisQuery,
   useGetCardDescriptionQuery,
   useGetArchiveQuery,
-  // Экспортируем новые хуки для удаления аккаунта
   useGetDeleteAccountInfoQuery,
   useRequestDeleteAccountMutation,
   useConfirmDeleteAccountMutation,

@@ -17,13 +17,19 @@ export function ReferralStatementPanel({
 }: ReferralStatementPanelProps) {
   const { t } = useLanguage();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const [currentPage, setCurrentPage] = useState(1);
+
+  // Используем старый API пока не обновим бэкенд
+  const [currentPage, setCursor] = useState(1);
   const [allReferrals, setAllReferrals] = useState<any[]>([]);
   const [hasMoreContent, setHasMoreContent] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [loadedPages, setLoadedPages] = useState(1);
+  const [loadedBatches, setLoadedBatches] = useState(0);
 
-  // Fetch referral history data
+  // State for content expansion
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
+  const maxVisibleReferrals = 100;
+
+  // Используем старый API с page параметром
   const {
     data: referralHistory,
     isLoading,
@@ -33,36 +39,96 @@ export function ReferralStatementPanel({
   // Update allReferrals when new data is loaded
   useEffect(() => {
     if (referralHistory) {
-      if (referralHistory.date_referrals) {
+      if (
+        referralHistory.date_referrals &&
+        referralHistory.date_referrals.length > 0
+      ) {
         if (currentPage === 1) {
+          // First load - replace all data
           setAllReferrals(referralHistory.date_referrals);
-          setLoadedPages(1);
+          setLoadedBatches(1);
         } else {
-          // Append new referrals to existing ones
+          // Subsequent loads - append data
           setAllReferrals((prev) => [
             ...prev,
             ...referralHistory.date_referrals,
           ]);
-          setLoadedPages(currentPage);
+          setLoadedBatches((prev) => prev + 1);
         }
 
-        // Check if there's more content to load
+        // Check if there's more content based on response
         setHasMoreContent(referralHistory.date_referrals.length > 0);
       } else {
-        // Если date_referrals отсутствует — скорее всего данных больше нет
         setHasMoreContent(false);
       }
 
-      // Обязательно сбрасываем флаг загрузки
       setIsLoadingMore(false);
     }
   }, [referralHistory, currentPage]);
+
+  // Get all referrals flattened
+  const getAllReferrals = () => {
+    const referrals: Array<{
+      dateGroup: any;
+      referral: any;
+      refIndex: number;
+    }> = [];
+
+    allReferrals.forEach((dateGroup) => {
+      if (dateGroup.referrals && Array.isArray(dateGroup.referrals)) {
+        dateGroup.referrals.forEach((referral: any, refIndex: number) => {
+          referrals.push({ dateGroup, referral, refIndex });
+        });
+      }
+    });
+
+    return referrals;
+  };
+
+  // Get visible referrals based on expansion state
+  const getVisibleReferrals = () => {
+    const allReferralsList = getAllReferrals();
+
+    if (isContentExpanded) {
+      return allReferralsList;
+    }
+
+    return allReferralsList.slice(0, maxVisibleReferrals);
+  };
+
+  // Get total number of referrals
+  const getTotalReferralsCount = () => {
+    return getAllReferrals().length;
+  };
+
+  // Get hidden referrals count
+  const getHiddenReferralsCount = () => {
+    const total = getTotalReferralsCount();
+    return Math.max(0, total - maxVisibleReferrals);
+  };
+
+  // Group visible referrals by date for display
+  const getGroupedVisibleReferrals = () => {
+    const visibleReferrals = getVisibleReferrals();
+    const grouped: Record<
+      string,
+      Array<{ referral: any; refIndex: number }>
+    > = {};
+
+    visibleReferrals.forEach(({ dateGroup, referral, refIndex }) => {
+      if (!grouped[dateGroup.date]) {
+        grouped[dateGroup.date] = [];
+      }
+      grouped[dateGroup.date].push({ referral, refIndex });
+    });
+
+    return grouped;
+  };
 
   // Format date string (YYYY-MM-DD) to a more readable format
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      // Check if date is valid
       if (isNaN(date.getTime())) {
         return dateString;
       }
@@ -78,31 +144,29 @@ export function ReferralStatementPanel({
   };
 
   // Determine if a referral is active based on type_id
-  // Assuming type_id = 2 means active, but this should be adjusted based on actual business logic
   const isReferralActive = (typeId: number) => {
     return typeId === 2;
   };
 
   // Handle load more
   const handleLoadMore = () => {
+    if (!hasMoreContent || isLoadingMore) return;
+
     setIsLoadingMore(true);
-    setCurrentPage((prev) => prev + 1);
+    setCursor((prev) => prev + 1);
   };
 
-  // Handle collapse back to first page
+  // Handle collapse back to first batch
   const handleCollapse = () => {
     setIsLoadingMore(true);
-    // Keep only the first page of data
+
     setTimeout(() => {
-      if (referralHistory?.date_referrals) {
-        setAllReferrals(
-          allReferrals.slice(0, referralHistory.date_referrals.length)
-        );
-      }
-      setCurrentPage(1);
-      setLoadedPages(1);
+      setCursor(1);
+      setLoadedBatches(0);
       setHasMoreContent(true);
+      setIsContentExpanded(false); // Also collapse content when resetting
       setIsLoadingMore(false);
+
       // Scroll to top
       const panel = document.querySelector(".referral-statement-panel");
       if (panel) {
@@ -110,6 +174,23 @@ export function ReferralStatementPanel({
       }
     }, 300);
   };
+
+  // Toggle content expansion
+  const toggleContentExpansion = () => {
+    setIsContentExpanded(!isContentExpanded);
+  };
+
+  // Debug info
+  const totalReferrals = getTotalReferralsCount();
+  const hiddenReferrals = getHiddenReferralsCount();
+
+  console.log("Debug referrals:", {
+    totalReferrals,
+    hiddenReferrals,
+    maxVisible: maxVisibleReferrals,
+    isExpanded: isContentExpanded,
+    allReferralsLength: allReferrals.length,
+  });
 
   return (
     <div className="h-full flex flex-col bg-white px-4 max-w-2xl mx-auto dark:bg-[#404040] referral-statement-panel">
@@ -180,73 +261,95 @@ export function ReferralStatementPanel({
               </div>
             )}
 
-            {!error &&
-              allReferrals.map((dateGroup, dateIndex) => (
-                <div
-                  key={`date-${dateGroup.id}-${dateIndex}`}
-                  className="mb-6 last:mb-0"
-                >
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">
-                    {formatDate(dateGroup.date)}
-                  </h3>
+            {!error && allReferrals.length > 0 && (
+              <>
+                {Object.entries(getGroupedVisibleReferrals()).map(
+                  ([date, referrals]) => (
+                    <div key={`date-${date}`} className="mb-6 last:mb-0">
+                      <h3 className="text-sm font-medium text-gray-500 mb-2">
+                        {formatDate(date)}
+                      </h3>
 
-                  {dateGroup.referrals.map((referral: any, refIndex) => (
-                    <div
-                      key={`referral-${referral.id}-${dateIndex}-${refIndex}`}
-                      className="mb-5 last:mb-0 flex justify-between items-center"
-                    >
-                      <div className="flex items-center">
-                        <p
-                          className={
-                            isReferralActive(referral.type_id)
-                              ? "font-bold"
-                              : "font-normal"
-                          }
+                      {referrals.map(({ referral, refIndex }) => (
+                        <div
+                          key={`referral-${referral.id}-${refIndex}`}
+                          className="mb-5 last:mb-0 flex justify-between items-center"
                         >
-                          {referral.name}
-                        </p>
-                      </div>
-                      <span className="text-black dark:text-white font-light">
-                        {referral.phone}
-                      </span>
+                          <div className="flex items-center">
+                            <p
+                              className={
+                                isReferralActive(referral.type_id)
+                                  ? "font-bold"
+                                  : "font-normal"
+                              }
+                            >
+                              {referral.name}
+                            </p>
+                          </div>
+                          <span className="text-black dark:text-white font-light">
+                            {referral.phone}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              ))}
+                  )
+                )}
+
+                {/* Loading indicator for additional content */}
+                {isLoadingMore && currentPage > 1 && (
+                  <div className="flex justify-center py-4">
+                    <div className="h-6 w-6 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
-          {/* Load more button or collapse button */}
+          {/* Bottom controls */}
           {!isLoading && !error && allReferrals.length > 0 && (
-            <div className="flex justify-center items-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-              {loadedPages > 1 && !hasMoreContent ? (
-                <Button
-                  onClick={handleCollapse}
-                  disabled={isLoadingMore}
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
-                >
-                  {isLoadingMore ? (
-                    <div className="h-5 w-5 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
-                  ) : (
+            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+              {/* Debug info - remove in production */}
+
+              {/* Content expansion button - показываем всегда если есть данные для тестирования */}
+              {totalReferrals > 0 && (
+                <div className="flex flex-col items-center gap-2 mb-4">
+                  <Button
+                    onClick={toggleContentExpansion}
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                    title={isContentExpanded ? "Show less" : "Show more"}
+                  >
+                    {isContentExpanded ? (
+                      <ChevronUp className="h-6 w-6 text-blue-600" />
+                    ) : (
+                      <ChevronDown className="h-6 w-6 text-blue-600" />
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {/* Pagination controls */}
+              <div className="flex justify-center items-center gap-2">
+                {/* Collapse button - show when we have loaded multiple batches */}
+                {loadedBatches > 1 && (
+                  <Button
+                    onClick={handleCollapse}
+                    disabled={isLoadingMore}
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                    title="Collapse to first page"
+                  >
                     <ChevronUp className="h-6 w-6 text-gray-600" />
-                  )}
-                </Button>
-              ) : hasMoreContent ? (
-                <Button
-                  onClick={handleLoadMore}
-                  disabled={isLoadingMore}
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
-                >
-                  {isLoadingMore ? (
-                    <div className="h-5 w-5 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
-                  ) : (
-                    <ChevronDown className="h-6 w-6 text-blue-600" />
-                  )}
-                </Button>
-              ) : null}
+                  </Button>
+                )}
+
+                {/* Load more button */}
+              </div>
+
+              {/* Batch indicator */}
+              {loadedBatches > 1 && <div className="text-center mt-2"></div>}
             </div>
           )}
         </div>

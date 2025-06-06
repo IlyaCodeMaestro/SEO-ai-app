@@ -344,7 +344,7 @@ export interface IBonusExchangeResult {
 export interface IBonusEvent {
   from_name: string | null;
   type_id: number;
-  value: number;
+  value: string;
   time: string;
   id: number;
   title: string;

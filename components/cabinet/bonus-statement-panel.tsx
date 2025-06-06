@@ -15,47 +15,128 @@ interface BonusStatementPanelProps {
 export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
   const { t } = useLanguage();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const [currentPage, setCurrentPage] = useState(1);
+
+  // Cursor-based pagination state
+  const [cursor, setCursor] = useState<string | null>(null);
   const [allEvents, setAllEvents] = useState<any[]>([]);
   const [hasMoreContent, setHasMoreContent] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [loadedPages, setLoadedPages] = useState(1);
+  const [loadedBatches, setLoadedBatches] = useState(0);
+  const [cursors, setCursors] = useState<string[]>([]); // Store cursors for each batch
 
-  // Fetch bonus history data
+  // State for content expansion
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
+  const maxVisibleTransactions = 10;
+
+  // Fetch bonus history data with cursor
   const {
     data: bonusHistory,
     isLoading,
     error,
-  } = useGetBonusHistoryQuery(currentPage);
+  } = useGetBonusHistoryQuery({ cursor, limit: 10 });
 
   // Update allEvents when new data is loaded
   useEffect(() => {
     if (bonusHistory) {
-      if (bonusHistory.date_events) {
-        if (currentPage === 1) {
+      if (bonusHistory.date_events && bonusHistory.date_events.length > 0) {
+        if (cursor === null) {
+          // First load - replace all data
           setAllEvents(bonusHistory.date_events);
-          setLoadedPages(1);
+          setLoadedBatches(1);
+          setCursors([]);
         } else {
+          // Subsequent loads - append data
           setAllEvents((prev) => [...prev, ...bonusHistory.date_events]);
-          setLoadedPages(currentPage);
+          setLoadedBatches((prev) => prev + 1);
         }
 
-        setHasMoreContent(bonusHistory.date_events.length > 0);
+        // Update cursor for next load
+        const lastEvent =
+          bonusHistory.date_events[bonusHistory.date_events.length - 1];
+        const lastEventInLastDate =
+          lastEvent.events[lastEvent.events.length - 1];
+
+        // Use timestamp + id as cursor for uniqueness
+        const nextCursor = `${lastEvent.date}_${lastEventInLastDate.id}_${lastEventInLastDate.time}`;
+
+        // Store current cursor for potential rollback
+        if (cursor !== null) {
+          setCursors((prev) => [...prev, cursor]);
+        }
+
+        // Check if there's more content based on response
+        setHasMoreContent(
+          bonusHistory.has_more || bonusHistory.date_events.length >= 10
+        );
       } else {
-        // Если date_events отсутствует — скорее всего данных больше нет
         setHasMoreContent(false);
       }
 
-      // Обязательно сбрасываем флаг загрузки
       setIsLoadingMore(false);
     }
-  }, [bonusHistory, currentPage]);
+  }, [bonusHistory, cursor]);
+
+  // Get all transactions flattened
+  const getAllTransactions = () => {
+    const transactions: Array<{
+      dateEvent: any;
+      event: any;
+      eventIndex: number;
+    }> = [];
+
+    allEvents.forEach((dateEvent) => {
+      dateEvent.events.forEach((event: any, eventIndex: number) => {
+        transactions.push({ dateEvent, event, eventIndex });
+      });
+    });
+
+    return transactions;
+  };
+
+  // Get visible transactions based on expansion state
+  const getVisibleTransactions = () => {
+    const allTransactions = getAllTransactions();
+
+    if (isContentExpanded) {
+      return allTransactions;
+    }
+
+    return allTransactions.slice(0, maxVisibleTransactions);
+  };
+
+  // Get total number of transactions
+  const getTotalTransactionsCount = () => {
+    return getAllTransactions().length;
+  };
+
+  // Get hidden transactions count
+  const getHiddenTransactionsCount = () => {
+    const total = getTotalTransactionsCount();
+    return Math.max(0, total - maxVisibleTransactions);
+  };
+
+  // Group visible transactions by date for display
+  const getGroupedVisibleTransactions = () => {
+    const visibleTransactions = getVisibleTransactions();
+    const grouped: Record<
+      string,
+      Array<{ event: any; eventIndex: number }>
+    > = {};
+
+    visibleTransactions.forEach(({ dateEvent, event, eventIndex }) => {
+      if (!grouped[dateEvent.date]) {
+        grouped[dateEvent.date] = [];
+      }
+      grouped[dateEvent.date].push({ event, eventIndex });
+    });
+
+    return grouped;
+  };
 
   // Format date string (YYYY-MM-DD) to a more readable format
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      // Check if date is valid
       if (isNaN(date.getTime())) {
         return dateString;
       }
@@ -73,7 +154,6 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
   // Format time string to remove seconds (HH:MM:SS -> HH:MM)
   const formatTime = (timeString: string) => {
     try {
-      // If time is in HH:MM:SS format, remove seconds
       if (timeString && timeString.includes(":")) {
         const timeParts = timeString.split(":");
         if (timeParts.length >= 2) {
@@ -88,56 +168,62 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
 
   // Get text color based on transaction type
   const getTextColor = (typeId: number) => {
-    // Если это пополнение бонусов (type_id = 8), то зеленый цвет
     if (typeId === 8) {
       return "text-green-600";
-    }
-    // Если это списание бонусов (type_id = 1, 9, 10), то красный цвет
-    else if ([1, 9, 10].includes(typeId)) {
+    } else if ([1, 9, 10].includes(typeId)) {
       return "text-red-600";
     }
-    // По умолчанию черный цвет
     return "text-gray-800 dark:text-white";
   };
 
   // Format value with sign
   const formatValue = (typeId: number, value: number) => {
-    // Если это пополнение бонусов (type_id = 8), то добавляем плюс
     if (typeId === 8) {
       return `+${value}`;
-    }
-    // Если это списание бонусов (type_id = 1, 9, 10), то добавляем минус
-    else if ([1, 9, 10].includes(typeId)) {
+    } else if ([1, 9, 10].includes(typeId)) {
       return `-${value}`;
     }
-    // По умолчанию просто значение
     return value;
   };
 
-  // Handle load more
+  // Handle load more with cursor
   const handleLoadMore = () => {
+    if (!hasMoreContent || isLoadingMore) return;
+
     setIsLoadingMore(true);
-    setCurrentPage((prev) => prev + 1);
+
+    // Get cursor from the last loaded event
+    if (allEvents.length > 0) {
+      const lastDateEvent = allEvents[allEvents.length - 1];
+      const lastEvent = lastDateEvent.events[lastDateEvent.events.length - 1];
+      const newCursor = `${lastDateEvent.date}_${lastEvent.id}_${lastEvent.time}`;
+      setCursor(newCursor);
+    }
   };
 
-  // Handle collapse back to first page
+  // Handle collapse back to first batch
   const handleCollapse = () => {
     setIsLoadingMore(true);
-    // Keep only the first page of data
+
     setTimeout(() => {
-      if (bonusHistory?.date_events) {
-        setAllEvents(allEvents.slice(0, bonusHistory.date_events.length));
-      }
-      setCurrentPage(1);
-      setLoadedPages(1);
+      setCursor(null);
+      setLoadedBatches(0);
       setHasMoreContent(true);
+      setCursors([]);
+      setIsContentExpanded(false); // Also collapse content when resetting
       setIsLoadingMore(false);
+
       // Scroll to top
       const panel = document.querySelector(".bonus-statement-panel");
       if (panel) {
         panel.scrollTop = 0;
       }
     }, 300);
+  };
+
+  // Toggle content expansion
+  const toggleContentExpansion = () => {
+    setIsContentExpanded(!isContentExpanded);
   };
 
   return (
@@ -181,7 +267,7 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
         <div className="bg-gray-50 rounded-[25px] p-6 border shadow-md min-h-[500px] flex flex-col justify-between dark:bg-[#2C2B2B] dark:border-none">
           {/* Transaction list */}
           <div className="flex-grow overflow-y-auto">
-            {isLoading && currentPage === 1 && (
+            {isLoading && cursor === null && (
               <div className="flex items-center justify-center h-full">
                 <p>{t("common.loading")}</p>
               </div>
@@ -209,77 +295,121 @@ export function BonusStatementPanel({ onClose }: BonusStatementPanelProps) {
               </div>
             )}
 
-            {!error &&
-              allEvents.map((dateEvent, dateIndex) => (
-                <div
-                  key={`date-${dateEvent.id}-${dateIndex}`}
-                  className="mb-6 last:mb-0"
-                >
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">
-                    {formatDate(dateEvent.date)}
-                  </h3>
+            {!error && allEvents.length > 0 && (
+              <>
+                {Object.entries(getGroupedVisibleTransactions()).map(
+                  ([date, transactions]) => (
+                    <div key={`date-${date}`} className="mb-6 last:mb-0">
+                      <h3 className="text-sm font-medium text-gray-500 mb-2">
+                        {formatDate(date)}
+                      </h3>
 
-                  {dateEvent.events.map((event: any, eventIndex) => (
-                    <div
-                      key={`event-${event.id}-${dateIndex}-${eventIndex}`}
-                      className="mb-3 last:mb-0"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-medium">
-                            {event.title} {event.from_name && event.from_name}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {formatTime(event.time)}
-                          </p>
-                        </div>
-                        <span
-                          className={`font-medium whitespace-nowrap ${getTextColor(
-                            event.type_id
-                          )}`}
+                      {transactions.map(({ event, eventIndex }) => (
+                        <div
+                          key={`event-${event.id}-${eventIndex}`}
+                          className="mb-3 last:mb-0"
                         >
-                          {formatValue(event.type_id, event.value)}{" "}
-                          {t("bonus.points")}
-                        </span>
-                      </div>
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <p className="font-medium">
+                                {event.title}{" "}
+                                {event.from_name && event.from_name}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {formatTime(event.time)}
+                              </p>
+                            </div>
+                            <span
+                              className={`font-medium whitespace-nowrap ${getTextColor(
+                                event.type_id
+                              )}`}
+                            >
+                              {formatValue(event.type_id, event.value)}{" "}
+                              {t("bonus.points")}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              ))}
+                  )
+                )}
+
+                {/* Loading indicator for additional content */}
+                {isLoadingMore && cursor !== null && (
+                  <div className="flex justify-center py-4">
+                    <div className="h-6 w-6 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
-          {/* Load more button or collapse button */}
+          {/* Bottom controls */}
           {!isLoading && !error && allEvents.length > 0 && (
-            <div className="flex justify-center items-center mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-              {loadedPages > 1 && !hasMoreContent ? (
-                <Button
-                  onClick={handleCollapse}
-                  disabled={isLoadingMore}
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
-                >
-                  {isLoadingMore ? (
-                    <div className="h-5 w-5 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
-                  ) : (
+            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+              {/* Content expansion button */}
+              {getHiddenTransactionsCount() > 0 && (
+                <div className="flex flex-col items-center gap-2 mb-4">
+                  <Button
+                    onClick={toggleContentExpansion}
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                    title={isContentExpanded ? "Show less" : "Show more"}
+                  >
+                    {isContentExpanded ? (
+                      <ChevronUp className="h-6 w-6 text-blue-600" />
+                    ) : (
+                      <ChevronDown className="h-6 w-6 text-blue-600" />
+                    )}
+                  </Button>
+
+                 
+                </div>
+              )}
+
+              {/* Pagination controls */}
+              <div className="flex justify-center items-center gap-2">
+                {/* Collapse button - show when we have loaded multiple batches */}
+                {loadedBatches > 1 && (
+                  <Button
+                    onClick={handleCollapse}
+                    disabled={isLoadingMore}
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                    title="Collapse to first page"
+                  >
                     <ChevronUp className="h-6 w-6 text-gray-600" />
-                  )}
-                </Button>
-              ) : hasMoreContent ? (
-                <Button
-                  onClick={handleLoadMore}
-                  disabled={isLoadingMore}
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
-                >
-                  {isLoadingMore ? (
-                    <div className="h-5 w-5 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
-                  ) : (
-                    <ChevronDown className="h-6 w-6 text-blue-600" />
-                  )}
-                </Button>
-              ) : null}
+                  </Button>
+                )}
+
+                {/* Load more button */}
+                {hasMoreContent && (
+                  <Button
+                    onClick={handleLoadMore}
+                    disabled={isLoadingMore}
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                  >
+                    {isLoadingMore && cursor !== null ? (
+                      <div className="h-5 w-5 border-2 border-t-transparent border-blue-600 rounded-full animate-spin"></div>
+                    ) : (
+                      <ChevronDown className="h-6 w-6 text-blue-600" />
+                    )}
+                  </Button>
+                )}
+              </div>
+
+              {/* Batch indicator */}
+              {loadedBatches > 1 && (
+                <div className="text-center mt-2">
+                  <span className="text-xs text-gray-500">
+                    Loaded {loadedBatches} batch{loadedBatches > 1 ? "es" : ""}
+                  </span>
+                </div>
+              )}
             </div>
           )}
         </div>
