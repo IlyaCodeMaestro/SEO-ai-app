@@ -10,8 +10,11 @@ interface ProductInfoProps {
     id: string;
     sku: string;
     name: string;
-    type: "analysis" | "description" | "both";
+    type: "analysis" | "description" | "both"; // Это внутреннее представление типа
+    typeText?: string; // Добавляем поле для текста типа из API (например, "Анализ")
     image?: string;
+    status?: string;
+    status_color?: string;
   };
   isMobile: boolean;
 }
@@ -21,8 +24,14 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
   const [copied, setCopied] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
-  // Функция для определения статуса элемента
+  // Обновленная функция для определения статуса элемента
   const getItemStatus = (item: any) => {
+    // Если есть typeText и status из API, используем их
+    if (item.typeText && item.status) {
+      return `${item.typeText} ${item.status}`;
+    }
+
+    // Иначе используем старую логику как fallback
     if (item.type === "both") {
       return t("product.status.both");
     } else if (item.type === "analysis") {
@@ -76,6 +85,9 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
     copyToClipboard(sku);
   };
 
+  // Определяем цвет статуса
+  const statusColor = item.status_color || "#3B82F6"; // Используем синий цвет по умолчанию
+
   if (isMobile) {
     return (
       <>
@@ -121,7 +133,10 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
               </div>
             </div>
 
-            <div className="ml-2 max-w-[100px]  text-md text-blue-600">
+            <div
+              className="ml-2 max-w-[100px] text-md"
+              style={{ color: statusColor }}
+            >
               {formatStatusText(getItemStatus(item))}
             </div>
           </div>
@@ -171,7 +186,15 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
           </div>
         </div>
         <div className="flex items-center mt-3 sm:mt-0 sm:ml-4">
-          <div className="text-xs text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full text-center">
+          <div
+            className="text-xs px-2 py-1 rounded-full text-center"
+            style={{
+              color: statusColor,
+              backgroundColor: item.status_color
+                ? `${statusColor}10`
+                : "rgba(59, 130, 246, 0.1)",
+            }}
+          >
             {formatStatusText(getItemStatus(item))}
           </div>
         </div>

@@ -62,9 +62,10 @@ export function ArchiveView({
   };
 
   const getItemStatus = (item: any) => {
-    if (item.type_id === 3) return t("archive.both.done");
-    if (item.type_id === 2) return t("archive.analysis.done");
-    return t("archive.description.done");
+    const status = item.status || "неизвестен";
+    const type = item.type || "Работа";
+
+    return `${type} ${status}`;
   };
 
   const getItemType = (item: any): "analysis" | "description" | "both" => {
@@ -79,7 +80,7 @@ export function ArchiveView({
       ...item,
       id: item.id,
       type: getItemType(item),
-      status: "completed",
+      status: item.status_id === 3 ? "completed" : "failed",
       timestamp: Date.now(),
       competitorSku: "",
     };
@@ -317,7 +318,10 @@ export function ArchiveView({
                         </div>
                       </div>
 
-                      <div className="text-blue-600 text-right mt-3 md:text-md sm:text-md text-md font-normal ml-2 md:w-28 sm:w-24 w-24">
+                      <div
+                        className="text-right mt-3 md:text-md sm:text-md text-md font-normal ml-2 md:w-28 sm:w-24 w-24"
+                        style={{ color: card.status_color }}
+                      >
                         {formatStatusText(getItemStatus(card))}
                       </div>
 
