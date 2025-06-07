@@ -2,11 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "../provider/language-provider";
-import { useGetAffiliateItemQuery } from "@/store/services/affiliate-api";
+import { useGetAffiliateQuery } from "@/store/services/affiliate-api";
+import { Loader2 } from "lucide-react";
+import { useApiTranslation } from "@/hooks/use-api-translation";
 
 interface PartnerCardProps {
   title: string;
-  gradient: string;
+  startColor: string;
+  endColor: string;
   onNavigate: () => void;
   isSelected: boolean;
   id: string;
@@ -15,13 +18,14 @@ interface PartnerCardProps {
 
 function PartnerCard({
   title,
-  gradient,
+  startColor,
+  endColor,
   onNavigate,
   isSelected,
   id,
   onSelect,
 }: PartnerCardProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   const handleClick = () => {
     onSelect(id);
@@ -31,10 +35,16 @@ function PartnerCard({
   // Apply blue border when selected
   const borderClass = isSelected ? "border-4 border-blue-600" : "border";
 
+  // Динамический градиент на основе цветов из API
+  const gradientStyle = {
+    background: `linear-gradient(to right, ${startColor}, ${endColor})`,
+  };
+
   return (
     <div
-      className={`${gradient} rounded-[20px] p-6 text-white ${borderClass} shadow-custom mb-4 cursor-pointer transition-all duration-200`}
+      className={`rounded-[20px] p-6 text-white ${borderClass} shadow-custom mb-4 cursor-pointer transition-all duration-200`}
       onClick={handleClick}
+      style={gradientStyle}
     >
       <p className="text-xl font-normal mb-4">{title}</p>
       <button
@@ -51,7 +61,8 @@ function PartnerCard({
 }
 
 export function PartnerView() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const { getTranslatedMessage } = useApiTranslation();
   const [shareContent, setShareContent] = useState<{
     content: string;
     title: string;
@@ -69,7 +80,7 @@ export function PartnerView() {
   }, []);
 
   // Получаем данные партнерской программы из API
-  const { data: affiliateData, isLoading, error } = useGetAffiliateItemQuery(1);
+  const { data: affiliateData, isLoading, error } = useGetAffiliateQuery();
 
   const handleSelectItem = (id: string) => {
     // Set the selected item
@@ -168,33 +179,50 @@ export function PartnerView() {
     return `${baseClasses} ${borderClass}`;
   };
 
+  if (isLoading) {
+    return (
+      <div className="h-full flex flex-col p-6 items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <p className="mt-2 text-blue-600">{t("loading")}</p>
+      </div>
+    );
+  }
+
+  if (error || !affiliateData) {
+    return (
+      <div className="h-full flex flex-col p-6 items-center justify-center">
+        <p className="text-red-500">{t("error.loading")}</p>
+      </div>
+    );
+  }
+
+  // Получаем переведенное сообщение из API
+  const translatedMessage = getTranslatedMessage(affiliateData.output);
+
   return (
-    <div className="h-full  flex flex-col p-6 items-center relative overflow-hidden">
+    <div className="h-full flex flex-col p-6 items-center relative overflow-hidden">
       <h1 className="text-lg sm:text-xl font-medium text-blue-600 mb-6 ml-4">
         {t("partner.referral.program")}
       </h1>
 
-      <PartnerCard
-        id="standard-program"
-        title={t("partner.card.premium")}
-        gradient="bg-gradient-to-r from-[#64cada] to-[#4169E1]"
-        onNavigate={handleOpenStandardProgram}
-        isSelected={selectedItem === "standard-program"}
-        onSelect={handleSelectItem}
-      />
-
-      <PartnerCard
-        id="premium-program"
-        title={t("partner.card.standard")}
-        gradient="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)]"
-        onNavigate={handleOpenPremiumProgram}
-        isSelected={selectedItem === "premium-program"}
-        onSelect={handleSelectItem}
-      />
+      {affiliateData.shares.map((share, index) => (
+        <PartnerCard
+          key={share.id}
+          id={`program-${share.id}`}
+          title={share.title}
+          startColor={share.b_start_color}
+          endColor={share.b_end_color}
+          onNavigate={
+            index === 0 ? handleOpenStandardProgram : handleOpenPremiumProgram
+          }
+          isSelected={selectedItem === `program-${share.id}`}
+          onSelect={handleSelectItem}
+        />
+      ))}
 
       <div className="mt-12 flex justify-center">
         <button onClick={handleShare} className={getShareButtonStyle()}>
-          {isLoading ? t("loading") : t("common.share")}
+          {t("common.share")}
         </button>
       </div>
     </div>

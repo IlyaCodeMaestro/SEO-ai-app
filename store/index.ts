@@ -4,6 +4,7 @@ import { sessionsApi } from "./services/sessions-api";
 import { profileApi } from "./services/profile-api";
 import { feedbackApi } from "./services/feedback-api";
 import { affiliateApi } from "./services/affiliate-api";
+import { settingsApi } from "./services/settings-api";
 
 export const makeStore = () =>
   configureStore({
@@ -13,6 +14,7 @@ export const makeStore = () =>
       [profileApi.reducerPath]: profileApi.reducer,
       [feedbackApi.reducerPath]: feedbackApi.reducer,
       [affiliateApi.reducerPath]: affiliateApi.reducer,
+      [settingsApi.reducerPath]: settingsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
@@ -20,7 +22,8 @@ export const makeStore = () =>
         sessionsApi.middleware,
         profileApi.middleware,
         feedbackApi.middleware,
-        affiliateApi.middleware
+        affiliateApi.middleware,
+        settingsApi.middleware
       ),
   });
 
