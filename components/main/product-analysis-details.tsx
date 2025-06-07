@@ -120,7 +120,6 @@ export function ProductAnalysisDetails({
 
   // Extract data from the API response
   const { card, button } = analysisData;
-  const buttonText = button?.text || t("product.analysis.start");
   const buttonVisible = button?.visible !== false;
 
   return (
@@ -221,7 +220,7 @@ export function ProductAnalysisDetails({
               onClick={() => setShowModal(true)}
               className="bg-gradient-to-r from-[#64cada] to-[#4169E1] text-white rounded-full h-[55px] w-[200px] border border-white shadow-custom inline-block px-8"
             >
-              {buttonText}
+              {t("product.analysis.start")}
             </Button>
           </div>
         )}

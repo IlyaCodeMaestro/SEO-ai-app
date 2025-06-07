@@ -127,7 +127,7 @@ export function ProductDescriptionDetails({
 
   // Extract data from the API response
   const { card, button } = descriptionData;
-  const buttonText = button?.text || t("product.description.start");
+
   const buttonVisible = button?.visible !== false;
 
   return (
@@ -228,7 +228,7 @@ export function ProductDescriptionDetails({
               onClick={() => setShowModal(true)}
               className="bg-gradient-to-r from-[#64cada] to-[#4169E1] text-white rounded-full h-[55px] w-[200px] border border-white shadow-custom inline-block px-8"
             >
-              {buttonText}
+            {t("product.description.start")}
             </Button>
           </div>
         )}
