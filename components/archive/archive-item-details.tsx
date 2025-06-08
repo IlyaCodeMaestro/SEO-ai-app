@@ -20,7 +20,6 @@ import { ArchiveItemDetailsModal } from "./archive-layout/block-modal";
 import {
   useGetCardAnalysisQuery,
   useGetCardDescriptionQuery,
-  useStartDescriptionMutation,
   useStartAnalysisDescriptionMutation,
 } from "@/store/services/main";
 import { useRouter } from "next/navigation";
@@ -479,7 +478,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 ))}
               </div>
               <span className="text-lg pr-5 font-medium text-black dark:text-white">
-                {analysisResults.rating.toFixed(1)}
+                {analysisResults.rating}
               </span>
             </div>
 
@@ -657,25 +656,22 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 </div>
               ))}
 
-              {/* Warning Messages */}
-              <div className="mt-6 space-y-4">
-                <div className="flex gap-3">
-                  <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
-                    !
-                  </span>
-                  <p className="text-sm text-black dark:text-white leading-relaxed text-left">
-                    {t("keywords.warning.categories")}
-                  </p>
-                </div>
-                <div className="flex gap-3">
-                  <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
-                    !
-                  </span>
-                  <p className="text-sm text-black dark:text-white leading-relaxed text-left">
-                    {t("keywords.warning.budget")}
-                  </p>
-                </div>
-              </div>
+              {/* Dynamic Warning Messages from API */}
+              {analysisData?.analysis?.irrelevant?.note &&
+                analysisData.analysis.irrelevant.note.length > 0 && (
+                  <div className="mt-6 space-y-4">
+                    {analysisData.analysis.irrelevant.note.map((note) => (
+                      <div key={note.id} className="flex gap-3">
+                        <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
+                          !
+                        </span>
+                        <p className="text-sm text-black dark:text-white leading-relaxed text-left">
+                          {note.text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           </div>
         );
@@ -839,6 +835,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
                 <IrrelevantKeywordsTable
                   title="Использованные нерелевантные слова"
                   keywords={analysisResults.irrelevantKeywords}
+                  notes={analysisData?.analysis?.irrelevant?.note || []}
                   section="irrelevantKeywords"
                   isExpanded={expandedSections["irrelevantKeywords"]}
                   onToggle={toggleSection}
@@ -1110,6 +1107,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               <IrrelevantKeywordsTable
                 title="Использованные нерелевантные слова"
                 keywords={analysisResults.irrelevantKeywords}
+                notes={analysisData?.analysis?.irrelevant?.note || []}
                 section="irrelevantKeywords"
                 isExpanded={expandedSections["irrelevantKeywords"]}
                 onToggle={toggleSection}

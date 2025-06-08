@@ -101,7 +101,7 @@ const ResultsBlock: React.FC<ResultsBlockProps> = ({
                 ))}
               </div>
               <span className="font-sm text-md -mt-1">
-                {rating.toFixed(1)}
+                {rating}
               </span>
             </div>
 

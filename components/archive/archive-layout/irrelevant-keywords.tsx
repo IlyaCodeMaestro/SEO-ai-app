@@ -3,6 +3,11 @@
 import { useLanguage } from "@/components/provider/language-provider";
 import { ChevronDown, ChevronUp, Maximize2 } from "lucide-react";
 
+interface Note {
+  text: string;
+  id: number;
+}
+
 interface KeywordsTableProps {
   title: string;
   keywords: { word: string; frequency: number }[];
@@ -18,6 +23,7 @@ interface KeywordsTableProps {
   textColorClass?: string;
   isMobile: boolean;
   onMaximize?: (title: string) => void;
+  notes?: Note[]; // New prop for API notes
 }
 
 export function IrrelevantKeywordsTable({
@@ -29,6 +35,7 @@ export function IrrelevantKeywordsTable({
   textColorClass = "",
   isMobile,
   onMaximize,
+  notes = [], // Default to empty array
 }: KeywordsTableProps) {
   const { t } = useLanguage();
 
@@ -71,25 +78,19 @@ export function IrrelevantKeywordsTable({
           </div>
         </div>
 
-        {/* Warning Messages */}
-        {isExpanded && (
+        {/* Dynamic Warning Messages from API */}
+        {isExpanded && notes.length > 0 && (
           <div className="px-4 pb-4 space-y-3">
-            <div className="flex gap-2">
-              <div className="text-red-500 font-bold text-lg flex-shrink-0 leading-none ">
-                !
+            {notes.map((note) => (
+              <div key={note.id} className="flex gap-2">
+                <div className="text-red-500 font-bold text-lg flex-shrink-0 leading-none">
+                  !
+                </div>
+                <p className="text-xs text-black dark:text-white leading-relaxed text-left">
+                  {note.text}
+                </p>
               </div>
-              <p className="text-xs text-black dark:text-white leading-relaxed text-left">
-                {t("keywords.warning.categories")}
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <span className="text-red-500 font-bold text-lg flex-shrink-0 leading-none">
-                !
-              </span>
-              <p className="text-xs text-black dark:text-white leading-relaxed text-left">
-                {t("keywords.warning.budget")}
-              </p>
-            </div>
+            ))}
           </div>
         )}
 
@@ -154,25 +155,19 @@ export function IrrelevantKeywordsTable({
         </div>
       </div>
 
-      {/* Warning Messages */}
-      {isExpanded && (
+      {/* Dynamic Warning Messages from API */}
+      {isExpanded && notes.length > 0 && (
         <div className="px-4 pb-4 space-y-4">
-          <div className="flex gap-3">
-            <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
-              !
-            </span>
-            <p className="text-sm text-black dark:text-white leading-relaxed text-left">
-              {t("keywords.warning.categories")}
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
-              !
-            </span>
-            <p className="text-sm text-black dark:text-white leading-relaxed text-left">
-              {t("keywords.warning.budget")}
-            </p>
-          </div>
+          {notes.map((note) => (
+            <div key={note.id} className="flex gap-3">
+              <span className="text-red-500 font-bold text-xl flex-shrink-0 leading-none">
+                !
+              </span>
+              <p className="text-sm text-black dark:text-white leading-relaxed text-left">
+                {note.text}
+              </p>
+            </div>
+          ))}
         </div>
       )}
     </div>

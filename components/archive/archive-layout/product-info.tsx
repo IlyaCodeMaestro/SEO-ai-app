@@ -23,22 +23,17 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  
+  const getItemType = (item: any): "analysis" | "description" | "both" => {
+    if (item.type_id === 3) return "both";
+    if (item.type_id === 2) return "analysis";
+    return "description";
+  };
 
-  // Обновленная функция для определения статуса элемента
-  const getItemStatus = (item: any) => {
-    // Если есть typeText и status из API, используем их
-    if (item.typeText && item.status) {
-      return `${item.typeText} ${item.status}`;
-    }
-
-    // Иначе используем старую логику как fallback
-    if (item.type === "both") {
-      return t("product.status.both");
-    } else if (item.type === "analysis") {
-      return t("product.status.analysis");
-    } else {
-      return t("product.status.description");
-    }
+  const getItemStatus = (item: any): string => {
+    const type = getItemType(item);
+    const status = item.status_id === 3 ? "completed" : "failed";
+    return `${type} ${status}`;
   };
 
   // Функция для разделения статуса на строки
