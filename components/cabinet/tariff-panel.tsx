@@ -21,39 +21,7 @@ import { useLanguage } from "../provider/language-provider";
 // API translations for dynamic content
 const apiTranslations: Record<string, { en: string; kz: string; ru: string }> =
   {
-    "«Селлер»": {
-      en: "«Seller»",
-      kz: "«Селлер»",
-      ru: "«Селлер»",
-    },
-    "«Менеджер»": {
-      en: "«Manager»",
-      kz: "«Менеджер»",
-      ru: "«Менеджер»",
-    },
-    "«Премиум»": {
-      en: "«Premium»",
-      kz: "«Премиум»",
-      ru: "«Премиум»",
-    },
-    'При своевременной оплате абонентской платы или переподключении тарифа 50% бонусов сохраняются, остатки трафика не сохраняются.\n\nПри переходе на тариф "Селлер" бонусы не сохраняются.\n\nПри переходе на тариф "Премиум" 100% бонусов сохраняются.\n\nАбонентская плата бонусами не оплачивается.\n\nПодписку можно активировать или приостановить в личном кабинете на странице тарифы с помощью переключателя «Автосписание».':
-      {
-        en: "With timely payment of the subscription fee or tariff reconnection, 50% of bonuses are retained, remaining traffic is not preserved.\n\nWhen switching to the 'Seller' tariff, bonuses are not retained.\n\nWhen switching to the 'Premium' tariff, 100% of bonuses are retained.\n\nThe subscription fee cannot be paid with bonuses.\n\nThe subscription can be activated or paused in the personal account on the tariffs page using the 'Auto-renewal' toggle.",
-        kz: 'Абоненттік төлемді уақытында төлегенде немесе тарифті қайта қосқанда бонустардың 50%-ы сақталады, қалған трафик сақталмайды.\n\n"Сатушы" тарифіне ауысқанда бонустар сақталмайды.\n\n"Премиум" тарифіне ауысқанда бонустардың 100%-ы сақталады.\n\nАбоненттік төлем бонустармен төленбейді.\n\nЖазылымды жеке кабинетте тарифтер бетінде «Автотізімнен шығару» ауыстырып-қосқышы арқылы белсендіруге немесе тоқтатуға болады.',
-        ru: 'При своевременной оплате абонентской платы или переподключении тарифа 50% бонусов сохраняются, остатки трафика не сохраняются.\nПри переходе на тариф "Селлер" бонусы не сохраняются.\nПри переходе на тариф "Премиум" 100% бонусов сохраняются.\nАбонентская плата бонусами не оплачивается.\nПодписку можно активировать или приостановить в личном кабинете на странице тарифы с помощью переключателя «Автосписание».',
-      },
-    'При своевременной оплате абонентской платы или переподключении 100% бонусов сохраняются, остатки трафика не сохраняются.\n\nПри переходе на тариф "Селлер" или "Менеджер" бонусы не сохраняются.\n\nАбонентская плата бонусами не оплачивается.\n\nПодписку можно активировать или приостановить в личном кабинете на странице тарифы с помощью переключателя «Автосписание».':
-      {
-        en: "With timely payment of the subscription fee or reconnection, 100% of bonuses are retained, remaining traffic is not preserved.\n\nWhen switching to the 'Seller' or 'Manager' tariff, bonuses are not retained.\n\nThe subscription fee cannot be paid with bonuses.\n\nThe subscription can be activated or paused in the personal account on the tariffs page using the 'Auto-renewal' toggle.",
-        kz: 'Абоненттік төлемді уақытында төлегенде немесе қайта қосқанда бонустардың 100%-ы сақталады, қалған трафик сақталмайды.\n\n"Сатушы" немесе "Менеджер" тарифіне ауысқанда бонустар сақталмайды.\n\nАбоненттік төлем бонустармен төленбейді.\n\nЖазылымды жеке кабинетте тарифтер бетінде «Автотізімнен шығару» ауыстырып-қосқышы арқылы белсендіруге немесе тоқтатуға болады.',
-        ru: 'При своевременной оплате абонентской платы или переподключении 100% бонусов сохраняются, остатки трафика не сохраняются.\nПри переходе на тариф "Селлер" или "Менеджер" бонусы не сохраняются.\nАбонентская плата бонусами не оплачивается.\nПодписку можно активировать или приостановить в личном кабинете на странице тарифы с помощью переключателя «Автосписание».',
-      },
-    'При переподключении тарифа остатки трафика и бонусы не сохраняются.\n\nПри переходе на тариф "Менеджер" 50% бонусов сохраняются.\n\nПри переходе на тариф "Премиум" 100% бонусов сохраняются.\n\nАбонентская плата бонусами не оплачивается.\n\nПодписку можно активировать или приостановить в личном кабинете на странице тарифы с помощью переключателя «Автосписание».':
-      {
-        en: "When reconnecting to the tariff, remaining traffic and bonuses are not preserved.\n\nWhen switching to the 'Manager' tariff, 50% of bonuses are retained.\n\nWhen switching to the 'Premium' tariff, 100% of bonuses are retained.\n\nThe subscription fee cannot be paid with bonuses.\n\nThe subscription can be activated or paused in the personal account on the tariffs page using the 'Auto-renewal' toggle.",
-        kz: 'Тарифті қайта қосқанда қалған трафик пен бонустар сақталмайды.\n\n"Менеджер" тарифіне ауысқанда бонустардың 50%-ы сақталады.\n\n"Премиум" тарифіне ауысқанда бонустардың 100%-ы сақталады.\n\nАбоненттік төлем бонустармен төленбейді.\n\nЖазылымды жеке кабинетте тарифтер бетінде «Автотізімнен шығару» ауыстырып-қосқышы арқылы белсендіруге немесе тоқтатуға болады.',
-        ru: 'При переподключении тарифа остатки трафика и бонусы не сохраняются.\nПри переходе на тариф "Менеджер" 50% бонусов сохраняются.\nПри переходе на тариф "Премиум" 100% бонусов сохраняются.\nАбонентская плата бонусами не оплачивается.\nПодписку можно активировать или приостановить в личном кабинете на странице тарифы с помощью переключателя «Автосписание».',
-      },
+    // Keep other translations that might be needed, but remove the tariff titles and descriptions
   };
 
 const mapComponentIdToApiId = (componentId: string): number => {
@@ -213,22 +181,8 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
   const translateApiContent = (text: string): string => {
     if (!text) return text;
 
-    if (apiTranslations[text]) {
-      return apiTranslations[text][language] || text;
-    }
-
-    for (const key in apiTranslations) {
-      const normalizedKey = key.replace(/\s+/g, "");
-      const normalizedText = text.replace(/\s+/g, "");
-
-      if (
-        normalizedKey.includes(normalizedText) ||
-        normalizedText.includes(normalizedKey)
-      ) {
-        return apiTranslations[key][language] || text;
-      }
-    }
-
+    // For tariff titles and descriptions, just return the text directly
+    // as we'll use what comes from the API
     return text;
   };
 
@@ -352,20 +306,14 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
   const cancelAutoRenewal = () => {
     setShowAutoRenewalModal(false);
   };
+  const getTariffGradientStyle = (tariff: {
+    b_start_color: string;
+    b_end_color: string;
+  }) => ({
+    background: `linear-gradient(90deg, ${tariff.b_start_color}, ${tariff.b_end_color})`,
+  });
 
   // Get gradient class based on tariff ID
-  const getTariffGradient = (tariffId: string) => {
-    switch (tariffId) {
-      case "seller":
-        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC]";
-      case "manager":
-        return "bg-gradient-to-r from-[rgba(0,131,172,0.71)] to-[#3460D1]";
-      case "premium":
-        return "bg-gradient-to-r from-[#2663FF] to-[#0B3CBB]";
-      default:
-        return "bg-gradient-to-r from-[#26CBFF] to-[#0083AC]";
-    }
-  };
 
   // Mobile view
   if (isMobile) {
@@ -405,7 +353,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                     {t("tariff.my")}
                   </span>
                   <span className="font-bold text-lg">
-                    {translateApiContent(tariffsData.tariff.title)}
+                    {tariffsData.tariff.title}
                   </span>
                 </div>
                 <div className="text-sm text-gray-600 dark:text-white space-y-1">
@@ -472,18 +420,17 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                 return (
                   <div
                     key={apiTariff.id}
-                    className={`rounded-3xl overflow-hidden ${getTariffGradient(
-                      tariffId
-                    )} ${
+                    className={`rounded-3xl overflow-hidden ${
                       expandedTariff === tariffId ? "shadow-lg" : "shadow-sm"
                     }`}
+                    style={getTariffGradientStyle(apiTariff)}
                     onClick={() => handleTariffClick(tariffId)}
                   >
                     {expandedTariff === tariffId ? (
                       // Expanded view
                       <div className="text-white p-6">
                         <h3 className="text-2xl font-bold mb-2">
-                          {translateApiContent(apiTariff.title)}
+                          {apiTariff.title}
                         </h3>
                         <div className="mb-4">
                           <p className="mb-1">
@@ -507,7 +454,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                         </div>
 
                         <div className="text-sm mb-6">
-                          {translateApiContent(apiTariff.description)
+                          {apiTariff.description
                             .split("\n\n")
                             .map((detail, index) => (
                               <p key={index} className="mb-1">
@@ -533,7 +480,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       // Collapsed view
                       <div className="text-white p-5">
                         <h3 className="text-2xl font-bold mb-2">
-                          {translateApiContent(apiTariff.title)}
+                          {apiTariff.title}
                         </h3>
                         <p className="text-sm">
                           {t("tariff.monthly.fee")} {apiTariff.final_price}{" "}
@@ -563,7 +510,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
               <div className="text-center mb-6">
                 <p className="text-lg">
                   {t("tariff.confirm.switch")}{" "}
-                  {translateApiContent(getTariffById(tariffToSwitch).name)}?
+                  {getTariffById(tariffToSwitch).name}?
                 </p>
               </div>
               <div className="flex flex-col gap-3">
@@ -659,7 +606,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       {t("tariff.my")}
                     </span>
                     <span className="font-bold text-lg">
-                      {translateApiContent(tariffsData.tariff.title)}
+                      {tariffsData.tariff.title}
                     </span>
                   </div>
                   <div className="text-sm text-gray-600 dark:text-white space-y-1">
@@ -725,15 +672,14 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                 return (
                   <div
                     key={apiTariff.id}
-                    className={`rounded-3xl overflow-hidden ${getTariffGradient(
-                      tariffId
-                    )} shadow-sm`}
+                    className="rounded-3xl overflow-hidden shadow-sm"
+                    style={getTariffGradientStyle(apiTariff)}
                   >
                     <div className="p-4 text-white">
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="text-2xl font-bold mb-2">
-                            {translateApiContent(apiTariff.title)}
+                            {apiTariff.title}
                           </h3>
                           <p className="text-sm">
                             {t("tariff.monthly.fee")} {apiTariff.final_price}{" "}
@@ -749,7 +695,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                           </p>
                         </div>
                         <div className="text-sm max-w-[50%]">
-                          {translateApiContent(apiTariff.description)
+                          {apiTariff.description
                             .split("\n")
                             .map((detail, index) => (
                               <p key={index} className="mb-1">
@@ -784,7 +730,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
               <div className="text-center mb-6">
                 <p className="text-lg">
                   {t("tariff.confirm.switch")}{" "}
-                  {translateApiContent(getTariffById(tariffToSwitch).name)}?
+                  {getTariffById(tariffToSwitch).name}?
                 </p>
               </div>
               <div className="flex flex-col gap-3">
