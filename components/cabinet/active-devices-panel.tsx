@@ -86,20 +86,34 @@ export function ActiveDevicesPanel({ onClose }: ActiveDevicesPanelProps) {
     }
   };
 
-  // Get device icon based on device type
-  const getDeviceIcon = (title: string) => {
-    if (title.includes("Web") || title.includes("Веб")) {
+  // Get device icon based on device title from API
+  const getDeviceIcon = (session: any) => {
+    const title = getDeviceTitle(session);
+    if (
+      title &&
+      (title.includes("Web") ||
+        title.includes("Веб") ||
+        title.includes("қосымшасы"))
+    ) {
       return <Laptop className="h-5 w-5 text-gray-500" />;
     } else {
       return <Smartphone className="h-5 w-5 text-gray-500" />;
     }
   };
 
-  // Get device title based on language
+  // Get device title based on current language from API
   const getDeviceTitle = (session: any) => {
-    if (language === "kz") return session.title_kk;
-    if (language === "en") return session.title_en;
-    return session.title_ru;
+    if (language === "kz" && session.title_kk) return session.title_kk;
+    if (language === "en" && session.title_en) return session.title_en;
+    if (session.title_ru) return session.title_ru;
+
+    // Fallback to any available title
+    return (
+      session.title_en ||
+      session.title_ru ||
+      session.title_kk ||
+      "Unknown Device"
+    );
   };
 
   // Загрузить больше устройств
@@ -209,14 +223,14 @@ export function ActiveDevicesPanel({ onClose }: ActiveDevicesPanelProps) {
             filteredSessions.map((session, index) => (
               <div
                 key={`session-${session.id}-${index}`}
-                className="bg-white rounded-3xl p-4 shadow-md border dark:bg-[#2C2B2B] "
+                className="bg-white rounded-3xl p-4 shadow-md border dark:bg-[#2C2B2B]"
               >
                 <div className="flex items-start">
-                  <div className="mr-3 mt-1">
-                    {getDeviceIcon(getDeviceTitle(session))}
-                  </div>
+                  <div className="mr-3 mt-1">{getDeviceIcon(session)}</div>
                   <div className="flex-1">
-                    <p className="font-medium">{getDeviceTitle(session)}</p>
+                    <p className="font-medium dark:text-white">
+                      {getDeviceTitle(session)}
+                    </p>
                     <p className="text-sm text-gray-500">
                       {session.device_name || ""}
                     </p>

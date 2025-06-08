@@ -3,6 +3,7 @@ import { axiosBaseQuery } from "@/axios/axiosBaseQuery";
 
 export interface IAffiliateItemResponse {
   link_share: string;
+  shares: IAffiliateShare[];
   output: {
     message_kk: string;
     message_en: string;

@@ -475,3 +475,28 @@ export interface IFaqResponse {
   questions: IFaqQuestion[];
   output: IOutput;
 }
+
+// Интерфейс для типа обратной связи
+export interface IFeedbackType {
+  id: number
+  title: string
+  note: string
+  title_kk?: string
+  title_en?: string
+  title_ru?: string
+  note_kk?: string
+  note_en?: string
+  note_ru?: string
+}
+
+// Интерфейс для ответа API с типами обратной связи
+export interface IFeedbackTypesResponse {
+  feedback_type: IFeedbackType[]
+  output: {
+    message_kk: string
+    message_en: string
+    message_ru: string
+    message: string
+    result: boolean
+  }
+}

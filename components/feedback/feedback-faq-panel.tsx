@@ -6,7 +6,6 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLanguage } from "../provider/language-provider";
 import { useGetFaqQuestionsQuery } from "@/store/services/feedback-api";
 import type { IFaqQuestion } from "@/store/types";
-import { faqTranslations } from "./translations/faq-translations";
 
 interface FeedbackFaqPanelProps {
   onClose: () => void;
@@ -15,7 +14,7 @@ interface FeedbackFaqPanelProps {
 export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
 
   // Получаем данные FAQ из API
   const { data: faqData, isLoading, error } = useGetFaqQuestionsQuery();
@@ -24,16 +23,8 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  // Функция для получения заголовка вопроса на нужном языке
+  // Функция для получения заголовка вопроса на нужном языке из API
   const getQuestionTitle = (question: IFaqQuestion): string => {
-    // Проверяем, есть ли перевод в файле переводов
-    const translation =
-      faqTranslations[question.id]?.[language as "kz" | "en" | "ru"];
-    if (translation?.title) {
-      return translation.title;
-    }
-
-    // Если нет перевода в файле, проверяем, есть ли перевод в данных API
     if (language === "kz" && question.title_kk) {
       return question.title_kk;
     } else if (language === "en" && question.title_en) {
@@ -41,20 +32,11 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
     } else if (language === "ru" && question.title_ru) {
       return question.title_ru;
     }
-
-    return question.title; // Возвращаем дефолтный заголовок, если перевод не найден
+    return question.title; // Возвращаем дефолтный заголовок
   };
 
-  // Функция для получения текста ответа на нужном языке
+  // Функция для получения текста ответа на нужном языке из API
   const getQuestionMessage = (question: IFaqQuestion): string => {
-    // Проверяем, есть ли перевод в файле переводов
-    const translation =
-      faqTranslations[question.id]?.[language as "kz" | "en" | "ru"];
-    if (translation?.message) {
-      return translation.message;
-    }
-
-    // Если нет перевода в файле, проверяем, есть ли перевод в данных API
     if (language === "kz" && question.message_kk) {
       return question.message_kk;
     } else if (language === "en" && question.message_en) {
@@ -62,8 +44,7 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
     } else if (language === "ru" && question.message_ru) {
       return question.message_ru;
     }
-
-    return question.message; // Возвращаем дефолтный текст, если перевод не найден
+    return question.message; // Возвращаем дефолтный текст
   };
 
   // Функция для форматирования текста с переносами строк
@@ -78,6 +59,39 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
 
   // Определяем размер иконок в зависимости от устройства
   const iconSize = 20;
+
+  // Получаем заголовки из API или используем дефолтные значения
+  const getHeaderTitle = () => {
+    // Можно добавить заголовок в API ответ, пока используем дефолтные значения
+    if (language === "kz") return "Кері байланыс";
+    if (language === "en") return "Feedback";
+    return "Обратная связь";
+  };
+
+  const getFaqTitle = () => {
+    // Можно добавить заголовок в API ответ, пока используем дефолтные значения
+    if (language === "kz") return "Жиі қойылатын сұрақтар";
+    if (language === "en") return "Frequently Asked Questions";
+    return "Часто задаваемые вопросы";
+  };
+
+  const getLoadingText = () => {
+    if (language === "kz") return "Жүктелуде...";
+    if (language === "en") return "Loading...";
+    return "Загрузка...";
+  };
+
+  const getErrorText = () => {
+    if (language === "kz") return "FAQ жүктеу қатесі";
+    if (language === "en") return "Error loading FAQ";
+    return "Ошибка загрузки FAQ";
+  };
+
+  const getNoQuestionsText = () => {
+    if (language === "kz") return "Сұрақтар жоқ";
+    if (language === "en") return "No questions available";
+    return "Нет доступных вопросов";
+  };
 
   return (
     <div className="h-full flex flex-col bg-white dark:bg-[#404040]">
@@ -95,7 +109,7 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
               />
             </button>
             <h2 className="text-lg font-medium mx-auto text-center text-blue-600 pl-6">
-              {t("common.feedback")}
+              {getHeaderTitle()}
             </h2>
             <div className="w-6" />
           </>
@@ -115,7 +129,7 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
           {/* Подзаголовок */}
           <div className="py-4 flex justify-center">
             <div className="bg-gradient-to-r from-[#0d52ff] to-[rgba(11,60,187,1)] text-white rounded-full py-3 px-6 text-center font-medium w-full">
-              {t("feedback.faq")}
+              {getFaqTitle()}
             </div>
           </div>
 
@@ -124,12 +138,13 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
             {isLoading && (
               <div className="flex justify-center items-center py-12">
                 <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
+                <span className="ml-2 text-blue-600">{getLoadingText()}</span>
               </div>
             )}
 
             {error && (
               <div className="text-center py-8">
-                <p className="text-red-500">{t("error.loading.faq")}</p>
+                <p className="text-red-500">{getErrorText()}</p>
               </div>
             )}
 
@@ -169,7 +184,7 @@ export function FeedbackFaqPanel({ onClose }: FeedbackFaqPanelProps) {
             {!isLoading && !error && faqData?.questions.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-500 dark:text-white">
-                  {t("feedback.no.questions")}
+                  {getNoQuestionsText()}
                 </p>
               </div>
             )}

@@ -318,9 +318,20 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                   {profileData?.user.tariff
                     ? profileData.user.tariff.includes("Премиум")
                       ? `«${language === "en" ? "Premium" : "Премиум"}»`
-                      : profileData.user.tariff
-                    : `«${getTranslatedTariffName()}»`}
+                      : profileData.user.tariff.includes("Селлер")
+                      ? `«${
+                          language === "en"
+                            ? "Seller"
+                            : language === "kz"
+                            ? "Сатушы"
+                            : "Селлер"
+                        }»`
+                      : profileData.user.tariff.includes("Менеджер")
+                      ? `«${language === "en" ? "Manager" : "Менеджер"}»`
+                      : `«${profileData.user.tariff}»`
+                    : `«${getTranslatedTariffName(currentTariffData?.id)}»`}
                 </span>
+
                 <button
                   className="text-xs font-light text-black underline dark:text-white"
                   onClick={(e) => {
@@ -442,7 +453,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
             </div>
           </div>
 
-        {/* {Выйти} */}
+          {/* {Выйти} */}
           <div
             className={`${getItemStyle(
               "exit-account"
@@ -456,7 +467,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
               <ChevronRight className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white flex-shrink-0" />
             </div>
           </div>
-            {/* Удалить аккаунт */}
+          {/* Удалить аккаунт */}
           <div
             className={`${getItemStyle(
               "delete-account"

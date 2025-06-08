@@ -21,6 +21,7 @@ const config = {
     extend: {
       screens: {
         "xs-range": { raw: "(min-width: 405px) and (max-width: 639px)" },
+        little: { raw: "(min-width: 359px) and (max-width: 404px)" },
       },
       colors: {
         border: "hsl(var(--border))",
