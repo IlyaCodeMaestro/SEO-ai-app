@@ -250,14 +250,8 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
                       }`}
                       onClick={() => handleOptionChange(option.id)}
                     ></div>
-                    <span className="text-xs sm:text-sm">
-                      {option.id === 1
-                        ? t("bonus.exchange.all.analysis")
-                        : option.id === 2
-                        ? t("bonus.exchange.all.description")
-                        : option.id === 3
-                        ? t("bonus.exchange.all.both")
-                        : option.title}
+                    <span className="text-xs sm:text-sm dark:text-white">
+                      {option.title}
                     </span>
                   </div>
                 ))}
@@ -266,11 +260,7 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
               <div className="mt-4 text-center text-xs text-gray-600 dark:text-white">
                 {bonusExchangeData?.prices.map((price) => (
                   <p key={price.id}>
-                    {price.id === 1
-                      ? t("bonus.analysis.value")
-                      : price.id === 2
-                      ? t("bonus.description.value")
-                      : `${price.title}: ${price.value} ${price.currency}`}
+                    {price.title}: {price.value} {price.currency}
                   </p>
                 ))}
               </div>
@@ -309,7 +299,9 @@ export function BonusExchangePanel({ onClose }: BonusExchangePanelProps) {
                   {t("bonus.card.not.added")}
                 </p>
                 <p className="text-gray-500 text-xs">
-                  {t("bonus.point.value.200")}
+                  1 {bonusExchangeData?.prices[0]?.currency} ={" "}
+                  {bonusExchangeData?.balance?.point_price}{" "}
+                  {bonusExchangeData?.balance?.currency}
                 </p>
               </div>
             )}
