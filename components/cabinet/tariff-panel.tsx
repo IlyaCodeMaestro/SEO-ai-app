@@ -83,6 +83,10 @@ const formatDateByLanguage = (dateString: string, language: string): string => {
     month: "long",
   });
 };
+// Функция для удаления всех типов кавычек из текста
+const removeQuotes = (text: string): string => {
+  return text.replace(/[«»""'']/g, "");
+};
 
 export function TariffPanel({ onClose }: TariffPanelProps) {
   const { language, t } = useLanguage();
@@ -353,7 +357,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                     {t("tariff.my")}
                   </span>
                   <span className="font-bold text-lg">
-                    {tariffsData.tariff.title}
+                    «{removeQuotes(tariffsData.tariff.title)}»
                   </span>
                 </div>
                 <div className="text-sm text-gray-600 dark:text-white space-y-1">
@@ -480,7 +484,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       // Collapsed view
                       <div className="text-white p-5">
                         <h3 className="text-2xl font-bold mb-2">
-                          {apiTariff.title}
+                          «{removeQuotes(apiTariff.title)}»
                         </h3>
                         <p className="text-sm">
                           {t("tariff.monthly.fee")} {apiTariff.final_price}{" "}
@@ -606,7 +610,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       {t("tariff.my")}
                     </span>
                     <span className="font-bold text-lg">
-                      {tariffsData.tariff.title}
+                      «{removeQuotes(tariffsData.tariff.title)}»
                     </span>
                   </div>
                   <div className="text-sm text-gray-600 dark:text-white space-y-1">
@@ -679,7 +683,7 @@ export function TariffPanel({ onClose }: TariffPanelProps) {
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="text-2xl font-bold mb-2">
-                            {apiTariff.title}
+                            «{removeQuotes(apiTariff.title)}»
                           </h3>
                           <p className="text-sm">
                             {t("tariff.monthly.fee")} {apiTariff.final_price}{" "}

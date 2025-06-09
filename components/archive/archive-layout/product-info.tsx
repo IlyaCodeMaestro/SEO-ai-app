@@ -23,19 +23,19 @@ export function ProductInfo({ item, isMobile }: ProductInfoProps) {
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [api, contextHolder] = notification.useNotification();
-  
+
+  const getItemStatus = (item: any) => {
+    const status = item.status || "неизвестен";
+    const type = item.type || "Работа";
+
+    return `${type} ${status}`;
+  };
+
   const getItemType = (item: any): "analysis" | "description" | "both" => {
     if (item.type_id === 3) return "both";
     if (item.type_id === 2) return "analysis";
     return "description";
   };
-
-  const getItemStatus = (item: any): string => {
-    const type = getItemType(item);
-    const status = item.status_id === 3 ? "completed" : "failed";
-    return `${type} ${status}`;
-  };
-
   // Функция для разделения статуса на строки
   const formatStatusText = (status: string) => {
     const words = status.split(" ");

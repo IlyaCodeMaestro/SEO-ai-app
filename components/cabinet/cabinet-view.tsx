@@ -45,6 +45,12 @@ const translateApiContent = (text: string, language: string): string => {
   // Если совпадения не найдено, возвращаем оригинальный текст
   return text;
 };
+
+// Функция для удаления всех типов кавычек из текста
+const removeQuotes = (text: string): string => {
+  return text.replace(/[""'']/g, "");
+};
+
 export function CabinetView({ onOpenPanel }: CabinetViewProps) {
   const { t, language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -74,6 +80,16 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
         setSelectedItem(null);
       }, 2000);
     };
+
+  const handleThemeChange = (newTheme: "light" | "dark") => {
+    setTheme(newTheme);
+    window.location.reload();
+  };
+
+  const handleLanguageChange = (newLanguage: "kz" | "ru" | "en") => {
+    setLanguage(newLanguage);
+    window.location.reload();
+  };
 
   // Update the getTranslatedTariffName function to properly handle English translations
 
@@ -316,20 +332,8 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
               <div className="flex flex-col items-end gap-2">
                 <span className="text-sm md:text-base text-gray-800 dark:text-white leading-tight">
                   {profileData?.user.tariff
-                    ? profileData.user.tariff.includes("Премиум")
-                      ? `«${language === "en" ? "Premium" : "Премиум"}»`
-                      : profileData.user.tariff.includes("Селлер")
-                      ? `«${
-                          language === "en"
-                            ? "Seller"
-                            : language === "kz"
-                            ? "Сатушы"
-                            : "Селлер"
-                        }»`
-                      : profileData.user.tariff.includes("Менеджер")
-                      ? `«${language === "en" ? "Manager" : "Менеджер"}»`
-                      : `«${profileData.user.tariff}»`
-                    : `«${getTranslatedTariffName(currentTariffData?.id)}»`}
+                    ? removeQuotes(profileData.user.tariff)
+                    : removeQuotes(getTranslatedTariffName())}
                 </span>
 
                 <button
@@ -358,10 +362,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                       ? "bg-white text-blue-600 font-medium shadow-md dark:bg-gray-900 dark:text-white"
                       : "text-gray-500 dark:text-white"
                   }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLanguage("kz");
-                  }}
+                  onClick={() => handleLanguageChange("kz")}
                 >
                   Каз.
                 </button>
@@ -371,10 +372,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                       ? "bg-white text-blue-600 font-medium shadow-md dark:bg-gray-900 dark:text-white"
                       : "text-gray-500 dark:text-white"
                   }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLanguage("ru");
-                  }}
+                  onClick={() => handleLanguageChange("ru")}
                 >
                   Рус.
                 </button>
@@ -384,10 +382,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                       ? "bg-white text-blue-600 font-medium shadow-md dark:bg-gray-900 dark:text-white"
                       : "text-gray-500 dark:text-white"
                   }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLanguage("en");
-                  }}
+                  onClick={() => handleLanguageChange("en")}
                 >
                   Eng.
                 </button>
@@ -408,10 +403,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                       ? "bg-white text-blue-600 shadow-md"
                       : "text-gray-500 dark:text-white"
                   }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setTheme("light");
-                  }}
+                  onClick={() => handleThemeChange("light")}
                 >
                   <Sun className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                   <span className="text-xs md:text-sm leading-none">
@@ -424,10 +416,7 @@ export function CabinetView({ onOpenPanel }: CabinetViewProps) {
                       ? "bg-white text-blue-600 shadow-md dark:text-white dark:bg-gray-900"
                       : "text-gray-500 dark:text-white"
                   }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setTheme("dark");
-                  }}
+                  onClick={() => handleThemeChange("dark")}
                 >
                   <Moon className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                   <span className="text-xs md:text-sm leading-none">

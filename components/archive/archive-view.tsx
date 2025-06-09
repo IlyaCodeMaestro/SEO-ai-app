@@ -52,6 +52,8 @@ export function ArchiveView({
     );
   };
 
+  console.log(archiveData);
+
   const scrollToTop = () => {
     if (!isMobileDevice()) {
       window.scrollTo({
@@ -80,7 +82,7 @@ export function ArchiveView({
       ...item,
       id: item.id,
       type: getItemType(item),
-      status: item.status_id === 3 ? "completed" : "failed",
+      status: item.status || "неизвестен",
       timestamp: Date.now(),
       competitorSku: "",
     };

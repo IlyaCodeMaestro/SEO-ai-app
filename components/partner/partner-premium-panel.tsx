@@ -123,7 +123,7 @@ export default function PartnerStandardPanel({
 
         <div className="space-y-8 relative">
           {/* Vertical line */}
-          <div className="absolute left-[20px] top-[20px] little:h-[705px] h-[680px] md:h-[395px] xs-range:h-[595px] sm:h-[590px] w-px border-l border-dashed border-blue-700 z-0" />
+          <div className="absolute left-[20px] top-[20px] little:h-[610px] h-[600px] md:h-[395px] xs-range:h-[595px] sm:h-[590px] w-px border-l border-dashed border-blue-700 z-0" />
 
           {/* Dynamic steps from API */}
           {affiliateData.shares.share_items.map((item, index) => (

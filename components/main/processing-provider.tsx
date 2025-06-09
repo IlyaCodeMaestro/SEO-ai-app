@@ -56,11 +56,11 @@ export function ProcessingProvider({
   // Use RTK Query hooks for polling
   const { data: processData, refetch: refetchProcessList } =
     useGetProcessListQuery(undefined, {
-      pollingInterval: 5000, // Poll every 5 seconds
+     
     });
 
   const { data: archiveData, refetch: refetchArchive } = useGetArchiveQuery(1, {
-    pollingInterval: 5000, // Poll every 5 seconds
+   
   });
 
   // Store a ref to the current processing items for use in the polling effect

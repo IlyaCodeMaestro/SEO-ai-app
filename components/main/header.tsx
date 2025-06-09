@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "../provider/theme-provider";
 import { useLanguage } from "../provider/language-provider";
 import { Sun, Moon, Menu } from "lucide-react";
@@ -12,6 +12,12 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useProcessingContext } from "./processing-provider";
 
+import {
+  useGetSettingsQuery,
+  useUpdateSettingsMutation,
+} from "@/store/services/settings-api";
+import type { ISettingsRequest } from "@/store/settings";
+
 export function Header({ activeTab }: { activeTab?: string }) {
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
@@ -19,13 +25,32 @@ export function Header({ activeTab }: { activeTab?: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  // Обновляем URL при изменении вкладки
+  const { data, error, isLoading } = useGetSettingsQuery();
+  const [updateSettings, { isLoading: isUpdating, isSuccess }] =
+    useUpdateSettingsMutation();
+
+  useEffect(() => {
+    const updatedSettings: ISettingsRequest = {
+      // Пример: заполни в соответствии со структурой ISettingsRequest
+      theme_id: theme === "dark" ? 2 : 1,
+      language_id: language === "kz" ? 1 : language === "en" ? 2 : 3,
+    };
+
+    updateSettings(updatedSettings);
+  }, [language, theme]);
+
   const handleTabChange = (value: string) => {
     window.location.href = `/dashboard/${value}`;
   };
 
   const handleThemeChange = (newTheme: "light" | "dark") => {
     setTheme(newTheme);
+    window.location.reload();
+  };
+
+  const handleLanguageChange = (newLanguage: "kz" | "ru" | "en") => {
+    setLanguage(newLanguage);
+    window.location.reload();
   };
 
   return (
@@ -152,7 +177,7 @@ export function Header({ activeTab }: { activeTab?: string }) {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => setLanguage("kz")}
+                          onClick={() => handleLanguageChange("kz")}
                           className={`rounded-full h-6 w-8 text-xs ${
                             language === "kz"
                               ? "bg-white dark:bg-black"
@@ -164,7 +189,7 @@ export function Header({ activeTab }: { activeTab?: string }) {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => setLanguage("ru")}
+                          onClick={() => handleLanguageChange("ru")}
                           className={`rounded-full h-6 w-8 text-xs ${
                             language === "ru"
                               ? "bg-white dark:bg-black"
@@ -176,7 +201,7 @@ export function Header({ activeTab }: { activeTab?: string }) {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => setLanguage("en")}
+                          onClick={() => handleLanguageChange("en")}
                           className={`rounded-full h-6 w-8 text-xs ${
                             language === "en"
                               ? "bg-white dark:bg-black"
@@ -234,7 +259,7 @@ export function Header({ activeTab }: { activeTab?: string }) {
                 type="single"
                 value={language}
                 onValueChange={(value) =>
-                  value && setLanguage(value as "kz" | "ru" | "en")
+                  value && handleLanguageChange(value as "kz" | "ru" | "en")
                 }
                 className="border rounded-full p-0.5 bg-gray-200 dark:bg-[#4D4D4D]"
               >

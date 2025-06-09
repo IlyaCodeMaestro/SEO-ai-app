@@ -140,7 +140,7 @@ export function TariffProvider({
 
     return {
       id,
-      name: apiTariff.title.replace(/[«»]/g, ""),
+      name: apiTariff.title.replace(/[«»""]/g, ""),
       monthlyFee: apiTariff.final_price,
       analysisCount: apiTariff.analyses,
       descriptionCount: apiTariff.descriptions,
