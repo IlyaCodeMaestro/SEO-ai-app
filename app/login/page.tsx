@@ -27,7 +27,7 @@ export default function Login() {
 
       // Use replace instead of push for immediate navigation
       // and prevent back button from returning to login page
-      router.push("/dashboard");
+      router.push("/dashboard/main");
     } catch (err: any) {
       setError(err.message);
       setIsLoading(false);

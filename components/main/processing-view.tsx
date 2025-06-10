@@ -5,10 +5,13 @@ import type React from "react";
 import { X, ArrowLeft, Copy } from "lucide-react";
 import { useProcessingContext } from "./processing-provider";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { useGetProcessListQuery } from "@/store/services/main";
+import {
+  useGetArchiveQuery,
+  useGetProcessListQuery,
+} from "@/store/services/main";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "../provider/language-provider";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { notification } from "antd"; // Добавляем импорт notification
 
 interface ProcessingViewProps {
@@ -17,6 +20,13 @@ interface ProcessingViewProps {
 
 export function ProcessingView({ onClose }: ProcessingViewProps) {
   const {
+    processingItems: contextProcessingItems,
+    hasNotifications,
+    setHasNotifications,
+    processingItems,
+  } = useProcessingContext();
+
+  const {
     data: apiProcessData,
     isLoading,
     error,
@@ -24,11 +34,63 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
   } = useGetProcessListQuery(undefined, {
     pollingInterval: 5000, // Poll every 5 seconds
   });
-  const { processingItems: contextProcessingItems } = useProcessingContext();
+
+  const { data: archiveData, refetch: refetchArchive } = useGetArchiveQuery(1, {
+    pollingInterval: 5000, // Poll every 5 seconds
+  });
+
+  const processingItemsRef = useRef(processingItems);
+
+  useEffect(() => {
+    if (!archiveData || !archiveData.card_dates) return;
+
+    const currentProcessingItems = [...processingItemsRef.current];
+
+    // Go through each card in the archive
+    archiveData.card_dates.forEach((dateGroup) => {
+      dateGroup.cards.forEach((card) => {
+        const processingItem = currentProcessingItems.find(
+          (item) => item.cardId === card.id
+        );
+
+        if (processingItem) {
+          // Log the complete processing item to see all properties
+          console.log(
+            "Processing item:",
+            JSON.stringify(processingItem, null, 2)
+          );
+
+          let isCompleted = false;
+
+          // Check various status properties that might indicate completion
+          if (card.status_id === 3 || card.status_id === 4) {
+            isCompleted = true;
+          } else if (
+            card.status === "выполнен" ||
+            card.status === "завершен" ||
+            card.status === "завершен успешно"
+          ) {
+            isCompleted = true;
+          } else if (
+            processingItem.type === "description" &&
+            card.type_id === 1
+          ) {
+            isCompleted = true;
+          }
+
+          if (isCompleted) {
+          }
+        }
+      });
+    });
+  }, [archiveData]);
+
+  console.log("123", apiProcessData);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { t } = useLanguage();
   const [copiedCardId, setCopiedCardId] = useState<number | null>(null);
   const [api, contextHolder] = notification.useNotification(); // Добавляем хук для уведомлений
+  const { hasNewItems, clearNewItems } = useProcessingContext();
 
   // State to store combined and deduplicated items
   const [displayItems, setDisplayItems] = useState<any[]>([]);
@@ -41,33 +103,33 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
     const processedIds = new Set<number>();
 
     // First add items from context (these are the most up-to-date)
-    if (contextProcessingItems && contextProcessingItems.length > 0) {
-      console.log("546", contextProcessingItems);
-      contextProcessingItems.forEach((item) => {
-        if (item.cardId && !processedIds.has(item.cardId)) {
-          combinedItems.push({
-            ...item.cardData,
-            id: item.cardId,
-            type:
-              item.type === "analysis"
-                ? "Анализ"
-                : item.type === "description"
-                ? "Описание"
-                : "Анализ и описание",
-            type_id:
-              item.type === "analysis"
-                ? 2
-                : item.type === "description"
-                ? 1
-                : 3,
-            status: "в обработке",
-            status_color: "#000000",
-            // Add any other necessary fields
-          });
-          processedIds.add(item.cardId);
-        }
-      });
-    }
+    // if (apiProcessData && apiProcessData?.card_dates.length > 0) {
+    //   console.log("546", apiProcessData);
+    //   apiProcessData.card_dates.forEach((item) => {
+    //     if (item.cardId && !processedIds.has(item.cardId)) {
+    //       combinedItems.push({
+    //         ...item.cardData,
+    //         id: item.cardId,
+    //         type:
+    //           item.type === "analysis"
+    //             ? "Анализ"
+    //             : item.type === "description"
+    //             ? "Описание"
+    //             : "Анализ и описание",
+    //         type_id:
+    //           item.type === "analysis"
+    //             ? 2
+    //             : item.type === "description"
+    //             ? 1
+    //             : 3,
+    //         status: "в обработке",
+    //         status_color: "#000000",
+    //         // Add any other necessary fields
+    //       });
+    //       processedIds.add(item.cardId);
+    //     }
+    //   });
+    // }
 
     // Then add items from API that aren't already added
     if (apiProcessData && apiProcessData.card_dates) {
@@ -84,7 +146,7 @@ export function ProcessingView({ onClose }: ProcessingViewProps) {
     }
 
     setDisplayItems(combinedItems);
-  }, [apiProcessData, contextProcessingItems]);
+  }, [apiProcessData]);
 
   // Check if there are any items to display
   const hasNoItems = displayItems.length === 0;

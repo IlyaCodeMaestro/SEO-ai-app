@@ -25,6 +25,7 @@ import type {
   ITariffReconnectRequest,
   IDeleteAccountInfoResponse,
   IDeleteAccountResponse,
+  IGetBadge,
 } from "../types";
 import { axiosBaseQuery } from "@/axios/axiosBaseQuery";
 
@@ -223,6 +224,12 @@ export const mainApi = createApi({
         method: "GET",
       }),
     }),
+    getBadge: builder.query<IGetBadge, void>({
+      query: () => ({
+        url: `/v1/badge`,
+        method: "GET",
+      }),
+    }),
     getCardDescription: builder.query<ICardDescriptionResponse, number>({
       query: (cardId) => ({
         url: `/v1/card/description?card_id=${cardId}`,
@@ -279,6 +286,7 @@ export const {
   useStartAnalysisDescriptionMutation,
   useGetProcessListQuery,
   useGetCardAnalysisQuery,
+  useGetBadgeQuery,
   useGetCardDescriptionQuery,
   useGetArchiveQuery,
   useGetDeleteAccountInfoQuery,

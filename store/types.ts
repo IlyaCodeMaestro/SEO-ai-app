@@ -95,6 +95,20 @@ export interface IResponseStartDescription {
   };
 }
 
+export interface IGetBadge {
+  badge: {
+    notification_count: number;
+    card_count: number;
+  };
+  output: {
+    message_en: string;
+    message_kk: string;
+    message_ru: string;
+    message: string;
+    result: boolean;
+  };
+}
+
 // Add this new interface for the card analysis response
 export interface ICardAnalysisResponse {
   notification_read: boolean;
@@ -478,25 +492,25 @@ export interface IFaqResponse {
 
 // Интерфейс для типа обратной связи
 export interface IFeedbackType {
-  id: number
-  title: string
-  note: string
-  title_kk?: string
-  title_en?: string
-  title_ru?: string
-  note_kk?: string
-  note_en?: string
-  note_ru?: string
+  id: number;
+  title: string;
+  note: string;
+  title_kk?: string;
+  title_en?: string;
+  title_ru?: string;
+  note_kk?: string;
+  note_en?: string;
+  note_ru?: string;
 }
 
 // Интерфейс для ответа API с типами обратной связи
 export interface IFeedbackTypesResponse {
-  feedback_type: IFeedbackType[]
+  feedback_type: IFeedbackType[];
   output: {
-    message_kk: string
-    message_en: string
-    message_ru: string
-    message: string
-    result: boolean
-  }
+    message_kk: string;
+    message_en: string;
+    message_ru: string;
+    message: string;
+    result: boolean;
+  };
 }

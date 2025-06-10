@@ -85,6 +85,7 @@ export function ArchiveView({
       status: item.status || "неизвестен",
       timestamp: Date.now(),
       competitorSku: "",
+      typeName: item.type || "Работа",
     };
 
     // Pass the selected item to the parent component

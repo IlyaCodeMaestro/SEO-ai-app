@@ -17,17 +17,36 @@ import {
   useUpdateSettingsMutation,
 } from "@/store/services/settings-api";
 import type { ISettingsRequest } from "@/store/settings";
+import { useGetBadgeQuery } from "@/store/services/main";
 
 export function Header({ activeTab }: { activeTab?: string }) {
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
-  const { hasNewItems, clearNewItems } = useProcessingContext();
+  const { hasNewItems, clearNewItems, clearProcessedCardIds } =
+    useProcessingContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const { data, error, isLoading } = useGetSettingsQuery();
   const [updateSettings, { isLoading: isUpdating, isSuccess }] =
     useUpdateSettingsMutation();
+  const { hasNotifications, setHasNotifications } = useProcessingContext();
+
+  const {
+    data: badgeData,
+    isLoading: isBadgeLoading,
+    error: badgeError,
+  } = useGetBadgeQuery();
+
+  useEffect(() => {
+    if (badgeData?.badge.card_count > 0) {
+      setHasNotifications(true);
+    } else {
+      setHasNotifications(false);
+    }
+  }, [badgeData]);
+
+  console.log(badgeData);
 
   useEffect(() => {
     const updatedSettings: ISettingsRequest = {
@@ -84,8 +103,10 @@ export function Header({ activeTab }: { activeTab?: string }) {
               <SheetTrigger asChild>
                 <div className="w-[40px] h-[40px] flex items-center justify-center relative">
                   <Menu className="w-[35px] h-[35px] stroke-[1.5px]" />
-                  {hasNewItems && activeTab !== "archive" && (
+                  {hasNotifications && activeTab !== "archive" ? (
                     <span className="absolute top-0 right-0 bg-blue-600 w-4 h-4 rounded-full"></span>
+                  ) : (
+                    ""
                   )}
                 </div>
               </SheetTrigger>
@@ -122,8 +143,10 @@ export function Header({ activeTab }: { activeTab?: string }) {
                       onClick={() => handleTabChange("archive")}
                     >
                       {t("common.archive")}
-                      {hasNewItems && activeTab !== "archive" && (
+                      {hasNotifications && activeTab !== "archive" ? (
                         <span className="absolute top-3 bg-blue-600 w-3 h-3 rounded-full"></span>
+                      ) : (
+                        ""
                       )}
                     </button>
                     <button
@@ -332,8 +355,10 @@ export function Header({ activeTab }: { activeTab?: string }) {
                     className="text-lg font-medium data-[state=active]:text-blue-600 data-[state=active]:bg-transparent border-none shadow-none relative whitespace-nowrap h-10 mb-0"
                   >
                     {t("common.archive")}
-                    {hasNewItems && activeTab !== "archive" && (
+                    {hasNotifications && activeTab !== "archive" ? (
                       <span className="absolute -top-1 right-1 bg-blue-600 w-3 h-3 rounded-full"></span>
+                    ) : (
+                      ""
                     )}
                   </TabsTrigger>
                   <TabsTrigger

@@ -23,6 +23,8 @@ export type ProcessingHistoryItem = {
 type ProcessingContextType = {
   processingItems: ProcessingHistoryItem[];
   hasNewItems: boolean;
+  hasNotifications: boolean;
+  setHasNotifications: (value: boolean) => void;
   addProcessingItem: (
     type: "analysis" | "description" | "both",
     data: {
@@ -52,20 +54,18 @@ export function ProcessingProvider({
   >([]);
   const [hasNewItems, setHasNewItems] = useState(false);
   const [processedCardIds, setProcessedCardIds] = useState<number[]>([]);
+  const [hasNotifications, setHasNotifications] = useState(false);
 
   // Use RTK Query hooks for polling
-  const { data: processData, refetch: refetchProcessList } =
-    useGetProcessListQuery(undefined, {
-     
-    });
-
-  const { data: archiveData, refetch: refetchArchive } = useGetArchiveQuery(1, {
-   
-  });
+  // const { data: processData, refetch: refetchProcessList } =
+  //   useGetProcessListQuery(undefined, {
+  //     pollingInterval: 5000, // Poll every 5 seconds
+  //   });
 
   // Store a ref to the current processing items for use in the polling effect
   const processingItemsRef = useRef(processingItems);
   useEffect(() => {
+    console.log("f", processingItems);
     processingItemsRef.current = processingItems;
   }, [processingItems]);
 
@@ -84,109 +84,6 @@ export function ProcessingProvider({
       }
     }
   }, []);
-
-  // Update the useEffect that checks for completed items to properly handle both analysis and description types
-  useEffect(() => {
-    if (!archiveData || !archiveData.card_dates) return;
-
-    // Check all card dates in archive
-    const currentProcessingItems = [...processingItemsRef.current];
-    let updatedProcessingItems = [...currentProcessingItems];
-    const newProcessedCardIds = [...processedCardIds];
-    let hasChanges = false;
-
-    // Go through each card in the archive
-    archiveData.card_dates.forEach((dateGroup) => {
-      dateGroup.cards.forEach((card) => {
-        // Log the complete card object to see all properties
-        // console.log("Archive card:", JSON.stringify(card, null, 2));
-
-        // Find matching processing item by cardId
-        const processingItem = currentProcessingItems.find(
-          (item) => item.cardId === card.id
-        );
-
-        if (processingItem) {
-          // Log the complete processing item to see all properties
-          console.log(
-            "Processing item:",
-            JSON.stringify(processingItem, null, 2)
-          );
-
-          // IMPORTANT: For description cards, we'll consider them completed if they're in the archive at all
-          // This is a fallback to ensure description cards are added to the archive
-          let isCompleted = false;
-
-          // Check various status properties that might indicate completion
-          if (card.status_id === 3 || card.status_id === 4) {
-            isCompleted = true;
-          } else if (
-            card.status === "выполнен" ||
-            card.status === "завершен" ||
-            card.status === "завершен успешно"
-          ) {
-            isCompleted = true;
-          } else if (
-            processingItem.type === "description" &&
-            card.type_id === 1
-          ) {
-            // For description cards, we'll be more lenient
-            // If it's in the archive at all, consider it completed
-            isCompleted = true;
-            console.log(
-              `Forcing description card ${card.id} to be considered completed`
-            );
-          }
-
-          // Log more details about the card and processing item for debugging
-          console.log(
-            `Checking card ID ${card.id}: type_id=${card.type_id}, processingType=${processingItem.type}, ` +
-              `status_id=${card.status_id}, status=${card.status}, isCompleted=${isCompleted}`
-          );
-
-          // For description cards, we'll manually set isCompleted to true
-          if (processingItem.type === "description") {
-            isCompleted = true;
-            console.log(
-              `Forcing description card ${card.id} to be considered completed regardless of status`
-            );
-          }
-
-          if (isCompleted) {
-            // Log the expected message format
-            console.log(
-              `Card ID ${card.id} has been processed and is now in the archive. Type: ${card.type_id}, Processing type: ${processingItem.type}`
-            );
-
-            // Remove from processing items
-            updatedProcessingItems = updatedProcessingItems.filter(
-              (procItem) => procItem.id !== processingItem.id
-            );
-
-            // Add to processed card IDs if not already there
-            if (!newProcessedCardIds.includes(card.id)) {
-              newProcessedCardIds.push(card.id);
-              hasChanges = true;
-            }
-          }
-        }
-      });
-    });
-
-    // Update state if changes were made
-    if (updatedProcessingItems.length !== currentProcessingItems.length) {
-      setProcessingItems(updatedProcessingItems);
-      setHasNewItems(true);
-    }
-
-    if (hasChanges) {
-      setProcessedCardIds(newProcessedCardIds);
-      localStorage.setItem(
-        "processedCardIds",
-        JSON.stringify(newProcessedCardIds)
-      );
-    }
-  }, [archiveData, processedCardIds]);
 
   // Add a special function to manually add a card ID to the processed list
   // This can be used for testing or as a fallback
@@ -257,8 +154,8 @@ export function ProcessingProvider({
     }
 
     // Immediately trigger a refetch of the process list and archive
-    refetchProcessList();
-    refetchArchive();
+    // refetchProcessList();
+    // refetchArchive();
   };
 
   const clearNewItems = () => {
@@ -280,6 +177,8 @@ export function ProcessingProvider({
         processedCardIds,
         clearProcessedCardIds,
         manuallyAddToProcessed,
+        hasNotifications,
+        setHasNotifications,
       }}
     >
       {children}

@@ -33,6 +33,7 @@ interface ArchiveItemDetailsProps {
     sku: string;
     competitorSku?: string;
     type: "analysis" | "description" | "both";
+    typeName: string;
     status: "processing" | "completed";
     timestamp: number;
     name: string;
@@ -54,6 +55,8 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
   const shouldFetchDescription = item.type === "description";
   const router = useRouter();
   const [api, contextHolder] = notification.useNotification();
+
+  console.log(item);
   // Функция для копирования с уведомлением
   const handleCopy = (text: string, section: string) => {
     navigator.clipboard.writeText(text);
@@ -773,6 +776,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               image:
                 descriptionData?.card?.images?.[0]?.image ||
                 analysisData?.card?.images?.[0]?.image,
+              typeName: item.typeName,
             }}
             isMobile={false}
           />
@@ -1028,6 +1032,7 @@ export function ArchiveItemDetails({ onClose, item }: ArchiveItemDetailsProps) {
               image:
                 descriptionData?.card?.images?.[0]?.image ||
                 analysisData?.card?.images?.[0]?.image,
+              typeName: item.typeName,
             }}
             isMobile={true}
           />
